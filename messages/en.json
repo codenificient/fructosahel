@@ -1,0 +1,267 @@
+{
+  "common": {
+    "appName": "FructoSahel",
+    "tagline": "Transforming Sahel Agriculture",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "viewAll": "View All",
+    "noData": "No data available",
+    "error": "An error occurred",
+    "success": "Success",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Knowledge Base",
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "logout": "Logout",
+    "signUp": "Sign Up"
+  },
+  "landing": {
+    "hero": {
+      "title": "Growing the Future of Sahel Agriculture",
+      "subtitle": "Empowering farmers in Burkina Faso, Mali, and Niger with AI-driven insights and modern farm management tools.",
+      "cta": "Get Started",
+      "learnMore": "Learn More"
+    },
+    "features": {
+      "title": "Why Choose FructoSahel?",
+      "subtitle": "Modern tools designed for the unique challenges of Sahel agriculture",
+      "farmManagement": {
+        "title": "Farm Management",
+        "description": "Track your farms, fields, and crops with detailed monitoring and planning tools."
+      },
+      "aiAgents": {
+        "title": "AI Advisors",
+        "description": "Get expert advice from our AI agronomist, marketing, and finance agents."
+      },
+      "analytics": {
+        "title": "Smart Analytics",
+        "description": "Make data-driven decisions with comprehensive reports and insights."
+      },
+      "knowledgeBase": {
+        "title": "Knowledge Base",
+        "description": "Access detailed growing guides for pineapples, cashews, mangos, and more."
+      }
+    },
+    "crops": {
+      "title": "Our Focus Crops",
+      "subtitle": "Specialized expertise in high-value Sahel crops",
+      "pineapple": "Pineapple",
+      "cashew": "Cashew",
+      "avocado": "Avocado",
+      "mango": "Mango",
+      "banana": "Banana",
+      "papaya": "Papaya"
+    },
+    "stats": {
+      "farms": "Farms Managed",
+      "hectares": "Hectares Under Cultivation",
+      "farmers": "Farmers Supported",
+      "countries": "Countries"
+    },
+    "cta": {
+      "title": "Ready to Transform Your Farm?",
+      "subtitle": "Join hundreds of farmers already using FructoSahel to improve their yields and profitability.",
+      "button": "Start Free Trial"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back",
+    "overview": "Overview",
+    "recentActivity": "Recent Activity",
+    "quickActions": "Quick Actions",
+    "stats": {
+      "totalFarms": "Total Farms",
+      "totalHectares": "Total Hectares",
+      "activeCrops": "Active Crops",
+      "pendingTasks": "Pending Tasks",
+      "monthlyRevenue": "Monthly Revenue",
+      "monthlyExpenses": "Monthly Expenses"
+    }
+  },
+  "farms": {
+    "title": "Farms",
+    "addFarm": "Add Farm",
+    "editFarm": "Edit Farm",
+    "farmDetails": "Farm Details",
+    "fields": "Fields",
+    "addField": "Add Field",
+    "location": "Location",
+    "size": "Size (Hectares)",
+    "manager": "Manager",
+    "country": "Country",
+    "countries": {
+      "burkina_faso": "Burkina Faso",
+      "mali": "Mali",
+      "niger": "Niger"
+    }
+  },
+  "crops": {
+    "title": "Crops",
+    "addCrop": "Add Crop",
+    "editCrop": "Edit Crop",
+    "cropDetails": "Crop Details",
+    "type": "Crop Type",
+    "variety": "Variety",
+    "status": "Status",
+    "plantingDate": "Planting Date",
+    "harvestDate": "Expected Harvest",
+    "yield": "Expected Yield (kg)",
+    "statuses": {
+      "planning": "Planning",
+      "planted": "Planted",
+      "growing": "Growing",
+      "flowering": "Flowering",
+      "fruiting": "Fruiting",
+      "harvesting": "Harvesting",
+      "harvested": "Harvested",
+      "dormant": "Dormant"
+    }
+  },
+  "tasks": {
+    "title": "Tasks",
+    "addTask": "Add Task",
+    "editTask": "Edit Task",
+    "taskDetails": "Task Details",
+    "assignedTo": "Assigned To",
+    "dueDate": "Due Date",
+    "priority": "Priority",
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "urgent": "Urgent"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "finance": {
+    "title": "Finance",
+    "transactions": "Transactions",
+    "addTransaction": "Add Transaction",
+    "sales": "Sales",
+    "addSale": "Add Sale",
+    "income": "Income",
+    "expenses": "Expenses",
+    "netProfit": "Net Profit",
+    "revenue": "Revenue",
+    "currency": "XOF"
+  },
+  "team": {
+    "title": "Team",
+    "addMember": "Add Team Member",
+    "editMember": "Edit Member",
+    "roles": {
+      "admin": "Administrator",
+      "manager": "Manager",
+      "worker": "Worker",
+      "viewer": "Viewer"
+    }
+  },
+  "agents": {
+    "title": "AI Advisors",
+    "selectAgent": "Select an AI Advisor",
+    "newConversation": "New Conversation",
+    "typeMessage": "Type your message...",
+    "send": "Send",
+    "marketing": {
+      "name": "Marketing Advisor",
+      "description": "Get advice on market trends, pricing strategies, and finding buyers for your produce."
+    },
+    "finance": {
+      "name": "Finance Advisor",
+      "description": "Manage your farm finances, budgeting, and investment decisions."
+    },
+    "agronomist": {
+      "name": "Agronomist Advisor",
+      "description": "Expert advice on planting, irrigation, fertilizers, pest control, and crop management."
+    }
+  },
+  "blog": {
+    "title": "Knowledge Base",
+    "subtitle": "Expert guides for growing fruits in the Sahel region",
+    "readMore": "Read More",
+    "categories": "Categories",
+    "allPosts": "All Posts",
+    "relatedPosts": "Related Posts",
+    "growingGuide": "Growing Guide",
+    "schedule": "Growing Schedule",
+    "waterNeeds": "Water Requirements",
+    "fertilizer": "Fertilizer Guide",
+    "pestControl": "Pest Control",
+    "harvesting": "Harvesting Tips",
+    "sahelTips": "Sahel-Specific Tips"
+  },
+  "about": {
+    "title": "About FructoSahel",
+    "mission": {
+      "title": "Our Mission",
+      "content": "To empower Sahel farmers with modern technology and AI-driven insights to increase crop yields, improve sustainability, and build prosperous agricultural businesses."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "content": "A thriving agricultural sector in the Sahel region where farmers have access to the knowledge and tools they need to succeed."
+    },
+    "team": {
+      "title": "Our Team",
+      "content": "We are a team of agricultural experts, technologists, and entrepreneurs passionate about transforming agriculture in West Africa."
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have questions? We'd love to hear from you.",
+    "form": {
+      "name": "Your Name",
+      "email": "Email Address",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send Message"
+    },
+    "info": {
+      "address": "Ouagadougou, Burkina Faso",
+      "email": "contact@fructosahel.com",
+      "phone": "+226 XX XX XX XX"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot Password?",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign Up"
+    },
+    "signUp": {
+      "title": "Create Account",
+      "subtitle": "Join FructoSahel today",
+      "name": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "hasAccount": "Already have an account?",
+      "login": "Login"
+    }
+  }
+}

@@ -1,0 +1,267 @@
+{
+  "common": {
+    "appName": "FructoSahel",
+    "tagline": "Transformer l'Agriculture du Sahel",
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Creer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "export": "Exporter",
+    "import": "Importer",
+    "viewAll": "Voir Tout",
+    "noData": "Aucune donnee disponible",
+    "error": "Une erreur s'est produite",
+    "success": "Succes",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Precedent"
+  },
+  "nav": {
+    "home": "Accueil",
+    "about": "A Propos",
+    "blog": "Base de Connaissances",
+    "contact": "Contact",
+    "dashboard": "Tableau de Bord",
+    "login": "Connexion",
+    "logout": "Deconnexion",
+    "signUp": "S'inscrire"
+  },
+  "landing": {
+    "hero": {
+      "title": "Cultiver l'Avenir de l'Agriculture Sahelienne",
+      "subtitle": "Autonomiser les agriculteurs au Burkina Faso, au Mali et au Niger avec des analyses basees sur l'IA et des outils modernes de gestion agricole.",
+      "cta": "Commencer",
+      "learnMore": "En Savoir Plus"
+    },
+    "features": {
+      "title": "Pourquoi Choisir FructoSahel?",
+      "subtitle": "Des outils modernes concus pour les defis uniques de l'agriculture sahelienne",
+      "farmManagement": {
+        "title": "Gestion des Exploitations",
+        "description": "Suivez vos fermes, parcelles et cultures avec des outils de surveillance et de planification detailles."
+      },
+      "aiAgents": {
+        "title": "Conseillers IA",
+        "description": "Obtenez des conseils d'experts de nos agents IA en agronomie, marketing et finance."
+      },
+      "analytics": {
+        "title": "Analyses Intelligentes",
+        "description": "Prenez des decisions basees sur les donnees avec des rapports et des analyses complets."
+      },
+      "knowledgeBase": {
+        "title": "Base de Connaissances",
+        "description": "Accedez a des guides de culture detailles pour les ananas, noix de cajou, mangues et plus encore."
+      }
+    },
+    "crops": {
+      "title": "Nos Cultures Cibles",
+      "subtitle": "Expertise specialisee dans les cultures a haute valeur du Sahel",
+      "pineapple": "Ananas",
+      "cashew": "Noix de Cajou",
+      "avocado": "Avocat",
+      "mango": "Mangue",
+      "banana": "Banane",
+      "papaya": "Papaye"
+    },
+    "stats": {
+      "farms": "Fermes Gerees",
+      "hectares": "Hectares Cultives",
+      "farmers": "Agriculteurs Accompagnes",
+      "countries": "Pays"
+    },
+    "cta": {
+      "title": "Pret a Transformer Votre Ferme?",
+      "subtitle": "Rejoignez des centaines d'agriculteurs qui utilisent deja FructoSahel pour ameliorer leurs rendements et leur rentabilite.",
+      "button": "Essai Gratuit"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de Bord",
+    "welcome": "Bon retour",
+    "overview": "Apercu",
+    "recentActivity": "Activite Recente",
+    "quickActions": "Actions Rapides",
+    "stats": {
+      "totalFarms": "Total des Fermes",
+      "totalHectares": "Total des Hectares",
+      "activeCrops": "Cultures Actives",
+      "pendingTasks": "Taches en Attente",
+      "monthlyRevenue": "Revenus Mensuels",
+      "monthlyExpenses": "Depenses Mensuelles"
+    }
+  },
+  "farms": {
+    "title": "Fermes",
+    "addFarm": "Ajouter une Ferme",
+    "editFarm": "Modifier la Ferme",
+    "farmDetails": "Details de la Ferme",
+    "fields": "Parcelles",
+    "addField": "Ajouter une Parcelle",
+    "location": "Emplacement",
+    "size": "Superficie (Hectares)",
+    "manager": "Responsable",
+    "country": "Pays",
+    "countries": {
+      "burkina_faso": "Burkina Faso",
+      "mali": "Mali",
+      "niger": "Niger"
+    }
+  },
+  "crops": {
+    "title": "Cultures",
+    "addCrop": "Ajouter une Culture",
+    "editCrop": "Modifier la Culture",
+    "cropDetails": "Details de la Culture",
+    "type": "Type de Culture",
+    "variety": "Variete",
+    "status": "Statut",
+    "plantingDate": "Date de Plantation",
+    "harvestDate": "Recolte Prevue",
+    "yield": "Rendement Prevu (kg)",
+    "statuses": {
+      "planning": "Planification",
+      "planted": "Plante",
+      "growing": "En Croissance",
+      "flowering": "Floraison",
+      "fruiting": "Fructification",
+      "harvesting": "Recolte",
+      "harvested": "Recolte",
+      "dormant": "Dormant"
+    }
+  },
+  "tasks": {
+    "title": "Taches",
+    "addTask": "Ajouter une Tache",
+    "editTask": "Modifier la Tache",
+    "taskDetails": "Details de la Tache",
+    "assignedTo": "Assigne a",
+    "dueDate": "Date d'Echeance",
+    "priority": "Priorite",
+    "priorities": {
+      "low": "Basse",
+      "medium": "Moyenne",
+      "high": "Haute",
+      "urgent": "Urgente"
+    },
+    "statuses": {
+      "pending": "En Attente",
+      "in_progress": "En Cours",
+      "completed": "Termine",
+      "cancelled": "Annule"
+    }
+  },
+  "finance": {
+    "title": "Finances",
+    "transactions": "Transactions",
+    "addTransaction": "Ajouter une Transaction",
+    "sales": "Ventes",
+    "addSale": "Ajouter une Vente",
+    "income": "Revenus",
+    "expenses": "Depenses",
+    "netProfit": "Benefice Net",
+    "revenue": "Chiffre d'Affaires",
+    "currency": "FCFA"
+  },
+  "team": {
+    "title": "Equipe",
+    "addMember": "Ajouter un Membre",
+    "editMember": "Modifier le Membre",
+    "roles": {
+      "admin": "Administrateur",
+      "manager": "Gestionnaire",
+      "worker": "Travailleur",
+      "viewer": "Observateur"
+    }
+  },
+  "agents": {
+    "title": "Conseillers IA",
+    "selectAgent": "Selectionnez un Conseiller IA",
+    "newConversation": "Nouvelle Conversation",
+    "typeMessage": "Tapez votre message...",
+    "send": "Envoyer",
+    "marketing": {
+      "name": "Conseiller Marketing",
+      "description": "Obtenez des conseils sur les tendances du marche, les strategies de prix et la recherche d'acheteurs pour vos produits."
+    },
+    "finance": {
+      "name": "Conseiller Financier",
+      "description": "Gerez les finances de votre ferme, le budget et les decisions d'investissement."
+    },
+    "agronomist": {
+      "name": "Conseiller Agronome",
+      "description": "Conseils d'experts sur la plantation, l'irrigation, les engrais, la lutte antiparasitaire et la gestion des cultures."
+    }
+  },
+  "blog": {
+    "title": "Base de Connaissances",
+    "subtitle": "Guides d'experts pour cultiver des fruits dans la region du Sahel",
+    "readMore": "Lire la Suite",
+    "categories": "Categories",
+    "allPosts": "Tous les Articles",
+    "relatedPosts": "Articles Connexes",
+    "growingGuide": "Guide de Culture",
+    "schedule": "Calendrier de Culture",
+    "waterNeeds": "Besoins en Eau",
+    "fertilizer": "Guide d'Engrais",
+    "pestControl": "Lutte Antiparasitaire",
+    "harvesting": "Conseils de Recolte",
+    "sahelTips": "Conseils Specifiques au Sahel"
+  },
+  "about": {
+    "title": "A Propos de FructoSahel",
+    "mission": {
+      "title": "Notre Mission",
+      "content": "Donner aux agriculteurs du Sahel les moyens d'agir grace a une technologie moderne et des analyses basees sur l'IA pour augmenter les rendements des cultures, ameliorer la durabilite et construire des entreprises agricoles prosperes."
+    },
+    "vision": {
+      "title": "Notre Vision",
+      "content": "Un secteur agricole prospere dans la region du Sahel ou les agriculteurs ont acces aux connaissances et aux outils dont ils ont besoin pour reussir."
+    },
+    "team": {
+      "title": "Notre Equipe",
+      "content": "Nous sommes une equipe d'experts agricoles, de technologues et d'entrepreneurs passionnes par la transformation de l'agriculture en Afrique de l'Ouest."
+    }
+  },
+  "contact": {
+    "title": "Contactez-Nous",
+    "subtitle": "Vous avez des questions? Nous serions ravis de vous entendre.",
+    "form": {
+      "name": "Votre Nom",
+      "email": "Adresse Email",
+      "subject": "Sujet",
+      "message": "Message",
+      "submit": "Envoyer le Message"
+    },
+    "info": {
+      "address": "Ouagadougou, Burkina Faso",
+      "email": "contact@fructosahel.com",
+      "phone": "+226 XX XX XX XX"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Bon Retour",
+      "subtitle": "Connectez-vous a votre compte",
+      "email": "Email",
+      "password": "Mot de Passe",
+      "forgotPassword": "Mot de Passe Oublie?",
+      "noAccount": "Vous n'avez pas de compte?",
+      "signUp": "S'inscrire"
+    },
+    "signUp": {
+      "title": "Creer un Compte",
+      "subtitle": "Rejoignez FructoSahel aujourd'hui",
+      "name": "Nom Complet",
+      "email": "Email",
+      "password": "Mot de Passe",
+      "confirmPassword": "Confirmer le Mot de Passe",
+      "hasAccount": "Vous avez deja un compte?",
+      "login": "Connexion"
+    }
+  }
+}
