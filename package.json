@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.0",
@@ -43,12 +44,19 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^13.1.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
     "dotenv": "^17.2.3",
     "drizzle-kit": "^0.31.7",
+    "semantic-release": "^25.0.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
