@@ -1,221 +1,583 @@
-# Deployment Guide
+# FructoSahel Deployment Guide
+
+This guide provides comprehensive instructions for deploying the FructoSahel application to Vercel.
+
+## Table of Contents
+
+1. [Prerequisites](#prerequisites)
+2. [Environment Variables](#environment-variables)
+3. [Pre-Deployment Checklist](#pre-deployment-checklist)
+4. [Deployment Steps](#deployment-steps)
+5. [Post-Deployment Verification](#post-deployment-verification)
+6. [Production Optimizations](#production-optimizations)
+7. [Troubleshooting](#troubleshooting)
+8. [Rollback Procedure](#rollback-procedure)
 
 ## Prerequisites
 
-- Node.js 18+ or Bun runtime
-- Neon PostgreSQL database
-- Anthropic API key
-- Stack Auth account (optional)
-- Vercel account (recommended)
+Before deploying, ensure you have:
 
-## Environment Setup
+- [ ] Node.js 20.x or later installed
+- [ ] Vercel account (sign up at https://vercel.com)
+- [ ] Vercel CLI installed (`npm i -g vercel`)
+- [ ] Git repository connected to Vercel
+- [ ] Database provisioned (Neon PostgreSQL recommended)
+- [ ] Anthropic API key for Claude integration
+- [ ] Analytics endpoint configured
 
-### 1. Create Environment File
+## Environment Variables
 
-```bash
-cp .env.example .env
-```
+### Required Environment Variables
 
-### 2. Configure Variables
+The following environment variables must be configured in your Vercel project settings:
 
-```env
-# Database (Neon)
-DATABASE_URL=postgresql://user:password@host.neon.tech/dbname?sslmode=require
-
-# Anthropic API
-ANTHROPIC_API_KEY=sk-ant-xxxxx
-
-# Stack Auth (optional)
-STACK_PROJECT_ID=your-project-id
-STACK_SECRET_SERVER_KEY=your-secret-key
-STACK_PUBLISHABLE_CLIENT_KEY=your-publishable-key
-
-# App Configuration
-NEXT_PUBLIC_APP_URL=https://your-domain.com
-```
-
-## Database Setup
-
-### 1. Create Neon Database
-
-1. Go to [neon.tech](https://neon.tech)
-2. Create a new project
-3. Copy the connection string to `DATABASE_URL`
-
-### 2. Run Migrations
+#### Database Configuration
 
 ```bash
-# Install dependencies
-bun install
-
-# Push schema to database
-bun drizzle-kit push
+DATABASE_URL=@database_url
 ```
 
-### 3. Verify Schema
+**Setup Instructions:**
+1. Navigate to your Vercel project dashboard
+2. Go to Settings > Environment Variables
+3. Click "Add New" > "Secret"
+4. Create a secret named `database_url` with your Neon connection string
+5. The format should be: `postgresql://user:password@host/database?sslmode=require`
+
+#### AI/ML Configuration
 
 ```bash
-# Open Drizzle Studio
-bun drizzle-kit studio
+ANTHROPIC_API_KEY=@anthropic_api_key
 ```
 
-## Vercel Deployment
+**Setup Instructions:**
+1. Obtain your API key from https://console.anthropic.com
+2. In Vercel project settings, create a secret named `anthropic_api_key`
+3. Add the API key value (starts with `sk-ant-`)
 
-### 1. Connect Repository
-
-1. Go to [vercel.com](https://vercel.com)
-2. Import your Git repository
-3. Select "Next.js" as framework preset
-
-### 2. Configure Environment Variables
-
-Add all environment variables in Vercel dashboard:
-- `DATABASE_URL`
-- `ANTHROPIC_API_KEY`
-- `NEXT_PUBLIC_APP_URL`
-
-### 3. Configure Build Settings
-
-```json
-{
-  "buildCommand": "bun run build",
-  "installCommand": "bun install",
-  "framework": "nextjs"
-}
-```
-
-### 4. Deploy
-
-Vercel will automatically deploy on push to main branch.
-
-## Alternative Deployments
-
-### Docker
-
-```dockerfile
-FROM oven/bun:1 as builder
-WORKDIR /app
-COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile
-COPY . .
-RUN bun run build
-
-FROM oven/bun:1-slim
-WORKDIR /app
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
-
-ENV NODE_ENV=production
-EXPOSE 3000
-CMD ["bun", "server.js"]
-```
-
-### Railway
-
-1. Connect GitHub repository
-2. Add environment variables
-3. Deploy
-
-### Self-Hosted
+#### Analytics Configuration
 
 ```bash
-# Build
-bun run build
-
-# Start production server
-bun run start
+NEXT_PUBLIC_ANALYTICS_ENABLED=true
+NEXT_PUBLIC_ANALYTICS_API_KEY=proj_fructosahel_key
+NEXT_PUBLIC_ANALYTICS_ENDPOINT=https://analytics-dashboard-phi-six.vercel.app/api
 ```
 
-## Post-Deployment Checklist
+**Setup Instructions:**
+1. These are public environment variables (prefixed with `NEXT_PUBLIC_`)
+2. Add them directly in the Vercel dashboard
+3. They will be exposed to the browser, so ensure they contain no sensitive data
 
-- [ ] Verify database connection
-- [ ] Test AI agents functionality
-- [ ] Check i18n routing (en/fr)
-- [ ] Verify all pages load correctly
-- [ ] Test form submissions
-- [ ] Check responsive design
-- [ ] Enable error monitoring (Sentry)
-- [ ] Set up analytics (optional)
+### Optional Environment Variables
 
-## Performance Optimization
+```bash
+# Google Analytics (optional)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 
-### 1. Database
+# Sentry Error Tracking (optional)
+SENTRY_DSN=https://xxxxx@sentry.io/xxxxx
+SENTRY_AUTH_TOKEN=xxxxx
 
-- Enable connection pooling in Neon
-- Add database indexes (see DATABASE_SCHEMA.md)
+# Feature Flags (optional)
+NEXT_PUBLIC_ENABLE_BETA_FEATURES=false
+```
 
-### 2. Caching
+## Pre-Deployment Checklist
 
-- Vercel Edge caching for static pages
-- ISR for blog pages
+### Code Quality
 
-### 3. Images
+- [ ] All tests pass (`npm test` or equivalent)
+- [ ] Linting passes (`npm run lint`)
+- [ ] Code formatting is consistent (`npm run format`)
+- [ ] No TypeScript errors (`npm run build`)
+- [ ] No console errors or warnings in development
 
-- Use Next.js Image component
-- Configure image optimization
+### Performance
 
-## Monitoring
+- [ ] Images are optimized (WebP/AVIF format)
+- [ ] Unused dependencies removed
+- [ ] Bundle size is acceptable (check with `npm run build`)
+- [ ] API routes are optimized
+- [ ] Database queries are efficient
 
-### Recommended Tools
+### Security
 
-- **Vercel Analytics**: Built-in performance monitoring
-- **Sentry**: Error tracking
-- **Neon Dashboard**: Database metrics
+- [ ] All environment variables are set as secrets (not plaintext)
+- [ ] API keys are not committed to repository
+- [ ] Security headers are configured (see `next.config.ts`)
+- [ ] CORS is properly configured
+- [ ] Input validation is implemented
 
-### Health Checks
+### SEO & Accessibility
 
-Add health endpoint:
+- [ ] Meta tags are complete (Open Graph, Twitter Cards)
+- [ ] Sitemap is generated (`/sitemap.xml`)
+- [ ] Robots.txt is configured (`/robots.txt`)
+- [ ] PWA manifest is present (`/manifest.json`)
+- [ ] Alt text on all images
+- [ ] Semantic HTML structure
+- [ ] Accessible forms with proper labels
+
+### Content
+
+- [ ] All copy is finalized
+- [ ] Internationalization (i18n) is complete for both EN and FR
+- [ ] Placeholder content is replaced
+- [ ] Legal pages are complete (Privacy Policy, Terms of Service)
+
+## Deployment Steps
+
+### Method 1: Deploy via Vercel Dashboard (Recommended for First Deployment)
+
+1. **Connect Repository**
+   ```bash
+   # Push your code to GitHub
+   git add .
+   git commit -m "chore: prepare for Vercel deployment"
+   git push origin main
+   ```
+
+2. **Create New Project**
+   - Go to https://vercel.com/new
+   - Import your GitHub repository
+   - Select "FructoSahel" repository
+
+3. **Configure Project**
+   - Framework Preset: Next.js (auto-detected)
+   - Root Directory: `./` (default)
+   - Build Command: `npm run build` (default)
+   - Output Directory: `.next` (default)
+   - Install Command: `npm install` (default)
+
+4. **Set Environment Variables**
+   - Add all required environment variables (see above)
+   - Ensure sensitive values are stored as secrets
+
+5. **Configure Region**
+   - Primary region: `cdg1` (Paris, France - closest to Sahel)
+   - This is configured in `vercel.json`
+
+6. **Deploy**
+   - Click "Deploy"
+   - Wait for deployment to complete (typically 2-5 minutes)
+   - Vercel will provide a preview URL
+
+### Method 2: Deploy via Vercel CLI
+
+1. **Login to Vercel**
+   ```bash
+   vercel login
+   ```
+
+2. **Link Project** (first time only)
+   ```bash
+   vercel link
+   ```
+   - Select or create a new project
+   - Link to existing Git repository
+
+3. **Set Environment Variables** (first time only)
+   ```bash
+   # Add environment variables
+   vercel env add DATABASE_URL production
+   vercel env add ANTHROPIC_API_KEY production
+   vercel env add NEXT_PUBLIC_ANALYTICS_ENABLED production
+   vercel env add NEXT_PUBLIC_ANALYTICS_API_KEY production
+   vercel env add NEXT_PUBLIC_ANALYTICS_ENDPOINT production
+   ```
+
+4. **Deploy to Production**
+   ```bash
+   # Deploy to production
+   vercel --prod
+   ```
+
+5. **Monitor Deployment**
+   - Watch the deployment logs
+   - Verify build completes successfully
+   - Check for any errors or warnings
+
+### Method 3: Automatic Deployments (After Initial Setup)
+
+Once configured, Vercel will automatically deploy:
+- **Production**: Every push to `main` branch
+- **Preview**: Every push to feature branches
+- **Pull Requests**: Automatic preview deployments for PRs
+
+## Post-Deployment Verification
+
+### Functional Testing
+
+1. **Homepage Loading**
+   - [ ] Visit https://fructosahel.vercel.app
+   - [ ] Verify page loads without errors
+   - [ ] Check both `/en` and `/fr` routes
+
+2. **Navigation**
+   - [ ] Test all navigation links
+   - [ ] Verify language switching works
+   - [ ] Check mobile navigation
+
+3. **Features**
+   - [ ] Test AI chat functionality
+   - [ ] Verify form submissions work
+   - [ ] Check database connectivity
+   - [ ] Test image loading and optimization
+
+4. **API Routes**
+   - [ ] Test `/api/chat` endpoint
+   - [ ] Verify analytics tracking
+   - [ ] Check error handling
+
+### Performance Testing
+
+1. **Core Web Vitals**
+   - [ ] Run Lighthouse audit (target: 90+ score)
+   - [ ] Check PageSpeed Insights
+   - [ ] Verify WebPageTest results
+
+2. **Metrics to Monitor**
+   - Largest Contentful Paint (LCP): < 2.5s
+   - First Input Delay (FID): < 100ms
+   - Cumulative Layout Shift (CLS): < 0.1
+   - Time to First Byte (TTFB): < 800ms
+
+3. **Tools**
+   ```bash
+   # Run Lighthouse
+   npx lighthouse https://fructosahel.vercel.app --view
+
+   # Check bundle size
+   npm run build
+   ```
+
+### Security Verification
+
+1. **Headers Check**
+   ```bash
+   # Verify security headers
+   curl -I https://fructosahel.vercel.app
+   ```
+
+   Expected headers:
+   - `Strict-Transport-Security`
+   - `X-Frame-Options`
+   - `X-Content-Type-Options`
+   - `X-XSS-Protection`
+   - `Referrer-Policy`
+
+2. **SSL/TLS**
+   - [ ] HTTPS is enforced
+   - [ ] Valid SSL certificate
+   - [ ] No mixed content warnings
+
+3. **Security Scan**
+   - [ ] Run security audit: `npm audit`
+   - [ ] Check for vulnerable dependencies
+   - [ ] Verify no exposed secrets in source code
+
+### SEO Verification
+
+1. **Meta Tags**
+   - [ ] View page source and verify meta tags
+   - [ ] Test Open Graph preview: https://www.opengraph.xyz/
+   - [ ] Test Twitter Card preview: https://cards-dev.twitter.com/validator
+
+2. **Sitemap**
+   - [ ] Verify sitemap: https://fructosahel.vercel.app/sitemap.xml
+   - [ ] Validate sitemap format
+   - [ ] Submit to Google Search Console
+
+3. **Robots.txt**
+   - [ ] Check robots.txt: https://fructosahel.vercel.app/robots.txt
+   - [ ] Verify crawl rules
+
+4. **Structured Data**
+   - [ ] Test with Google Rich Results Test
+   - [ ] Validate schema.org markup
+
+### Analytics Verification
+
+1. **Event Tracking**
+   - [ ] Verify page view events
+   - [ ] Test custom event tracking
+   - [ ] Check analytics dashboard
+
+2. **Error Tracking**
+   - [ ] Trigger a test error
+   - [ ] Verify error is logged
+   - [ ] Check error reporting dashboard
+
+## Production Optimizations
+
+### Image Optimization
+
+The application uses Next.js Image Optimization:
 
 ```typescript
-// app/api/health/route.ts
-export async function GET() {
-  return Response.json({ status: "ok" });
+// next.config.ts
+images: {
+  remotePatterns: [
+    {
+      protocol: "https",
+      hostname: "**",
+    },
+  ],
+  formats: ["image/avif", "image/webp"],
 }
 ```
 
-## Scaling Considerations
+**Best Practices:**
+- Use `next/image` component for all images
+- Provide `width` and `height` props
+- Use appropriate `sizes` attribute for responsive images
+- Leverage lazy loading (enabled by default)
 
-1. **Database**: Neon auto-scales, but consider read replicas for high traffic
-2. **AI API**: Implement rate limiting and caching
-3. **CDN**: Vercel Edge Network handles this automatically
-4. **Serverless Functions**: Consider cold start optimization
+### Caching Strategy
 
-## Security
+**Static Assets:**
+- Images, fonts, CSS, JS are automatically cached
+- CDN caching via Vercel Edge Network
 
-### Production Checklist
+**API Routes:**
+- Implement appropriate cache headers
+- Use Vercel Edge Functions for low latency
 
-- [ ] HTTPS enabled (automatic on Vercel)
-- [ ] Environment variables secured
-- [ ] API routes protected
-- [ ] CORS configured
-- [ ] Rate limiting on AI endpoints
-- [ ] Input validation
-- [ ] SQL injection prevention (Drizzle ORM handles this)
+**Database Queries:**
+- Implement query result caching where appropriate
+- Use Neon's connection pooling
 
-## Backup Strategy
+### Bundle Optimization
 
-### Database
+**Current Setup:**
+- Tree shaking enabled (automatic in production)
+- Code splitting by route (automatic with Next.js)
+- Compression enabled (`compress: true`)
 
-- Neon provides automatic backups
-- Configure point-in-time recovery
-- Export critical data periodically
+**Recommendations:**
+```bash
+# Analyze bundle
+npm run build
 
-### Code
+# Check for duplicate dependencies
+npx depcheck
 
-- Git repository as source of truth
-- Tag releases for easy rollback
+# Optimize dependencies
+npm prune --production
+```
+
+### Database Optimization
+
+**Connection Pooling:**
+```typescript
+// lib/db.ts should use connection pooling
+import { neon } from '@neondatabase/serverless'
+
+const sql = neon(process.env.DATABASE_URL!)
+```
+
+**Query Optimization:**
+- Add indexes for frequently queried fields
+- Use prepared statements
+- Implement pagination for large datasets
+- Monitor slow queries
+
+## Troubleshooting
+
+### Common Issues
+
+#### Build Failures
+
+**Problem:** Build fails with TypeScript errors
+```bash
+Solution:
+1. Run `npm run build` locally
+2. Fix all TypeScript errors
+3. Ensure all dependencies are in package.json
+4. Check for missing environment variables
+```
+
+**Problem:** Build timeout
+```bash
+Solution:
+1. Optimize build process
+2. Remove unused dependencies
+3. Check for infinite loops in build scripts
+4. Contact Vercel support for build limits
+```
+
+#### Runtime Errors
+
+**Problem:** 500 Internal Server Error
+```bash
+Solution:
+1. Check Vercel deployment logs
+2. Verify environment variables are set
+3. Test API routes locally
+4. Check database connectivity
+```
+
+**Problem:** Database connection errors
+```bash
+Solution:
+1. Verify DATABASE_URL is correct
+2. Check database is accessible from Vercel
+3. Ensure SSL mode is enabled
+4. Check connection pool settings
+```
+
+**Problem:** API rate limiting
+```bash
+Solution:
+1. Implement request throttling
+2. Add caching for API responses
+3. Use Vercel Edge Functions
+4. Contact API provider for limits
+```
+
+#### Performance Issues
+
+**Problem:** Slow page loads
+```bash
+Solution:
+1. Run Lighthouse audit
+2. Optimize images
+3. Implement code splitting
+4. Use ISR for static content
+5. Check database query performance
+```
+
+**Problem:** High memory usage
+```bash
+Solution:
+1. Check for memory leaks
+2. Optimize large data processing
+3. Implement pagination
+4. Use streaming for large responses
+```
+
+### Debugging Tools
+
+**Vercel Logs:**
+```bash
+# View logs
+vercel logs <deployment-url>
+
+# Stream logs in real-time
+vercel logs --follow
+```
+
+**Environment Variables:**
+```bash
+# List environment variables
+vercel env ls
+
+# Pull environment variables locally
+vercel env pull .env.local
+```
+
+**Preview Deployments:**
+```bash
+# Create preview deployment
+vercel
+
+# View preview URL
+vercel ls
+```
 
 ## Rollback Procedure
 
-### Vercel
+### Quick Rollback
 
-1. Go to Deployments tab
-2. Find previous working deployment
-3. Click "..." menu
-4. Select "Promote to Production"
+1. **Via Vercel Dashboard:**
+   - Go to Deployments tab
+   - Find last working deployment
+   - Click "..." menu > "Promote to Production"
 
-### Database
+2. **Via CLI:**
+   ```bash
+   # List deployments
+   vercel ls
 
-- Use Neon's branching feature for safe migrations
-- Keep migration scripts versioned
+   # Promote specific deployment
+   vercel promote <deployment-url>
+   ```
+
+### Manual Rollback
+
+1. **Git Revert:**
+   ```bash
+   # Find commit to revert to
+   git log --oneline
+
+   # Revert to specific commit
+   git revert <commit-hash>
+
+   # Push to trigger deployment
+   git push origin main
+   ```
+
+2. **Emergency Rollback:**
+   ```bash
+   # Force push previous commit
+   git reset --hard <commit-hash>
+   git push --force origin main
+   ```
+   **⚠️ Warning:** Only use force push in emergencies
+
+## Monitoring and Maintenance
+
+### Regular Checks
+
+**Daily:**
+- [ ] Monitor error rates in analytics
+- [ ] Check uptime status
+- [ ] Review deployment logs
+
+**Weekly:**
+- [ ] Run security audit (`npm audit`)
+- [ ] Check for dependency updates
+- [ ] Review performance metrics
+- [ ] Monitor database growth
+
+**Monthly:**
+- [ ] Update dependencies
+- [ ] Review and optimize bundle size
+- [ ] Audit unused features
+- [ ] Review and update documentation
+
+### Performance Monitoring
+
+**Tools:**
+- Vercel Analytics (built-in)
+- Google Analytics
+- Sentry (error tracking)
+- Lighthouse CI (automated performance testing)
+
+**Key Metrics:**
+- Response time: < 200ms
+- Error rate: < 0.1%
+- Uptime: > 99.9%
+- Core Web Vitals: All green
+
+## Support and Resources
+
+### Documentation
+- [Vercel Documentation](https://vercel.com/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Neon Database Docs](https://neon.tech/docs)
+- [Anthropic API Docs](https://docs.anthropic.com)
+
+### Community
+- [Next.js Discord](https://discord.gg/nextjs)
+- [Vercel Community](https://vercel.com/community)
+
+### Contact
+- Technical Support: support@fructosahel.com
+- Emergency: urgent@fructosahel.com
+
+---
+
+**Last Updated:** 2025-11-26
+**Version:** 1.0.0
+**Maintained by:** FructoSahel Team
