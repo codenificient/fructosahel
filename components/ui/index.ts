@@ -58,3 +58,17 @@ export {
   TableCell,
   TableCaption,
 } from "./table";
+export { Alert, AlertTitle, AlertDescription } from "./alert";
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "./alert-dialog";
