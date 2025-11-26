@@ -1,3 +1,9 @@
+## 1.0.0 (2025-11-26)
+
+### Features
+
+* Complete FructoSahel farm management platform implementation ([a68d828](https://github.com/codenificient/fructosahel/commit/a68d8286761c89aa2fa3ba06cdb7ed3309d8e670))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
