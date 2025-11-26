@@ -72,3 +72,5 @@ export {
   AlertDialogAction,
   AlertDialogCancel,
 } from "./alert-dialog";
+export { Toast } from "./toast";
+export { Toaster } from "./toaster";

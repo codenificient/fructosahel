@@ -46,10 +46,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useUsers, useCreateUser, useUpdateUser, useDeleteUser } from "@/lib/hooks";
+import { useToastContext } from "@/components/toast-provider";
 import type { User, NewUser, UserRole } from "@/types";
 
 export default function TeamPage() {
   const t = useTranslations();
+  const { toast } = useToastContext();
   const [roleFilter, setRoleFilter] = useState<UserRole | undefined>(undefined);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -58,9 +60,30 @@ export default function TeamPage() {
 
   // Hooks
   const { data: users, isLoading, error, refetch } = useUsers(roleFilter);
-  const createUser = useCreateUser(() => refetch());
-  const updateUser = useUpdateUser(() => refetch());
-  const deleteUser = useDeleteUser(() => refetch());
+  const createUser = useCreateUser(() => {
+    toast({
+      variant: "success",
+      title: "Team Member Added",
+      description: "New team member has been added successfully",
+    });
+    refetch();
+  });
+  const updateUser = useUpdateUser(() => {
+    toast({
+      variant: "success",
+      title: "Team Member Updated",
+      description: "Team member information has been updated",
+    });
+    refetch();
+  });
+  const deleteUser = useDeleteUser(() => {
+    toast({
+      variant: "success",
+      title: "Team Member Removed",
+      description: "Team member has been removed successfully",
+    });
+    refetch();
+  });
 
   // Form states
   const [formData, setFormData] = useState<Partial<NewUser>>({
@@ -100,6 +123,15 @@ export default function TeamPage() {
   };
 
   const handleAddMember = async () => {
+    if (!formData.name || !formData.email) {
+      toast({
+        variant: "error",
+        title: "Validation Error",
+        description: "Please fill in name and email fields",
+      });
+      return;
+    }
+
     try {
       await createUser.mutate({
         name: formData.name || "",
@@ -112,12 +144,25 @@ export default function TeamPage() {
       setIsAddDialogOpen(false);
       resetForm();
     } catch (err) {
-      console.error("Failed to create user:", err);
+      toast({
+        variant: "error",
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to create team member",
+      });
     }
   };
 
   const handleEditMember = async () => {
     if (!selectedUser) return;
+
+    if (!formData.name) {
+      toast({
+        variant: "error",
+        title: "Validation Error",
+        description: "Please fill in the name field",
+      });
+      return;
+    }
 
     try {
       await updateUser.mutate({
@@ -132,7 +177,11 @@ export default function TeamPage() {
       setSelectedUser(null);
       resetForm();
     } catch (err) {
-      console.error("Failed to update user:", err);
+      toast({
+        variant: "error",
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to update team member",
+      });
     }
   };
 
@@ -144,7 +193,11 @@ export default function TeamPage() {
       setIsDeleteDialogOpen(false);
       setSelectedUser(null);
     } catch (err) {
-      console.error("Failed to delete user:", err);
+      toast({
+        variant: "error",
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to delete team member",
+      });
     }
   };
 

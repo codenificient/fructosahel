@@ -8,6 +8,7 @@ import {
   MapPin,
   Sprout,
   ListTodo,
+  Calendar,
   DollarSign,
   Users,
   Bot,
@@ -50,6 +51,11 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
       href: `/${locale}/dashboard/tasks`,
       icon: ListTodo,
       label: t("tasks.title"),
+    },
+    {
+      href: `/${locale}/dashboard/calendar`,
+      icon: Calendar,
+      label: "Calendar",
     },
     {
       href: `/${locale}/dashboard/finance`,

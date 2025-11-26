@@ -26,6 +26,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  RevenueChart,
+  CropDistributionChart,
+  TaskStatusChart,
+  SalesTrendChart,
+} from "@/components/charts";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DashboardPage() {
   const t = useTranslations();
@@ -94,6 +101,40 @@ export default function DashboardPage() {
     { crop: "Banana", emoji: "🍌", fields: 3, status: "Harvesting", progress: 90 },
     { crop: "Papaya", emoji: "🍈", fields: 2, status: "Growing", progress: 40 },
   ];
+
+  // Mock data for charts
+  const revenueData = [
+    { month: "Jan", revenue: 8500000, expenses: 6200000 },
+    { month: "Feb", revenue: 9200000, expenses: 6800000 },
+    { month: "Mar", revenue: 10100000, expenses: 7100000 },
+    { month: "Apr", revenue: 11500000, expenses: 7800000 },
+    { month: "May", revenue: 10800000, expenses: 7500000 },
+    { month: "Jun", revenue: 12450000, expenses: 8230000 },
+  ];
+
+  const cropDistributionData = [
+    { name: "Mango", value: 8 },
+    { name: "Cashew", value: 5 },
+    { name: "Pineapple", value: 4 },
+    { name: "Banana", value: 3 },
+    { name: "Papaya", value: 2 },
+  ];
+
+  const taskStatusData = [
+    { status: "Pending", count: 18 },
+    { status: "In Progress", count: 12 },
+    { status: "Completed", count: 45 },
+    { status: "Cancelled", count: 3 },
+  ];
+
+  const salesTrendData = [
+    { date: "Week 1", Mango: 2500000, Cashew: 1800000, Pineapple: 1200000, Banana: 900000, Papaya: 600000 },
+    { date: "Week 2", Mango: 2800000, Cashew: 2100000, Pineapple: 1400000, Banana: 1100000, Papaya: 700000 },
+    { date: "Week 3", Mango: 3200000, Cashew: 2300000, Pineapple: 1600000, Banana: 1300000, Papaya: 800000 },
+    { date: "Week 4", Mango: 3500000, Cashew: 2600000, Pineapple: 1800000, Banana: 1500000, Papaya: 900000 },
+  ];
+
+  const cropTypes = ["Mango", "Cashew", "Pineapple", "Banana", "Papaya"];
 
   return (
     <div className="space-y-8">
@@ -246,6 +287,62 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Analytics Charts */}
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Analytics</h2>
+          <p className="text-muted-foreground">
+            Visual insights into your farm performance
+          </p>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-2">
+          {/* Revenue Chart */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Revenue vs Expenses</CardTitle>
+              <CardDescription>Monthly financial performance (XOF)</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RevenueChart data={revenueData} />
+            </CardContent>
+          </Card>
+
+          {/* Crop Distribution Chart */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Crop Distribution</CardTitle>
+              <CardDescription>Distribution of crops across all fields</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <CropDistributionChart data={cropDistributionData} />
+            </CardContent>
+          </Card>
+
+          {/* Task Status Chart */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Task Status</CardTitle>
+              <CardDescription>Overview of all tasks by status</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <TaskStatusChart data={taskStatusData} />
+            </CardContent>
+          </Card>
+
+          {/* Sales Trend Chart */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Sales Trend</CardTitle>
+              <CardDescription>Weekly sales by crop type (XOF)</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <SalesTrendChart data={salesTrendData} crops={cropTypes} />
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Quick Actions */}

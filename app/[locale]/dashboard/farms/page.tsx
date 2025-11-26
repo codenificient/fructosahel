@@ -35,6 +35,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useFarms, useCreateFarm, useUpdateFarm, useDeleteFarm } from "@/lib/hooks/use-farms";
+import { useToastContext } from "@/components/toast-provider";
 import type { Farm } from "@/types";
 
 interface FarmFormData {
@@ -54,6 +55,7 @@ export default function FarmsPage() {
   const createFarm = useCreateFarm();
   const updateFarm = useUpdateFarm();
   const deleteFarm = useDeleteFarm();
+  const { toast } = useToastContext();
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -69,11 +71,6 @@ export default function FarmsPage() {
     description: "",
     managerId: "",
   });
-  const [notification, setNotification] = useState<{
-    show: boolean;
-    type: "success" | "error";
-    message: string;
-  }>({ show: false, type: "success", message: "" });
 
   const countryColors: Record<string, string> = {
     burkina_faso: "bg-green-500",
@@ -94,17 +91,14 @@ export default function FarmsPage() {
     });
   };
 
-  const showNotification = (type: "success" | "error", message: string) => {
-    setNotification({ show: true, type, message });
-    setTimeout(() => {
-      setNotification({ show: false, type, message: "" });
-    }, 5000);
-  };
-
   const handleAddFarm = async () => {
     try {
       if (!formData.name || !formData.location || !formData.country || !formData.sizeHectares) {
-        showNotification("error", "Please fill in all required fields");
+        toast({
+          variant: "error",
+          title: "Validation Error",
+          description: "Please fill in all required fields",
+        });
         return;
       }
 
@@ -119,12 +113,20 @@ export default function FarmsPage() {
         managerId: formData.managerId || undefined,
       });
 
-      showNotification("success", t("farms.farmCreated") || "Farm created successfully");
+      toast({
+        variant: "success",
+        title: "Farm Created",
+        description: `${formData.name} has been added successfully`,
+      });
       setIsAddDialogOpen(false);
       resetForm();
       await refetch();
     } catch (err) {
-      showNotification("error", err instanceof Error ? err.message : "Failed to create farm");
+      toast({
+        variant: "error",
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to create farm",
+      });
     }
   };
 
@@ -148,7 +150,11 @@ export default function FarmsPage() {
 
     try {
       if (!formData.name || !formData.location || !formData.country || !formData.sizeHectares) {
-        showNotification("error", "Please fill in all required fields");
+        toast({
+          variant: "error",
+          title: "Validation Error",
+          description: "Please fill in all required fields",
+        });
         return;
       }
 
@@ -164,13 +170,21 @@ export default function FarmsPage() {
         managerId: formData.managerId || undefined,
       });
 
-      showNotification("success", t("farms.farmUpdated") || "Farm updated successfully");
+      toast({
+        variant: "success",
+        title: "Farm Updated",
+        description: `${formData.name} has been updated successfully`,
+      });
       setIsEditDialogOpen(false);
       setSelectedFarm(null);
       resetForm();
       await refetch();
     } catch (err) {
-      showNotification("error", err instanceof Error ? err.message : "Failed to update farm");
+      toast({
+        variant: "error",
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to update farm",
+      });
     }
   };
 
@@ -184,12 +198,20 @@ export default function FarmsPage() {
 
     try {
       await deleteFarm.mutate({ id: selectedFarm.id });
-      showNotification("success", t("farms.farmDeleted") || "Farm deleted successfully");
+      toast({
+        variant: "success",
+        title: "Farm Deleted",
+        description: `${selectedFarm.name} has been removed successfully`,
+      });
       setIsDeleteDialogOpen(false);
       setSelectedFarm(null);
       await refetch();
     } catch (err) {
-      showNotification("error", err instanceof Error ? err.message : "Failed to delete farm");
+      toast({
+        variant: "error",
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to delete farm",
+      });
     }
   };
 
@@ -198,24 +220,6 @@ export default function FarmsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Toast Notification */}
-      {notification.show && (
-        <div
-          className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg ${
-            notification.type === "success"
-              ? "bg-green-500 text-white"
-              : "bg-red-500 text-white"
-          }`}
-        >
-          {notification.type === "success" ? (
-            <div className="h-5 w-5 rounded-full bg-white/20 flex items-center justify-center">✓</div>
-          ) : (
-            <AlertCircle className="h-5 w-5" />
-          )}
-          <span>{notification.message}</span>
-        </div>
-      )}
-
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

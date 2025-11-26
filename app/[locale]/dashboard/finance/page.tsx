@@ -32,10 +32,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useTransactions, useCreateTransaction, type TransactionFilters } from "@/lib/hooks/use-transactions";
 import { useSales, useCreateSale, type SaleFilters } from "@/lib/hooks/use-sales";
+import { useToastContext } from "@/components/toast-provider";
 import type { NewTransaction, NewSale } from "@/types";
 
 export default function FinancePage() {
   const t = useTranslations();
+  const { toast } = useToastContext();
 
   // Date range filters
   const [dateRange, setDateRange] = useState({
@@ -81,6 +83,11 @@ export default function FinancePage() {
 
   // Mutations with refetch on success
   const createTransaction = useCreateTransaction(() => {
+    toast({
+      variant: "success",
+      title: "Transaction Recorded",
+      description: "Transaction has been added successfully",
+    });
     setTransactionDialogOpen(false);
     setTransactionForm({
       type: "income",
@@ -94,6 +101,11 @@ export default function FinancePage() {
   });
 
   const createSale = useCreateSale(() => {
+    toast({
+      variant: "success",
+      title: "Sale Recorded",
+      description: "Sale has been added successfully",
+    });
     setSaleDialogOpen(false);
     setSaleForm({
       cropType: "mango",
@@ -110,23 +122,57 @@ export default function FinancePage() {
 
   // Handler functions
   const handleCreateTransaction = () => {
-    createTransaction.mutate({
-      ...transactionForm,
-      amount: transactionForm.amount ? String(transactionForm.amount) : "0",
-    } as NewTransaction);
+    if (!transactionForm.category || !transactionForm.amount || parseFloat(transactionForm.amount) <= 0) {
+      toast({
+        variant: "error",
+        title: "Validation Error",
+        description: "Please fill in all required fields with valid values",
+      });
+      return;
+    }
+
+    try {
+      createTransaction.mutate({
+        ...transactionForm,
+        amount: transactionForm.amount ? String(transactionForm.amount) : "0",
+      } as NewTransaction);
+    } catch (err) {
+      toast({
+        variant: "error",
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to create transaction",
+      });
+    }
   };
 
   const handleCreateSale = () => {
-    createSale.mutate({
-      farmId: saleForm.farmId || "",
-      cropType: saleForm.cropType || "mango",
-      quantityKg: parseFloat(String(saleForm.quantityKg)) || 0,
-      pricePerKg: parseFloat(String(saleForm.pricePerKg)) || 0,
-      totalAmount: parseFloat(String(saleForm.totalAmount)) || 0,
-      buyerName: saleForm.buyerName || "",
-      buyerContact: saleForm.buyerContact || undefined,
-      saleDate: saleForm.saleDate instanceof Date ? saleForm.saleDate.toISOString() : String(saleForm.saleDate),
-    });
+    if (!saleForm.buyerName || !saleForm.quantityKg || !saleForm.pricePerKg) {
+      toast({
+        variant: "error",
+        title: "Validation Error",
+        description: "Please fill in all required fields",
+      });
+      return;
+    }
+
+    try {
+      createSale.mutate({
+        farmId: saleForm.farmId || "",
+        cropType: saleForm.cropType || "mango",
+        quantityKg: parseFloat(String(saleForm.quantityKg)) || 0,
+        pricePerKg: parseFloat(String(saleForm.pricePerKg)) || 0,
+        totalAmount: parseFloat(String(saleForm.totalAmount)) || 0,
+        buyerName: saleForm.buyerName || "",
+        buyerContact: saleForm.buyerContact || undefined,
+        saleDate: saleForm.saleDate instanceof Date ? saleForm.saleDate.toISOString() : String(saleForm.saleDate),
+      });
+    } catch (err) {
+      toast({
+        variant: "error",
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to create sale",
+      });
+    }
   };
 
   const formatCurrency = (amount: number) => {
@@ -349,6 +395,7 @@ export default function FinancePage() {
           </Dialog>
         </div>
       </div>
+      </div>
 
       {/* Date Range Filter */}
       <Card>
@@ -381,7 +428,6 @@ export default function FinancePage() {
           </div>
         </CardContent>
       </Card>
-      </div>
 
       {/* Error States */}
       {(transactionsError || salesError) && (

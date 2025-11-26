@@ -36,10 +36,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTasks, useCreateTask, useUpdateTask, useDeleteTask, type TaskFilters } from "@/lib/hooks/use-tasks";
+import { useToastContext } from "@/components/toast-provider";
 import type { Task, TaskStatus, TaskPriority } from "@/types";
 
 export default function TasksPage() {
   const t = useTranslations();
+  const { toast } = useToastContext();
   const [filters, setFilters] = useState<TaskFilters>({});
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState<string>("all");
@@ -49,15 +51,30 @@ export default function TasksPage() {
 
   // Mutations
   const createTask = useCreateTask(() => {
+    toast({
+      variant: "success",
+      title: "Task Created",
+      description: "New task has been added successfully",
+    });
     refetch();
     setIsAddDialogOpen(false);
   });
 
   const updateTask = useUpdateTask(() => {
+    toast({
+      variant: "success",
+      title: "Task Updated",
+      description: "Task status has been updated",
+    });
     refetch();
   });
 
   const deleteTask = useDeleteTask(() => {
+    toast({
+      variant: "success",
+      title: "Task Deleted",
+      description: "Task has been removed successfully",
+    });
     refetch();
   });
 
@@ -73,33 +90,48 @@ export default function TasksPage() {
   });
 
   const handleCreateTask = async () => {
-    if (!newTask.title) return;
+    if (!newTask.title) {
+      toast({
+        variant: "error",
+        title: "Validation Error",
+        description: "Please enter a task title",
+      });
+      return;
+    }
 
     // Get current user ID (in a real app, this would come from auth context)
     const createdBy = "00000000-0000-0000-0000-000000000000"; // Placeholder
 
-    await createTask.mutate({
-      title: newTask.title,
-      description: newTask.description || undefined,
-      farmId: newTask.farmId || undefined,
-      cropId: newTask.cropId || undefined,
-      assignedTo: newTask.assignedTo || undefined,
-      createdBy,
-      priority: newTask.priority,
-      dueDate: newTask.dueDate ? new Date(newTask.dueDate) : undefined,
-      status: "pending",
-    });
+    try {
+      await createTask.mutate({
+        title: newTask.title,
+        description: newTask.description || undefined,
+        farmId: newTask.farmId || undefined,
+        cropId: newTask.cropId || undefined,
+        assignedTo: newTask.assignedTo || undefined,
+        createdBy,
+        priority: newTask.priority,
+        dueDate: newTask.dueDate ? new Date(newTask.dueDate) : undefined,
+        status: "pending",
+      });
 
-    // Reset form
-    setNewTask({
-      title: "",
-      description: "",
-      farmId: "",
-      cropId: "",
-      assignedTo: "",
-      priority: "medium",
-      dueDate: "",
-    });
+      // Reset form
+      setNewTask({
+        title: "",
+        description: "",
+        farmId: "",
+        cropId: "",
+        assignedTo: "",
+        priority: "medium",
+        dueDate: "",
+      });
+    } catch (err) {
+      toast({
+        variant: "error",
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to create task",
+      });
+    }
   };
 
   const handleToggleComplete = async (task: Task) => {
@@ -112,7 +144,15 @@ export default function TasksPage() {
 
   const handleDeleteTask = async (taskId: string) => {
     if (confirm(t("tasks.confirmDelete") || "Are you sure you want to delete this task?")) {
-      await deleteTask.mutate({ id: taskId });
+      try {
+        await deleteTask.mutate({ id: taskId });
+      } catch (err) {
+        toast({
+          variant: "error",
+          title: "Error",
+          description: err instanceof Error ? err.message : "Failed to delete task",
+        });
+      }
     }
   };
 

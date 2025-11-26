@@ -68,3 +68,7 @@ export {
   useUpdateUser,
   useDeleteUser,
 } from "./use-users";
+
+// Toast hooks
+export { useToast } from "./use-toast";
+export type { ToastData, ToastOptions } from "./use-toast";

@@ -4,6 +4,8 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { ToastProvider } from "@/components/toast-provider";
+import { AnalyticsProvider } from "@/components/analytics-provider";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -70,7 +72,11 @@ export default async function LocaleLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <AnalyticsProvider>
+            <ToastProvider>
+              {children}
+            </ToastProvider>
+          </AnalyticsProvider>
         </NextIntlClientProvider>
       </body>
     </html>
