@@ -1,3 +1,10 @@
+## [1.1.0](https://github.com/codenificient/fructosahel/compare/v1.0.0...v1.1.0) (2025-11-26)
+
+### Features
+
+* **api:** implement Phase 8-9 API development and data integration ([bca07b2](https://github.com/codenificient/fructosahel/commit/bca07b20ed45d13cbd196709854707f1a4298227))
+* **dashboard:** implement Phase 10 advanced features ([9a1b2e8](https://github.com/codenificient/fructosahel/commit/9a1b2e8342ac6ce66a07c75de06078fc66512a00))
+
 ## 1.0.0 (2025-11-26)
 
 ### Features
