@@ -43,7 +43,7 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
       label: t("farms.title"),
     },
     {
-      href: `/${locale}/dashboard/farms/crops`,
+      href: `/${locale}/dashboard/crops`,
       icon: Sprout,
       label: t("crops.title"),
     },
