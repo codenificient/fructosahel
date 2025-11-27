@@ -1,0 +1,16 @@
+import "server-only";
+import { StackServerApp } from "@stackframe/stack";
+
+export const stackServerApp = new StackServerApp({
+  tokenStore: "nextjs-cookie",
+  urls: {
+    home: "/",
+    handler: "/handler",
+    signIn: "/handler/sign-in",
+    signUp: "/handler/sign-up",
+    afterSignIn: "/dashboard",
+    afterSignUp: "/dashboard",
+    signOut: "/",
+    accountSettings: "/handler/account-settings",
+  },
+});

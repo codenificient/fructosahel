@@ -3,6 +3,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
+import { StackProvider, StackTheme } from "@stackframe/stack";
+import { stackServerApp } from "@/lib/stack";
 import { routing } from "@/i18n/routing";
 import { ToastProvider } from "@/components/toast-provider";
 import { AnalyticsProvider } from "@/components/analytics-provider";
@@ -170,13 +172,17 @@ export default async function LocaleLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextIntlClientProvider messages={messages}>
-          <AnalyticsProvider>
-            <ToastProvider>
-              {children}
-            </ToastProvider>
-          </AnalyticsProvider>
-        </NextIntlClientProvider>
+        <StackProvider app={stackServerApp}>
+          <StackTheme>
+            <NextIntlClientProvider messages={messages}>
+              <AnalyticsProvider>
+                <ToastProvider>
+                  {children}
+                </ToastProvider>
+              </AnalyticsProvider>
+            </NextIntlClientProvider>
+          </StackTheme>
+        </StackProvider>
       </body>
     </html>
   );
