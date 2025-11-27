@@ -57,6 +57,9 @@ function HeroSection({ locale }: { locale: string }) {
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
+              <Link href={`/${locale}/demo`}>{t("tryDemo")}</Link>
+            </Button>
+            <Button size="lg" variant="ghost" asChild>
               <Link href={`/${locale}/blog`}>{t("learnMore")}</Link>
             </Button>
           </div>
