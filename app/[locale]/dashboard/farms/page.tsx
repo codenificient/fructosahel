@@ -36,7 +36,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { useFarms, useCreateFarm, useUpdateFarm, useDeleteFarm } from "@/lib/hooks/use-farms";
 import { useToastContext } from "@/components/toast-provider";
-import { demoFarms } from "@/lib/demo-data";
 import type { Farm } from "@/types";
 
 interface FarmFormData {
@@ -216,10 +215,7 @@ export default function FarmsPage() {
     }
   };
 
-  // Use demo data if no real data exists
-  const displayFarms = farms && farms.length > 0 ? farms : demoFarms;
-  const isUsingDemoData = !farms || farms.length === 0;
-
+  const displayFarms = farms || [];
   const totalHectares = displayFarms.reduce((acc, f) => acc + parseFloat(f.sizeHectares), 0);
   const uniqueCountries = new Set(displayFarms.map((f) => f.country)).size;
 
@@ -424,15 +420,21 @@ export default function FarmsPage() {
                 Try Again
               </Button>
             </div>
+          ) : displayFarms.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 gap-4">
+              <MapPin className="h-12 w-12 text-muted-foreground" />
+              <div className="text-center">
+                <h3 className="font-semibold text-lg">No farms yet</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Get started by adding your first farm
+                </p>
+              </div>
+              <Button onClick={() => setIsAddDialogOpen(true)}>
+                <Plus className="mr-2 h-4 w-4" />
+                {t("farms.addFarm")}
+              </Button>
+            </div>
           ) : (
-            <>
-              {isUsingDemoData && (
-                <div className="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
-                  <p className="text-sm text-amber-800 dark:text-amber-200">
-                    Showing demo data. Add your first farm to see real data.
-                  </p>
-                </div>
-              )}
             <Table>
               <TableHeader>
                 <TableRow>
@@ -492,7 +494,6 @@ export default function FarmsPage() {
                 ))}
               </TableBody>
             </Table>
-            </>
           )}
         </CardContent>
       </Card>

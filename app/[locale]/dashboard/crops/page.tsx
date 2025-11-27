@@ -58,7 +58,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useCrops, useCreateCrop, useUpdateCrop, useDeleteCrop } from "@/lib/hooks/use-crops";
 import { useToastContext } from "@/components/toast-provider";
-import { demoCrops } from "@/lib/demo-data";
 import type { Crop, CropType, CropStatus } from "@/types";
 import type { CreateCropInput } from "@/lib/validations/crops";
 
@@ -269,17 +268,11 @@ export default function CropsPage() {
     return new Intl.NumberFormat("fr-FR").format(Number(value));
   };
 
-  // Use demo data if no real data exists
-  const realCrops = crops || [];
-  const isUsingDemoData = realCrops.length === 0;
-  const displayCrops = isUsingDemoData ? demoCrops : realCrops;
+  // Use real data from database
+  const displayCrops = crops || [];
 
-  // Filter demo crops if filters are applied
-  const filteredCrops = displayCrops.filter((crop) => {
-    if (typeFilter && crop.cropType !== typeFilter) return false;
-    if (statusFilter && crop.status !== statusFilter) return false;
-    return true;
-  });
+  // Apply local filtering if needed (though API should handle this)
+  const filteredCrops = displayCrops;
 
   // Calculate stats
   const totalCrops = filteredCrops.length;
@@ -585,14 +578,6 @@ export default function CropsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {isUsingDemoData && (
-            <div className="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
-              <p className="text-sm text-amber-800 dark:text-amber-200">
-                Showing demo data. Add your first crop to see real data.
-              </p>
-            </div>
-          )}
-
           {filteredCrops.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12">
               <Sprout className="h-12 w-12 text-muted-foreground mb-4" />

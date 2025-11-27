@@ -97,6 +97,7 @@
   },
   "farms": {
     "title": "Fermes",
+    "subtitle": "Gerez vos fermes et suivez leurs performances",
     "addFarm": "Ajouter une Ferme",
     "editFarm": "Modifier la Ferme",
     "farmDetails": "Details de la Ferme",
@@ -136,6 +137,7 @@
   },
   "tasks": {
     "title": "Taches",
+    "subtitle": "Suivez et gerez les taches de votre ferme",
     "addTask": "Ajouter une Tache",
     "editTask": "Modifier la Tache",
     "taskDetails": "Details de la Tache",
@@ -157,6 +159,7 @@
   },
   "finance": {
     "title": "Finances",
+    "subtitle": "Suivez les revenus, depenses et performances financieres",
     "transactions": "Transactions",
     "addTransaction": "Ajouter une Transaction",
     "sales": "Ventes",
@@ -169,6 +172,7 @@
   },
   "team": {
     "title": "Equipe",
+    "subtitle": "Gerez les membres de votre equipe et leurs roles",
     "addMember": "Ajouter un Membre",
     "editMember": "Modifier le Membre",
     "roles": {

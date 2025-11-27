@@ -37,7 +37,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTasks, useCreateTask, useUpdateTask, useDeleteTask, type TaskFilters } from "@/lib/hooks/use-tasks";
 import { useToastContext } from "@/components/toast-provider";
-import { demoTasks } from "@/lib/demo-data";
 import type { Task, TaskStatus, TaskPriority } from "@/types";
 
 export default function TasksPage() {
@@ -171,12 +170,8 @@ export default function TasksPage() {
     cancelled: "secondary",
   };
 
-  // Use demo data if no real data exists
-  const displayTasks = tasks && tasks.length > 0 ? tasks : demoTasks;
-  const isUsingDemoData = !tasks || tasks.length === 0;
-
   // Filter tasks by status for tabs
-  const allTasks = displayTasks;
+  const allTasks = tasks || [];
   const pendingTasks = allTasks.filter(t => t.status === "pending");
   const inProgressTasks = allTasks.filter(t => t.status === "in_progress");
   const completedTasks = allTasks.filter(t => t.status === "completed");
@@ -382,13 +377,6 @@ export default function TasksPage() {
           </div>
         </CardHeader>
         <CardContent>
-          {isUsingDemoData && (
-            <div className="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
-              <p className="text-sm text-amber-800 dark:text-amber-200">
-                Showing demo data. Create your first task to see real data.
-              </p>
-            </div>
-          )}
           <Tabs value={selectedTab} onValueChange={setSelectedTab}>
             <TabsList>
               <TabsTrigger value="all">All ({allTasks.length})</TabsTrigger>

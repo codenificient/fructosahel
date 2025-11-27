@@ -97,6 +97,7 @@
   },
   "farms": {
     "title": "Farms",
+    "subtitle": "Manage your farms and track their performance",
     "addFarm": "Add Farm",
     "editFarm": "Edit Farm",
     "farmDetails": "Farm Details",
@@ -136,6 +137,7 @@
   },
   "tasks": {
     "title": "Tasks",
+    "subtitle": "Track and manage your farm tasks",
     "addTask": "Add Task",
     "editTask": "Edit Task",
     "taskDetails": "Task Details",
@@ -157,6 +159,7 @@
   },
   "finance": {
     "title": "Finance",
+    "subtitle": "Track income, expenses, and financial performance",
     "transactions": "Transactions",
     "addTransaction": "Add Transaction",
     "sales": "Sales",
@@ -169,6 +172,7 @@
   },
   "team": {
     "title": "Team",
+    "subtitle": "Manage your team members and roles",
     "addMember": "Add Team Member",
     "editMember": "Edit Member",
     "roles": {

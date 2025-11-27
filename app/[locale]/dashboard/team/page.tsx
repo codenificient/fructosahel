@@ -47,7 +47,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useUsers, useCreateUser, useUpdateUser, useDeleteUser } from "@/lib/hooks";
 import { useToastContext } from "@/components/toast-provider";
-import { demoUsers } from "@/lib/demo-data";
 import type { User, NewUser, UserRole } from "@/types";
 
 export default function TeamPage() {
@@ -220,10 +219,8 @@ export default function TeamPage() {
     setIsDeleteDialogOpen(true);
   };
 
-  // Use demo data if no real data exists
-  const realUsers = users || [];
-  const isUsingDemoData = realUsers.length === 0;
-  const teamMembers = isUsingDemoData ? demoUsers : realUsers;
+  // Use real data from database
+  const teamMembers = users || [];
 
   // Loading state
   if (isLoading) {
@@ -480,15 +477,7 @@ export default function TeamPage() {
       </div>
 
       {/* Team Table */}
-      {teamMembers.length > 0 && (
-        <>
-        {isUsingDemoData && (
-          <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
-            <p className="text-sm text-amber-800 dark:text-amber-200">
-              Showing demo data. Add your first team member to see real data.
-            </p>
-          </div>
-        )}
+      {teamMembers.length > 0 ? (
         <Card>
           <CardHeader>
             <CardTitle>Team Members</CardTitle>
@@ -576,7 +565,20 @@ export default function TeamPage() {
             </Table>
           </CardContent>
         </Card>
-        </>
+      ) : (
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <UserIcon className="h-12 w-12 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-semibold mb-2">No team members yet</h3>
+            <p className="text-muted-foreground text-center mb-4">
+              Get started by adding your first team member
+            </p>
+            <Button onClick={() => setIsAddDialogOpen(true)}>
+              <Plus className="mr-2 h-4 w-4" />
+              {t("team.addMember")}
+            </Button>
+          </CardContent>
+        </Card>
       )}
 
       {/* Edit Dialog */}
