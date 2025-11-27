@@ -33,6 +33,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useTransactions, useCreateTransaction, type TransactionFilters } from "@/lib/hooks/use-transactions";
 import { useSales, useCreateSale, type SaleFilters } from "@/lib/hooks/use-sales";
 import { useToastContext } from "@/components/toast-provider";
+import { demoTransactions, demoSales, calculateTransactionTotals, calculateSalesTotals } from "@/lib/demo-data";
 import type { NewTransaction, NewSale } from "@/types";
 
 export default function FinancePage() {
@@ -187,14 +188,25 @@ export default function FinancePage() {
     setDateRange({ startDate: "", endDate: "" });
   };
 
-  // Extract data from hooks
-  const transactions = transactionsData?.transactions || [];
-  const totalIncome = transactionsData?.totals.income || 0;
-  const totalExpenses = transactionsData?.totals.expense || 0;
-  const netProfit = (transactionsData?.totals.balance !== undefined) ? transactionsData.totals.balance : (totalIncome - totalExpenses);
+  // Extract data from hooks with demo data fallback
+  const realTransactions = transactionsData?.transactions || [];
+  const realSales = salesData?.sales || [];
 
-  const sales = salesData?.sales || [];
-  const totalSalesRevenue = salesData?.totals.totalRevenue || 0;
+  const isUsingDemoTransactions = realTransactions.length === 0;
+  const isUsingDemoSales = realSales.length === 0;
+
+  const transactions = isUsingDemoTransactions ? demoTransactions : realTransactions;
+  const sales = isUsingDemoSales ? demoSales : realSales;
+
+  // Calculate totals (use demo calculations for demo data)
+  const demoTxTotals = calculateTransactionTotals(demoTransactions);
+  const demoSaleTotals = calculateSalesTotals(demoSales);
+
+  const totalIncome = isUsingDemoTransactions ? demoTxTotals.income : (transactionsData?.totals.income || 0);
+  const totalExpenses = isUsingDemoTransactions ? demoTxTotals.expense : (transactionsData?.totals.expense || 0);
+  const netProfit = isUsingDemoTransactions ? demoTxTotals.balance : ((transactionsData?.totals.balance !== undefined) ? transactionsData.totals.balance : (totalIncome - totalExpenses));
+
+  const totalSalesRevenue = isUsingDemoSales ? demoSaleTotals.totalRevenue : (salesData?.totals.totalRevenue || 0);
 
   return (
     <div className="space-y-6">
@@ -527,6 +539,13 @@ export default function FinancePage() {
               <CardDescription>All income and expense records</CardDescription>
             </CardHeader>
             <CardContent>
+              {isUsingDemoTransactions && !transactionsLoading && (
+                <div className="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+                  <p className="text-sm text-amber-800 dark:text-amber-200">
+                    Showing demo data. Record your first transaction to see real data.
+                  </p>
+                </div>
+              )}
               {transactionsLoading ? (
                 <div className="space-y-3">
                   {[...Array(5)].map((_, i) => (
@@ -534,13 +553,6 @@ export default function FinancePage() {
                       <Skeleton className="h-12 w-full" />
                     </div>
                   ))}
-                </div>
-              ) : transactions.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">No transactions found</p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Create your first transaction to get started
-                  </p>
                 </div>
               ) : (
                 <Table>
@@ -583,6 +595,13 @@ export default function FinancePage() {
               <CardDescription>All produce sales transactions</CardDescription>
             </CardHeader>
             <CardContent>
+              {isUsingDemoSales && !salesLoading && (
+                <div className="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+                  <p className="text-sm text-amber-800 dark:text-amber-200">
+                    Showing demo data. Record your first sale to see real data.
+                  </p>
+                </div>
+              )}
               {salesLoading ? (
                 <div className="space-y-3">
                   {[...Array(5)].map((_, i) => (
@@ -590,13 +609,6 @@ export default function FinancePage() {
                       <Skeleton className="h-12 w-full" />
                     </div>
                   ))}
-                </div>
-              ) : sales.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">No sales found</p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Record your first sale to get started
-                  </p>
                 </div>
               ) : (
                 <Table>
