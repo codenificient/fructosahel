@@ -1,14 +1,28 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import {
+  Bot,
+  Calculator,
+  Loader2,
+  Plus,
+  Send,
+  Sprout,
+  TrendingUp,
+  User,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Send, Bot, User, Loader2, TrendingUp, Calculator, Sprout, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
+import { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import type { AgentType } from "@/types";
 
@@ -47,10 +61,30 @@ export default function AgentsPage() {
     scrollToBottom();
   }, [messages]);
 
-  const agents: { type: AgentType; icon: typeof TrendingUp; nameKey: string; descKey: string }[] = [
-    { type: "marketing", icon: TrendingUp, nameKey: "agents.marketing.name", descKey: "agents.marketing.description" },
-    { type: "finance", icon: Calculator, nameKey: "agents.finance.name", descKey: "agents.finance.description" },
-    { type: "agronomist", icon: Sprout, nameKey: "agents.agronomist.name", descKey: "agents.agronomist.description" },
+  const agents: {
+    type: AgentType;
+    icon: typeof TrendingUp;
+    nameKey: string;
+    descKey: string;
+  }[] = [
+    {
+      type: "marketing",
+      icon: TrendingUp,
+      nameKey: "agents.marketing.name",
+      descKey: "agents.marketing.description",
+    },
+    {
+      type: "finance",
+      icon: Calculator,
+      nameKey: "agents.finance.name",
+      descKey: "agents.finance.description",
+    },
+    {
+      type: "agronomist",
+      icon: Sprout,
+      nameKey: "agents.agronomist.name",
+      descKey: "agents.agronomist.description",
+    },
   ];
 
   const handleSend = async () => {
@@ -67,8 +101,17 @@ export default function AgentsPage() {
     setInput("");
     setIsLoading(true);
 
+    // Create empty assistant message for streaming
+    const assistantMessageId = (Date.now() + 1).toString();
+    const assistantMessage: Message = {
+      id: assistantMessageId,
+      role: "assistant",
+      content: "",
+      timestamp: new Date(),
+    };
+
     try {
-      const response = await fetch("/api/ai/chat", {
+      const response = await fetch("/api/ai/chat/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -82,26 +125,48 @@ export default function AgentsPage() {
 
       if (!response.ok) throw new Error("Failed to get response");
 
-      const data = await response.json();
-
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: data.content,
-        timestamp: new Date(),
-      };
-
+      // Add empty assistant message and start streaming
       setMessages((prev) => [...prev, assistantMessage]);
+      setIsLoading(false);
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+
+      if (!reader) throw new Error("No response body");
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantMessageId
+              ? { ...m, content: m.content + chunk }
+              : m,
+          ),
+        );
+      }
     } catch (error) {
       console.error("Chat error:", error);
       const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: assistantMessageId,
         role: "assistant",
         content: "Sorry, I encountered an error. Please try again.",
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
+      setMessages((prev) => {
+        // Replace empty assistant message or add error
+        const hasEmptyAssistant = prev.some(
+          (m) => m.id === assistantMessageId && m.content === "",
+        );
+        if (hasEmptyAssistant) {
+          return prev.map((m) =>
+            m.id === assistantMessageId ? errorMessage : m,
+          );
+        }
+        return [...prev, errorMessage];
+      });
       setIsLoading(false);
     }
   };
@@ -134,6 +199,7 @@ export default function AgentsPage() {
               const isSelected = selectedAgent === agent.type;
               return (
                 <button
+                  type="button"
                   key={agent.type}
                   onClick={() => {
                     setSelectedAgent(agent.type);
@@ -141,10 +207,12 @@ export default function AgentsPage() {
                   }}
                   className={cn(
                     "flex w-full items-start gap-3 rounded-lg border p-3 text-left transition-all hover:bg-muted",
-                    isSelected && "border-primary bg-primary/5"
+                    isSelected && "border-primary bg-primary/5",
                   )}
                 >
-                  <div className={cn("rounded-lg p-2", agentColors[agent.type])}>
+                  <div
+                    className={cn("rounded-lg p-2", agentColors[agent.type])}
+                  >
                     <Icon className="h-5 w-5" />
                   </div>
                   <div className="flex-1">
@@ -159,7 +227,11 @@ export default function AgentsPage() {
           </CardContent>
         </Card>
 
-        <Button variant="outline" className="w-full" onClick={startNewConversation}>
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={startNewConversation}
+        >
           <Plus className="mr-2 h-4 w-4" />
           {t("agents.newConversation")}
         </Button>
@@ -174,8 +246,12 @@ export default function AgentsPage() {
               <AgentIcon className="h-6 w-6" />
             </div>
             <div>
-              <CardTitle className="text-lg">{t(`agents.${selectedAgent}.name`)}</CardTitle>
-              <CardDescription>{t(`agents.${selectedAgent}.description`)}</CardDescription>
+              <CardTitle className="text-lg">
+                {t(`agents.${selectedAgent}.name`)}
+              </CardTitle>
+              <CardDescription>
+                {t(`agents.${selectedAgent}.description`)}
+              </CardDescription>
             </div>
           </div>
         </CardHeader>
@@ -184,10 +260,14 @@ export default function AgentsPage() {
         <CardContent className="flex-1 overflow-y-auto p-4">
           {messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center text-center">
-              <div className={cn("rounded-full p-4", agentColors[selectedAgent])}>
+              <div
+                className={cn("rounded-full p-4", agentColors[selectedAgent])}
+              >
                 <AgentIcon className="h-12 w-12" />
               </div>
-              <h3 className="mt-4 text-lg font-semibold">{t(`agents.${selectedAgent}.name`)}</h3>
+              <h3 className="mt-4 text-lg font-semibold">
+                {t(`agents.${selectedAgent}.name`)}
+              </h3>
               <p className="mt-2 max-w-sm text-sm text-muted-foreground">
                 {t(`agents.${selectedAgent}.description`)}
               </p>
@@ -195,39 +275,109 @@ export default function AgentsPage() {
                 <p className="text-muted-foreground">Try asking:</p>
                 {selectedAgent === "agronomist" && (
                   <>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("What's the best time to plant mangoes in Burkina Faso?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "What's the best time to plant mangoes in Burkina Faso?",
+                        )
+                      }
+                    >
                       "What's the best time to plant mangoes?"
                     </Badge>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("How much water do pineapples need during the dry season?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "How much water do pineapples need during the dry season?",
+                        )
+                      }
+                    >
                       "How much water do pineapples need?"
                     </Badge>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("How do I control fruit flies in my mango orchard?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "How do I control fruit flies in my mango orchard?",
+                        )
+                      }
+                    >
                       "How to control fruit flies?"
                     </Badge>
                   </>
                 )}
                 {selectedAgent === "marketing" && (
                   <>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("What's the current market price for cashews in the Sahel?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "What's the current market price for cashews in the Sahel?",
+                        )
+                      }
+                    >
                       "Current cashew prices?"
                     </Badge>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("How can I find export buyers for my mangoes?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput("How can I find export buyers for my mangoes?")
+                      }
+                    >
                       "How to find mango exporters?"
                     </Badge>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("What's the best marketing strategy for organic pineapples?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "What's the best marketing strategy for organic pineapples?",
+                        )
+                      }
+                    >
                       "Marketing organic pineapples?"
                     </Badge>
                   </>
                 )}
                 {selectedAgent === "finance" && (
                   <>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("How much does it cost to start a 1-hectare mango farm?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "How much does it cost to start a 1-hectare mango farm?",
+                        )
+                      }
+                    >
                       "Cost of 1ha mango farm?"
                     </Badge>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("What's the expected ROI for cashew cultivation?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "What's the expected ROI for cashew cultivation?",
+                        )
+                      }
+                    >
                       "ROI for cashew farming?"
                     </Badge>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("How can I get agricultural financing in Mali?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "How can I get agricultural financing in Mali?",
+                        )
+                      }
+                    >
                       "Agricultural loans in Mali?"
                     </Badge>
                   </>
@@ -241,7 +391,7 @@ export default function AgentsPage() {
                   key={message.id}
                   className={cn(
                     "flex gap-3",
-                    message.role === "user" && "flex-row-reverse"
+                    message.role === "user" && "flex-row-reverse",
                   )}
                 >
                   <Avatar className="h-8 w-8">
@@ -258,16 +408,24 @@ export default function AgentsPage() {
                       "max-w-[80%] rounded-lg px-4 py-2",
                       message.role === "user"
                         ? "bg-primary text-primary-foreground"
-                        : "bg-muted"
+                        : "bg-muted",
                     )}
                   >
-                    <p className="whitespace-pre-wrap text-sm">{message.content}</p>
-                    <p className="mt-1 text-xs opacity-50">
-                      {message.timestamp.toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
+                    {message.role === "assistant" && message.content === "" ? (
+                      <span className="inline-block h-4 w-2 animate-pulse bg-current opacity-70" />
+                    ) : (
+                      <p className="whitespace-pre-wrap text-sm">
+                        {message.content}
+                      </p>
+                    )}
+                    {message.content !== "" && (
+                      <p className="mt-1 text-xs opacity-50">
+                        {message.timestamp.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}

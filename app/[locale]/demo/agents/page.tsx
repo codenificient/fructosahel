@@ -1,14 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import {
+  Bot,
+  Calculator,
+  Plus,
+  Send,
+  Sprout,
+  TrendingUp,
+  User,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Bot, TrendingUp, Calculator, Sprout, Send, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useRef, useState } from "react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import type { AgentType } from "@/types";
+
+interface Message {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  timestamp: Date;
+}
 
 const agentIcons = {
   marketing: TrendingUp,
@@ -44,28 +66,96 @@ export default function DemoAgentsPage() {
   const t = useTranslations();
   const [selectedAgent, setSelectedAgent] = useState<AgentType>("agronomist");
   const [input, setInput] = useState("");
-  const [demoMessages, setDemoMessages] = useState<{role: string; content: string}[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const streamingRef = useRef<boolean>(false);
 
-  const agents: { type: AgentType; icon: typeof TrendingUp; nameKey: string; descKey: string }[] = [
-    { type: "marketing", icon: TrendingUp, nameKey: "agents.marketing.name", descKey: "agents.marketing.description" },
-    { type: "finance", icon: Calculator, nameKey: "agents.finance.name", descKey: "agents.finance.description" },
-    { type: "agronomist", icon: Sprout, nameKey: "agents.agronomist.name", descKey: "agents.agronomist.description" },
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const agents: {
+    type: AgentType;
+    icon: typeof TrendingUp;
+    nameKey: string;
+    descKey: string;
+  }[] = [
+    {
+      type: "marketing",
+      icon: TrendingUp,
+      nameKey: "agents.marketing.name",
+      descKey: "agents.marketing.description",
+    },
+    {
+      type: "finance",
+      icon: Calculator,
+      nameKey: "agents.finance.name",
+      descKey: "agents.finance.description",
+    },
+    {
+      type: "agronomist",
+      icon: Sprout,
+      nameKey: "agents.agronomist.name",
+      descKey: "agents.agronomist.description",
+    },
   ];
 
-  const handleDemoSend = () => {
-    if (!input.trim()) return;
+  const handleDemoSend = async () => {
+    if (!input.trim() || isStreaming) return;
 
-    const userMessage = { role: "user", content: input };
-    const responses = sampleResponses[selectedAgent];
-    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-    const assistantMessage = { role: "assistant", content: randomResponse };
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      content: input.trim(),
+      timestamp: new Date(),
+    };
 
-    setDemoMessages([...demoMessages, userMessage, assistantMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setIsStreaming(true);
+    streamingRef.current = true;
+
+    // Create empty assistant message
+    const assistantMessageId = (Date.now() + 1).toString();
+    const responses = sampleResponses[selectedAgent];
+    const fullResponse =
+      responses[Math.floor(Math.random() * responses.length)];
+
+    const assistantMessage: Message = {
+      id: assistantMessageId,
+      role: "assistant",
+      content: "",
+      timestamp: new Date(),
+    };
+
+    setMessages((prev) => [...prev, assistantMessage]);
+
+    // Simulate streaming word by word
+    const words = fullResponse.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      if (!streamingRef.current) break;
+      await new Promise((r) => setTimeout(r, 30 + Math.random() * 40));
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === assistantMessageId
+            ? { ...m, content: m.content + (i > 0 ? " " : "") + words[i] }
+            : m,
+        ),
+      );
+    }
+
+    setIsStreaming(false);
   };
 
   const startNewConversation = () => {
-    setDemoMessages([]);
+    streamingRef.current = false;
+    setMessages([]);
+    setIsStreaming(false);
   };
 
   const AgentIcon = agentIcons[selectedAgent];
@@ -85,17 +175,20 @@ export default function DemoAgentsPage() {
               const isSelected = selectedAgent === agent.type;
               return (
                 <button
+                  type="button"
                   key={agent.type}
                   onClick={() => {
                     setSelectedAgent(agent.type);
-                    setDemoMessages([]);
+                    startNewConversation();
                   }}
                   className={cn(
                     "flex w-full items-start gap-3 rounded-lg border p-3 text-left transition-all hover:bg-muted",
-                    isSelected && "border-primary bg-primary/5"
+                    isSelected && "border-primary bg-primary/5",
                   )}
                 >
-                  <div className={cn("rounded-lg p-2", agentColors[agent.type])}>
+                  <div
+                    className={cn("rounded-lg p-2", agentColors[agent.type])}
+                  >
                     <Icon className="h-5 w-5" />
                   </div>
                   <div className="flex-1">
@@ -110,7 +203,11 @@ export default function DemoAgentsPage() {
           </CardContent>
         </Card>
 
-        <Button variant="outline" className="w-full" onClick={startNewConversation}>
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={startNewConversation}
+        >
           <Plus className="mr-2 h-4 w-4" />
           {t("agents.newConversation")}
         </Button>
@@ -118,7 +215,8 @@ export default function DemoAgentsPage() {
         {/* Demo Notice */}
         <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
           <p className="text-xs text-amber-800 dark:text-amber-200">
-            Demo mode: Responses are pre-written samples. Sign in to chat with real AI agents.
+            Demo mode: Responses are pre-written samples. Sign in to chat with
+            real AI agents.
           </p>
         </div>
       </div>
@@ -132,21 +230,31 @@ export default function DemoAgentsPage() {
               <AgentIcon className="h-6 w-6" />
             </div>
             <div>
-              <CardTitle className="text-lg">{t(`agents.${selectedAgent}.name`)}</CardTitle>
-              <CardDescription>{t(`agents.${selectedAgent}.description`)}</CardDescription>
+              <CardTitle className="text-lg">
+                {t(`agents.${selectedAgent}.name`)}
+              </CardTitle>
+              <CardDescription>
+                {t(`agents.${selectedAgent}.description`)}
+              </CardDescription>
             </div>
-            <Badge variant="secondary" className="ml-auto">Demo Mode</Badge>
+            <Badge variant="secondary" className="ml-auto">
+              Demo Mode
+            </Badge>
           </div>
         </CardHeader>
 
         {/* Messages */}
         <CardContent className="flex-1 overflow-y-auto p-4">
-          {demoMessages.length === 0 ? (
+          {messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center text-center">
-              <div className={cn("rounded-full p-4", agentColors[selectedAgent])}>
+              <div
+                className={cn("rounded-full p-4", agentColors[selectedAgent])}
+              >
                 <AgentIcon className="h-12 w-12" />
               </div>
-              <h3 className="mt-4 text-lg font-semibold">{t(`agents.${selectedAgent}.name`)}</h3>
+              <h3 className="mt-4 text-lg font-semibold">
+                {t(`agents.${selectedAgent}.name`)}
+              </h3>
               <p className="mt-2 max-w-sm text-sm text-muted-foreground">
                 {t(`agents.${selectedAgent}.description`)}
               </p>
@@ -154,30 +262,76 @@ export default function DemoAgentsPage() {
                 <p className="text-muted-foreground">Try asking:</p>
                 {selectedAgent === "agronomist" && (
                   <>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("What's the best time to plant mangoes in Burkina Faso?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "What's the best time to plant mangoes in Burkina Faso?",
+                        )
+                      }
+                    >
                       "What's the best time to plant mangoes?"
                     </Badge>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("How much water do pineapples need during the dry season?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "How much water do pineapples need during the dry season?",
+                        )
+                      }
+                    >
                       "How much water do pineapples need?"
                     </Badge>
                   </>
                 )}
                 {selectedAgent === "marketing" && (
                   <>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("What's the current market price for cashews in the Sahel?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "What's the current market price for cashews in the Sahel?",
+                        )
+                      }
+                    >
                       "Current cashew prices?"
                     </Badge>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("How can I find export buyers for my mangoes?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput("How can I find export buyers for my mangoes?")
+                      }
+                    >
                       "How to find mango exporters?"
                     </Badge>
                   </>
                 )}
                 {selectedAgent === "finance" && (
                   <>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("How much does it cost to start a 1-hectare mango farm?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "How much does it cost to start a 1-hectare mango farm?",
+                        )
+                      }
+                    >
                       "Cost of 1ha mango farm?"
                     </Badge>
-                    <Badge variant="secondary" className="cursor-pointer" onClick={() => setInput("What's the expected ROI for cashew cultivation?")}>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setInput(
+                          "What's the expected ROI for cashew cultivation?",
+                        )
+                      }
+                    >
                       "ROI for cashew farming?"
                     </Badge>
                   </>
@@ -186,26 +340,50 @@ export default function DemoAgentsPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              {demoMessages.map((message, index) => (
+              {messages.map((message) => (
                 <div
-                  key={index}
+                  key={message.id}
                   className={cn(
                     "flex gap-3",
-                    message.role === "user" && "flex-row-reverse"
+                    message.role === "user" && "flex-row-reverse",
                   )}
                 >
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback>
+                      {message.role === "user" ? (
+                        <User className="h-4 w-4" />
+                      ) : (
+                        <Bot className="h-4 w-4" />
+                      )}
+                    </AvatarFallback>
+                  </Avatar>
                   <div
                     className={cn(
                       "max-w-[80%] rounded-lg px-4 py-2",
                       message.role === "user"
                         ? "bg-primary text-primary-foreground"
-                        : "bg-muted"
+                        : "bg-muted",
                     )}
                   >
-                    <p className="whitespace-pre-wrap text-sm">{message.content}</p>
+                    {message.role === "assistant" && message.content === "" ? (
+                      <span className="inline-block h-4 w-2 animate-pulse bg-current opacity-70" />
+                    ) : (
+                      <p className="whitespace-pre-wrap text-sm">
+                        {message.content}
+                      </p>
+                    )}
+                    {message.content !== "" && (
+                      <p className="mt-1 text-xs opacity-50">
+                        {message.timestamp.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
+              <div ref={messagesEndRef} />
             </div>
           )}
         </CardContent>
@@ -226,7 +404,10 @@ export default function DemoAgentsPage() {
               className="min-h-[44px] max-h-32 resize-none"
               rows={1}
             />
-            <Button onClick={handleDemoSend} disabled={!input.trim()}>
+            <Button
+              onClick={handleDemoSend}
+              disabled={!input.trim() || isStreaming}
+            >
               <Send className="h-4 w-4" />
             </Button>
           </div>
