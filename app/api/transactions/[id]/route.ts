@@ -46,14 +46,21 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
     const updateData: Record<string, unknown> = { updatedAt: new Date() };
 
-    if (validatedData.farmId !== undefined) updateData.farmId = validatedData.farmId;
+    if (validatedData.farmId !== undefined)
+      updateData.farmId = validatedData.farmId;
     if (validatedData.type !== undefined) updateData.type = validatedData.type;
-    if (validatedData.category !== undefined) updateData.category = validatedData.category;
-    if (validatedData.description !== undefined) updateData.description = validatedData.description;
-    if (validatedData.amount !== undefined) updateData.amount = validatedData.amount.toString();
-    if (validatedData.currency !== undefined) updateData.currency = validatedData.currency;
-    if (validatedData.transactionDate !== undefined) updateData.transactionDate = validatedData.transactionDate;
-    if (validatedData.attachmentUrl !== undefined) updateData.attachmentUrl = validatedData.attachmentUrl;
+    if (validatedData.category !== undefined)
+      updateData.category = validatedData.category;
+    if (validatedData.description !== undefined)
+      updateData.description = validatedData.description;
+    if (validatedData.amount !== undefined)
+      updateData.amount = validatedData.amount.toString();
+    if (validatedData.currency !== undefined)
+      updateData.currency = validatedData.currency;
+    if (validatedData.transactionDate !== undefined)
+      updateData.transactionDate = validatedData.transactionDate;
+    if (validatedData.attachmentUrl !== undefined)
+      updateData.attachmentUrl = validatedData.attachmentUrl;
 
     const [updatedTransaction] = await db
       .update(transactions)

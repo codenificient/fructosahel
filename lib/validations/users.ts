@@ -11,7 +11,9 @@ export const createUserSchema = z.object({
   language: z.enum(["en", "fr"]).default("en"),
 });
 
-export const updateUserSchema = createUserSchema.partial().omit({ email: true });
+export const updateUserSchema = createUserSchema
+  .partial()
+  .omit({ email: true });
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;
 export type UpdateUserInput = z.infer<typeof updateUserSchema>;

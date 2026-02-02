@@ -4,7 +4,13 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Plus, ListTodo, Clock, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -32,7 +38,10 @@ const priorityLabels: Record<TaskPriority, string> = {
   urgent: "Urgent",
 };
 
-const priorityColors: Record<TaskPriority, "default" | "secondary" | "destructive" | "outline"> = {
+const priorityColors: Record<
+  TaskPriority,
+  "default" | "secondary" | "destructive" | "outline"
+> = {
   low: "outline",
   medium: "secondary",
   high: "default",
@@ -44,9 +53,9 @@ export default function DemoTasksPage() {
   const [selectedTab, setSelectedTab] = useState("all");
 
   const allTasks = demoTasks;
-  const pendingTasks = allTasks.filter(t => t.status === "pending");
-  const inProgressTasks = allTasks.filter(t => t.status === "in_progress");
-  const completedTasks = allTasks.filter(t => t.status === "completed");
+  const pendingTasks = allTasks.filter((t) => t.status === "pending");
+  const inProgressTasks = allTasks.filter((t) => t.status === "in_progress");
+  const completedTasks = allTasks.filter((t) => t.status === "completed");
 
   const isOverdue = (task: Task) => {
     if (!task.dueDate || task.status === "completed") return false;
@@ -55,10 +64,14 @@ export default function DemoTasksPage() {
 
   const getDisplayTasks = () => {
     switch (selectedTab) {
-      case "pending": return pendingTasks;
-      case "in_progress": return inProgressTasks;
-      case "completed": return completedTasks;
-      default: return allTasks;
+      case "pending":
+        return pendingTasks;
+      case "in_progress":
+        return inProgressTasks;
+      case "completed":
+        return completedTasks;
+      default:
+        return allTasks;
     }
   };
 
@@ -66,7 +79,9 @@ export default function DemoTasksPage() {
     if (!date) return "-";
     const d = new Date(date);
     const today = new Date();
-    const diffDays = Math.ceil((d.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    const diffDays = Math.ceil(
+      (d.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+    );
 
     if (diffDays === 0) return "Today";
     if (diffDays === 1) return "Tomorrow";
@@ -94,7 +109,8 @@ export default function DemoTasksPage() {
       {/* Demo Banner */}
       <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
         <p className="text-sm text-amber-800 dark:text-amber-200">
-          This is a demo page with sample data. Sign in to manage your real tasks.
+          This is a demo page with sample data. Sign in to manage your real
+          tasks.
         </p>
       </div>
 
@@ -119,7 +135,9 @@ export default function DemoTasksPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{pendingTasks.length}</div>
+            <div className="text-2xl font-bold text-yellow-600">
+              {pendingTasks.length}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -130,7 +148,9 @@ export default function DemoTasksPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{inProgressTasks.length}</div>
+            <div className="text-2xl font-bold text-blue-600">
+              {inProgressTasks.length}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -141,7 +161,9 @@ export default function DemoTasksPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{completedTasks.length}</div>
+            <div className="text-2xl font-bold text-green-600">
+              {completedTasks.length}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -150,15 +172,23 @@ export default function DemoTasksPage() {
       <Card>
         <CardHeader>
           <CardTitle>Task List</CardTitle>
-          <CardDescription>Manage and track all your farm tasks</CardDescription>
+          <CardDescription>
+            Manage and track all your farm tasks
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs value={selectedTab} onValueChange={setSelectedTab}>
             <TabsList>
               <TabsTrigger value="all">All ({allTasks.length})</TabsTrigger>
-              <TabsTrigger value="pending">Pending ({pendingTasks.length})</TabsTrigger>
-              <TabsTrigger value="in_progress">In Progress ({inProgressTasks.length})</TabsTrigger>
-              <TabsTrigger value="completed">Completed ({completedTasks.length})</TabsTrigger>
+              <TabsTrigger value="pending">
+                Pending ({pendingTasks.length})
+              </TabsTrigger>
+              <TabsTrigger value="in_progress">
+                In Progress ({inProgressTasks.length})
+              </TabsTrigger>
+              <TabsTrigger value="completed">
+                Completed ({completedTasks.length})
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value={selectedTab} className="mt-4">
@@ -185,7 +215,13 @@ export default function DemoTasksPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant={task.status === "completed" ? "secondary" : "default"}>
+                        <Badge
+                          variant={
+                            task.status === "completed"
+                              ? "secondary"
+                              : "default"
+                          }
+                        >
                           {statusLabels[task.status]}
                         </Badge>
                       </TableCell>
@@ -195,7 +231,13 @@ export default function DemoTasksPage() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <span className={isOverdue(task) ? "text-destructive font-medium" : ""}>
+                        <span
+                          className={
+                            isOverdue(task)
+                              ? "text-destructive font-medium"
+                              : ""
+                          }
+                        >
                           {formatDate(task.dueDate)}
                           {isOverdue(task) && " (Overdue)"}
                         </span>

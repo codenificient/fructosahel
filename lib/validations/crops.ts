@@ -1,6 +1,13 @@
 import { z } from "zod";
 
-export const cropTypeValues = ["pineapple", "cashew", "avocado", "mango", "banana", "papaya"] as const;
+export const cropTypeValues = [
+  "pineapple",
+  "cashew",
+  "avocado",
+  "mango",
+  "banana",
+  "papaya",
+] as const;
 export const cropStatusValues = [
   "planning",
   "planted",
@@ -24,9 +31,12 @@ export const createCropSchema = z.object({
   expectedYieldKg: z.coerce.number().positive().optional(),
   actualYieldKg: z.coerce.number().positive().optional(),
   notes: z.string().optional(),
+  imageUrl: z.string().url().optional().or(z.literal("")),
 });
 
-export const updateCropSchema = createCropSchema.partial().omit({ fieldId: true });
+export const updateCropSchema = createCropSchema
+  .partial()
+  .omit({ fieldId: true });
 
 export type CreateCropInput = z.infer<typeof createCropSchema>;
 export type UpdateCropInput = z.infer<typeof updateCropSchema>;

@@ -36,19 +36,23 @@ export function TaskDayDialog({
 }: TaskDayDialogProps) {
   const t = useTranslations();
 
-  const priorityColors: Record<TaskPriority, "default" | "secondary" | "destructive" | "outline"> = {
+  const priorityColors: Record<
+    TaskPriority,
+    "default" | "secondary" | "destructive" | "outline"
+  > = {
     urgent: "destructive",
     high: "destructive",
     medium: "secondary",
     low: "outline",
   };
 
-  const statusColors: Record<TaskStatus, "default" | "secondary" | "outline"> = {
-    pending: "outline",
-    in_progress: "default",
-    completed: "secondary",
-    cancelled: "secondary",
-  };
+  const statusColors: Record<TaskStatus, "default" | "secondary" | "outline"> =
+    {
+      pending: "outline",
+      in_progress: "default",
+      completed: "secondary",
+      cancelled: "secondary",
+    };
 
   // Check if a task is overdue
   const isOverdue = (task: Task) => {
@@ -65,7 +69,8 @@ export function TaskDayDialog({
             {format(date, "MMMM d, yyyy")}
           </DialogTitle>
           <DialogDescription>
-            {tasks.length} task{tasks.length !== 1 ? "s" : ""} scheduled for this day
+            {tasks.length} task{tasks.length !== 1 ? "s" : ""} scheduled for
+            this day
           </DialogDescription>
         </DialogHeader>
 
@@ -79,9 +84,13 @@ export function TaskDayDialog({
               <div key={task.id}>
                 {index > 0 && <Separator className="my-3" />}
 
-                <div className={`space-y-3 rounded-lg border p-4 ${
-                  isOverdue(task) ? "border-red-500 bg-red-50 dark:bg-red-950/20" : ""
-                }`}>
+                <div
+                  className={`space-y-3 rounded-lg border p-4 ${
+                    isOverdue(task)
+                      ? "border-red-500 bg-red-50 dark:bg-red-950/20"
+                      : ""
+                  }`}
+                >
                   {/* Task header */}
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 space-y-1">
@@ -105,9 +114,7 @@ export function TaskDayDialog({
                       {t(`tasks.statuses.${task.status}`)}
                     </Badge>
                     {isOverdue(task) && (
-                      <Badge variant="destructive">
-                        Overdue
-                      </Badge>
+                      <Badge variant="destructive">Overdue</Badge>
                     )}
                   </div>
 

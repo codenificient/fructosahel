@@ -2,9 +2,24 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Plus, MapPin, MoreHorizontal, Edit, Trash2, Eye, AlertCircle, Loader2 } from "lucide-react";
+import {
+  Plus,
+  MapPin,
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  Eye,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -32,9 +47,20 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useFarms, useCreateFarm, useUpdateFarm, useDeleteFarm } from "@/lib/hooks/use-farms";
+import {
+  useFarms,
+  useCreateFarm,
+  useUpdateFarm,
+  useDeleteFarm,
+} from "@/lib/hooks/use-farms";
 import { useToastContext } from "@/components/toast-provider";
 import type { Farm } from "@/types";
 
@@ -93,7 +119,12 @@ export default function FarmsPage() {
 
   const handleAddFarm = async () => {
     try {
-      if (!formData.name || !formData.location || !formData.country || !formData.sizeHectares) {
+      if (
+        !formData.name ||
+        !formData.location ||
+        !formData.country ||
+        !formData.sizeHectares
+      ) {
         toast({
           variant: "error",
           title: "Validation Error",
@@ -125,7 +156,8 @@ export default function FarmsPage() {
       toast({
         variant: "error",
         title: "Error",
-        description: err instanceof Error ? err.message : "Failed to create farm",
+        description:
+          err instanceof Error ? err.message : "Failed to create farm",
       });
     }
   };
@@ -149,7 +181,12 @@ export default function FarmsPage() {
     if (!selectedFarm) return;
 
     try {
-      if (!formData.name || !formData.location || !formData.country || !formData.sizeHectares) {
+      if (
+        !formData.name ||
+        !formData.location ||
+        !formData.country ||
+        !formData.sizeHectares
+      ) {
         toast({
           variant: "error",
           title: "Validation Error",
@@ -183,7 +220,8 @@ export default function FarmsPage() {
       toast({
         variant: "error",
         title: "Error",
-        description: err instanceof Error ? err.message : "Failed to update farm",
+        description:
+          err instanceof Error ? err.message : "Failed to update farm",
       });
     }
   };
@@ -210,13 +248,17 @@ export default function FarmsPage() {
       toast({
         variant: "error",
         title: "Error",
-        description: err instanceof Error ? err.message : "Failed to delete farm",
+        description:
+          err instanceof Error ? err.message : "Failed to delete farm",
       });
     }
   };
 
   const displayFarms = farms || [];
-  const totalHectares = displayFarms.reduce((acc, f) => acc + parseFloat(f.sizeHectares), 0);
+  const totalHectares = displayFarms.reduce(
+    (acc, f) => acc + parseFloat(f.sizeHectares),
+    0,
+  );
   const uniqueCountries = new Set(displayFarms.map((f) => f.country)).size;
 
   return (
@@ -224,8 +266,12 @@ export default function FarmsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{t("farms.title")}</h1>
-          <p className="text-muted-foreground">Manage your farm locations and fields</p>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {t("farms.title")}
+          </h1>
+          <p className="text-muted-foreground">
+            Manage your farm locations and fields
+          </p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
@@ -237,7 +283,9 @@ export default function FarmsPage() {
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
               <DialogTitle>{t("farms.addFarm")}</DialogTitle>
-              <DialogDescription>Add a new farm to your portfolio</DialogDescription>
+              <DialogDescription>
+                Add a new farm to your portfolio
+              </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
@@ -246,7 +294,9 @@ export default function FarmsPage() {
                   id="name"
                   placeholder="Enter farm name"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -255,7 +305,9 @@ export default function FarmsPage() {
                   id="location"
                   placeholder="City or region"
                   value={formData.location}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, location: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -270,9 +322,15 @@ export default function FarmsPage() {
                     <SelectValue placeholder="Select country" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="burkina_faso">{t("farms.countries.burkina_faso")}</SelectItem>
-                    <SelectItem value="mali">{t("farms.countries.mali")}</SelectItem>
-                    <SelectItem value="niger">{t("farms.countries.niger")}</SelectItem>
+                    <SelectItem value="burkina_faso">
+                      {t("farms.countries.burkina_faso")}
+                    </SelectItem>
+                    <SelectItem value="mali">
+                      {t("farms.countries.mali")}
+                    </SelectItem>
+                    <SelectItem value="niger">
+                      {t("farms.countries.niger")}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -283,7 +341,9 @@ export default function FarmsPage() {
                   type="number"
                   placeholder="Size in hectares"
                   value={formData.sizeHectares}
-                  onChange={(e) => setFormData({ ...formData, sizeHectares: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, sizeHectares: e.target.value })
+                  }
                 />
               </div>
               <div className="grid grid-cols-2 gap-2">
@@ -295,7 +355,9 @@ export default function FarmsPage() {
                     step="any"
                     placeholder="e.g., 12.3714"
                     value={formData.latitude}
-                    onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, latitude: e.target.value })
+                    }
                   />
                 </div>
                 <div className="grid gap-2">
@@ -306,7 +368,9 @@ export default function FarmsPage() {
                     step="any"
                     placeholder="e.g., -1.5197"
                     value={formData.longitude}
-                    onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, longitude: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -316,7 +380,9 @@ export default function FarmsPage() {
                   id="description"
                   placeholder="Additional details about the farm"
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -331,8 +397,14 @@ export default function FarmsPage() {
               >
                 {t("common.cancel")}
               </Button>
-              <Button type="button" onClick={handleAddFarm} disabled={createFarm.isLoading}>
-                {createFarm.isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button
+                type="button"
+                onClick={handleAddFarm}
+                disabled={createFarm.isLoading}
+              >
+                {createFarm.isLoading && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
                 {t("common.save")}
               </Button>
             </DialogFooter>
@@ -356,13 +428,17 @@ export default function FarmsPage() {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total Hectares</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Hectares
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {isLoading ? (
               <Skeleton className="h-8 w-16" />
             ) : (
-              <div className="text-2xl font-bold">{totalHectares.toFixed(1)}</div>
+              <div className="text-2xl font-bold">
+                {totalHectares.toFixed(1)}
+              </div>
             )}
           </CardContent>
         </Card>
@@ -396,7 +472,9 @@ export default function FarmsPage() {
       <Card>
         <CardHeader>
           <CardTitle>All Farms</CardTitle>
-          <CardDescription>A list of all your farms across the Sahel region</CardDescription>
+          <CardDescription>
+            A list of all your farms across the Sahel region
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -458,7 +536,9 @@ export default function FarmsPage() {
                     <TableCell>{farm.location}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <span className={`h-2 w-2 rounded-full ${countryColors[farm.country]}`} />
+                        <span
+                          className={`h-2 w-2 rounded-full ${countryColors[farm.country]}`}
+                        />
                         {t(`farms.countries.${farm.country}`)}
                       </div>
                     </TableCell>
@@ -476,7 +556,9 @@ export default function FarmsPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => handleEditClick(farm)}>
+                          <DropdownMenuItem
+                            onClick={() => handleEditClick(farm)}
+                          >
                             <Edit className="mr-2 h-4 w-4" />
                             {t("common.edit")}
                           </DropdownMenuItem>
@@ -512,7 +594,9 @@ export default function FarmsPage() {
                 id="edit-name"
                 placeholder="Enter farm name"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
               />
             </div>
             <div className="grid gap-2">
@@ -521,7 +605,9 @@ export default function FarmsPage() {
                 id="edit-location"
                 placeholder="City or region"
                 value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, location: e.target.value })
+                }
               />
             </div>
             <div className="grid gap-2">
@@ -536,9 +622,15 @@ export default function FarmsPage() {
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="burkina_faso">{t("farms.countries.burkina_faso")}</SelectItem>
-                  <SelectItem value="mali">{t("farms.countries.mali")}</SelectItem>
-                  <SelectItem value="niger">{t("farms.countries.niger")}</SelectItem>
+                  <SelectItem value="burkina_faso">
+                    {t("farms.countries.burkina_faso")}
+                  </SelectItem>
+                  <SelectItem value="mali">
+                    {t("farms.countries.mali")}
+                  </SelectItem>
+                  <SelectItem value="niger">
+                    {t("farms.countries.niger")}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -549,7 +641,9 @@ export default function FarmsPage() {
                 type="number"
                 placeholder="Size in hectares"
                 value={formData.sizeHectares}
-                onChange={(e) => setFormData({ ...formData, sizeHectares: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, sizeHectares: e.target.value })
+                }
               />
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -561,7 +655,9 @@ export default function FarmsPage() {
                   step="any"
                   placeholder="e.g., 12.3714"
                   value={formData.latitude}
-                  onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, latitude: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -572,7 +668,9 @@ export default function FarmsPage() {
                   step="any"
                   placeholder="e.g., -1.5197"
                   value={formData.longitude}
-                  onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, longitude: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -582,7 +680,9 @@ export default function FarmsPage() {
                 id="edit-description"
                 placeholder="Additional details about the farm"
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
               />
             </div>
           </div>
@@ -598,8 +698,14 @@ export default function FarmsPage() {
             >
               {t("common.cancel")}
             </Button>
-            <Button type="button" onClick={handleUpdateFarm} disabled={updateFarm.isLoading}>
-              {updateFarm.isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button
+              type="button"
+              onClick={handleUpdateFarm}
+              disabled={updateFarm.isLoading}
+            >
+              {updateFarm.isLoading && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               {t("common.save")}
             </Button>
           </DialogFooter>
@@ -612,8 +718,9 @@ export default function FarmsPage() {
           <DialogHeader>
             <DialogTitle>Delete Farm</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete <strong>{selectedFarm?.name}</strong>? This action
-              cannot be undone.
+              Are you sure you want to delete{" "}
+              <strong>{selectedFarm?.name}</strong>? This action cannot be
+              undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -633,7 +740,9 @@ export default function FarmsPage() {
               onClick={handleDeleteFarm}
               disabled={deleteFarm.isLoading}
             >
-              {deleteFarm.isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {deleteFarm.isLoading && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               {t("common.delete")}
             </Button>
           </DialogFooter>

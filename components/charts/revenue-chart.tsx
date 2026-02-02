@@ -28,7 +28,10 @@ const formatCurrency = (value: number) => {
 export function RevenueChart({ data }: RevenueChartProps) {
   return (
     <ResponsiveContainer width="100%" height={350}>
-      <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+      <LineChart
+        data={data}
+        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+      >
         <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
         <XAxis
           dataKey="month"

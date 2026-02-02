@@ -16,6 +16,7 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  FileBarChart,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -63,6 +64,11 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
       label: t("finance.title"),
     },
     {
+      href: `/${locale}/dashboard/reports`,
+      icon: FileBarChart,
+      label: t("reports.title"),
+    },
+    {
       href: `/${locale}/dashboard/team`,
       icon: Users,
       label: t("team.title"),
@@ -86,13 +92,16 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
     <aside
       className={cn(
         "relative flex h-screen flex-col border-r bg-card transition-all duration-300",
-        collapsed ? "w-16" : "w-64"
+        collapsed ? "w-16" : "w-64",
       )}
     >
       {/* Logo */}
       <div className="flex h-16 items-center justify-between border-b px-4">
         {!collapsed && (
-          <Link href={`/${locale}/dashboard`} className="flex items-center gap-2">
+          <Link
+            href={`/${locale}/dashboard`}
+            className="flex items-center gap-2"
+          >
             <Sprout className="h-8 w-8 text-primary" />
             <span className="text-lg font-bold text-primary">FructoSahel</span>
           </Link>
@@ -130,7 +139,7 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
               <item.icon className={cn("h-5 w-5 shrink-0")} />
@@ -152,7 +161,7 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
               <item.icon className="h-5 w-5 shrink-0" />
@@ -161,9 +170,7 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
           );
         })}
         <Separator className="my-2" />
-        <button
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-destructive hover:text-destructive-foreground"
-        >
+        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-destructive hover:text-destructive-foreground">
           <LogOut className="h-5 w-5 shrink-0" />
           {!collapsed && <span>{t("nav.logout")}</span>}
         </button>

@@ -9,7 +9,9 @@ export const createFieldSchema = z.object({
   notes: z.string().optional(),
 });
 
-export const updateFieldSchema = createFieldSchema.partial().omit({ farmId: true });
+export const updateFieldSchema = createFieldSchema
+  .partial()
+  .omit({ farmId: true });
 
 export type CreateFieldInput = z.infer<typeof createFieldSchema>;
 export type UpdateFieldInput = z.infer<typeof updateFieldSchema>;

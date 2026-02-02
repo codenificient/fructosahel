@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { OfflineStatusBadge } from "@/components/offline-indicator";
 import { cn } from "@/lib/utils";
 
 interface DashboardHeaderProps {
@@ -36,6 +37,9 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
       </div>
 
       <div className="flex items-center gap-4">
+        {/* Offline Status */}
+        <OfflineStatusBadge />
+
         {/* Language Switcher */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -45,12 +49,18 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/en/dashboard`} className={cn(locale === "en" && "font-bold")}>
+              <Link
+                href={`/en/dashboard`}
+                className={cn(locale === "en" && "font-bold")}
+              >
                 English
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={`/fr/dashboard`} className={cn(locale === "fr" && "font-bold")}>
+              <Link
+                href={`/fr/dashboard`}
+                className={cn(locale === "fr" && "font-bold")}
+              >
                 Francais
               </Link>
             </DropdownMenuItem>
@@ -79,7 +89,9 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium">Admin User</p>
-                <p className="text-xs text-muted-foreground">admin@fructosahel.com</p>
+                <p className="text-xs text-muted-foreground">
+                  admin@fructosahel.com
+                </p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

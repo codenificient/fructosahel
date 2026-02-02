@@ -77,7 +77,7 @@ export function DemoSidebar({ locale }: DemoSidebarProps) {
     <aside
       className={cn(
         "relative flex h-screen flex-col border-r bg-card transition-all duration-300",
-        collapsed ? "w-16" : "w-64"
+        collapsed ? "w-16" : "w-64",
       )}
     >
       {/* Logo */}
@@ -98,7 +98,10 @@ export function DemoSidebar({ locale }: DemoSidebarProps) {
       {/* Demo Badge */}
       {!collapsed && (
         <div className="mx-2 mt-2">
-          <Badge variant="secondary" className="w-full justify-center gap-1 py-1">
+          <Badge
+            variant="secondary"
+            className="w-full justify-center gap-1 py-1"
+          >
             <FlaskConical className="h-3 w-3" />
             Demo Mode
           </Badge>
@@ -131,7 +134,7 @@ export function DemoSidebar({ locale }: DemoSidebarProps) {
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
               <item.icon className={cn("h-5 w-5 shrink-0")} />

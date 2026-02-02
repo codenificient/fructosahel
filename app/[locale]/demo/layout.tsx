@@ -16,7 +16,9 @@ export default async function DemoLayout({
       <DemoSidebar locale={locale} />
       <div className="flex flex-1 flex-col overflow-hidden">
         <DashboardHeader locale={locale} />
-        <main className="flex-1 overflow-y-auto bg-muted/30 p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto bg-muted/30 p-6">
+          {children}
+        </main>
       </div>
     </div>
   );

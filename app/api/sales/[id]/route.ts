@@ -46,18 +46,30 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
     const updateData: Record<string, unknown> = {};
 
-    if (validatedData.cropType !== undefined) updateData.cropType = validatedData.cropType;
-    if (validatedData.quantityKg !== undefined) updateData.quantityKg = validatedData.quantityKg.toString();
-    if (validatedData.pricePerKg !== undefined) updateData.pricePerKg = validatedData.pricePerKg.toString();
-    if (validatedData.currency !== undefined) updateData.currency = validatedData.currency;
-    if (validatedData.buyerName !== undefined) updateData.buyerName = validatedData.buyerName;
-    if (validatedData.buyerContact !== undefined) updateData.buyerContact = validatedData.buyerContact;
-    if (validatedData.saleDate !== undefined) updateData.saleDate = validatedData.saleDate;
-    if (validatedData.notes !== undefined) updateData.notes = validatedData.notes;
+    if (validatedData.cropType !== undefined)
+      updateData.cropType = validatedData.cropType;
+    if (validatedData.quantityKg !== undefined)
+      updateData.quantityKg = validatedData.quantityKg.toString();
+    if (validatedData.pricePerKg !== undefined)
+      updateData.pricePerKg = validatedData.pricePerKg.toString();
+    if (validatedData.currency !== undefined)
+      updateData.currency = validatedData.currency;
+    if (validatedData.buyerName !== undefined)
+      updateData.buyerName = validatedData.buyerName;
+    if (validatedData.buyerContact !== undefined)
+      updateData.buyerContact = validatedData.buyerContact;
+    if (validatedData.saleDate !== undefined)
+      updateData.saleDate = validatedData.saleDate;
+    if (validatedData.notes !== undefined)
+      updateData.notes = validatedData.notes;
 
     // Recalculate total if quantity or price changed
-    if (validatedData.quantityKg !== undefined || validatedData.pricePerKg !== undefined) {
-      const quantity = validatedData.quantityKg ?? parseFloat(existing.quantityKg);
+    if (
+      validatedData.quantityKg !== undefined ||
+      validatedData.pricePerKg !== undefined
+    ) {
+      const quantity =
+        validatedData.quantityKg ?? parseFloat(existing.quantityKg);
       const price = validatedData.pricePerKg ?? parseFloat(existing.pricePerKg);
       updateData.totalAmount = (quantity * price).toString();
     }

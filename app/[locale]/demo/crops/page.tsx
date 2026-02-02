@@ -2,9 +2,24 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Plus, MoreHorizontal, Edit, Trash2, Sprout, Calendar, Scale, Leaf } from "lucide-react";
+import {
+  Plus,
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  Sprout,
+  Calendar,
+  Scale,
+  Leaf,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -21,7 +36,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { demoCrops } from "@/lib/demo-data";
 import type { CropType, CropStatus } from "@/types";
 
@@ -45,7 +66,10 @@ const cropStatusLabels: Record<CropStatus, string> = {
   dormant: "Dormant",
 };
 
-const statusColors: Record<CropStatus, "default" | "secondary" | "destructive" | "outline"> = {
+const statusColors: Record<
+  CropStatus,
+  "default" | "secondary" | "destructive" | "outline"
+> = {
   planning: "outline",
   planted: "secondary",
   growing: "default",
@@ -59,7 +83,9 @@ const statusColors: Record<CropStatus, "default" | "secondary" | "destructive" |
 export default function DemoCropsPage() {
   const t = useTranslations();
   const [typeFilter, setTypeFilter] = useState<CropType | undefined>(undefined);
-  const [statusFilter, setStatusFilter] = useState<CropStatus | undefined>(undefined);
+  const [statusFilter, setStatusFilter] = useState<CropStatus | undefined>(
+    undefined,
+  );
 
   const filteredCrops = demoCrops.filter((crop) => {
     if (typeFilter && crop.cropType !== typeFilter) return false;
@@ -68,12 +94,16 @@ export default function DemoCropsPage() {
   });
 
   const totalCrops = filteredCrops.length;
-  const activeCrops = filteredCrops.filter(c =>
-    ["growing", "flowering", "fruiting", "harvesting"].includes(c.status)
+  const activeCrops = filteredCrops.filter((c) =>
+    ["growing", "flowering", "fruiting", "harvesting"].includes(c.status),
   ).length;
-  const totalPlants = filteredCrops.reduce((sum, c) => sum + (c.numberOfPlants || 0), 0);
-  const expectedYield = filteredCrops.reduce((sum, c) =>
-    sum + (c.expectedYieldKg ? parseFloat(c.expectedYieldKg) : 0), 0
+  const totalPlants = filteredCrops.reduce(
+    (sum, c) => sum + (c.numberOfPlants || 0),
+    0,
+  );
+  const expectedYield = filteredCrops.reduce(
+    (sum, c) => sum + (c.expectedYieldKg ? parseFloat(c.expectedYieldKg) : 0),
+    0,
   );
 
   const formatNumber = (value: string | number | null) => {
@@ -95,7 +125,9 @@ export default function DemoCropsPage() {
             <Sprout className="h-8 w-8 text-green-600" />
             Crops
           </h1>
-          <p className="text-muted-foreground">Manage your crop plantings and track growth</p>
+          <p className="text-muted-foreground">
+            Manage your crop plantings and track growth
+          </p>
         </div>
         <Button disabled>
           <Plus className="mr-2 h-4 w-4" />
@@ -106,7 +138,8 @@ export default function DemoCropsPage() {
       {/* Demo Banner */}
       <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
         <p className="text-sm text-amber-800 dark:text-amber-200">
-          This is a demo page with sample data. Sign in to manage your real crops.
+          This is a demo page with sample data. Sign in to manage your real
+          crops.
         </p>
       </div>
 
@@ -116,7 +149,9 @@ export default function DemoCropsPage() {
           <Label>Crop Type:</Label>
           <Select
             value={typeFilter || "all"}
-            onValueChange={(value) => setTypeFilter(value === "all" ? undefined : value as CropType)}
+            onValueChange={(value) =>
+              setTypeFilter(value === "all" ? undefined : (value as CropType))
+            }
           >
             <SelectTrigger className="w-[150px]">
               <SelectValue placeholder="All types" />
@@ -124,7 +159,9 @@ export default function DemoCropsPage() {
             <SelectContent>
               <SelectItem value="all">All types</SelectItem>
               {Object.entries(cropTypeLabels).map(([value, label]) => (
-                <SelectItem key={value} value={value}>{label}</SelectItem>
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -133,7 +170,11 @@ export default function DemoCropsPage() {
           <Label>Status:</Label>
           <Select
             value={statusFilter || "all"}
-            onValueChange={(value) => setStatusFilter(value === "all" ? undefined : value as CropStatus)}
+            onValueChange={(value) =>
+              setStatusFilter(
+                value === "all" ? undefined : (value as CropStatus),
+              )
+            }
           >
             <SelectTrigger className="w-[150px]">
               <SelectValue placeholder="All statuses" />
@@ -141,7 +182,9 @@ export default function DemoCropsPage() {
             <SelectContent>
               <SelectItem value="all">All statuses</SelectItem>
               {Object.entries(cropStatusLabels).map(([value, label]) => (
-                <SelectItem key={value} value={value}>{label}</SelectItem>
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -169,7 +212,9 @@ export default function DemoCropsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{activeCrops}</div>
+            <div className="text-2xl font-bold text-green-600">
+              {activeCrops}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -180,7 +225,9 @@ export default function DemoCropsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(totalPlants)}</div>
+            <div className="text-2xl font-bold">
+              {formatNumber(totalPlants)}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -191,7 +238,9 @@ export default function DemoCropsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(expectedYield)} kg</div>
+            <div className="text-2xl font-bold">
+              {formatNumber(expectedYield)} kg
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -200,7 +249,9 @@ export default function DemoCropsPage() {
       <Card>
         <CardHeader>
           <CardTitle>All Crops</CardTitle>
-          <CardDescription>All crop plantings ({filteredCrops.length})</CardDescription>
+          <CardDescription>
+            All crop plantings ({filteredCrops.length})
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -235,7 +286,9 @@ export default function DemoCropsPage() {
                   <TableCell>{formatDate(crop.plantingDate)}</TableCell>
                   <TableCell>{formatDate(crop.expectedHarvestDate)}</TableCell>
                   <TableCell>
-                    {crop.expectedYieldKg ? `${formatNumber(crop.expectedYieldKg)} kg` : "-"}
+                    {crop.expectedYieldKg
+                      ? `${formatNumber(crop.expectedYieldKg)} kg`
+                      : "-"}
                   </TableCell>
                   <TableCell>
                     <DropdownMenu>

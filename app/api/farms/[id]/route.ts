@@ -54,13 +54,20 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     const updateData: Record<string, unknown> = { updatedAt: new Date() };
 
     if (validatedData.name !== undefined) updateData.name = validatedData.name;
-    if (validatedData.location !== undefined) updateData.location = validatedData.location;
-    if (validatedData.country !== undefined) updateData.country = validatedData.country;
-    if (validatedData.sizeHectares !== undefined) updateData.sizeHectares = validatedData.sizeHectares.toString();
-    if (validatedData.latitude !== undefined) updateData.latitude = validatedData.latitude?.toString();
-    if (validatedData.longitude !== undefined) updateData.longitude = validatedData.longitude?.toString();
-    if (validatedData.description !== undefined) updateData.description = validatedData.description;
-    if (validatedData.managerId !== undefined) updateData.managerId = validatedData.managerId;
+    if (validatedData.location !== undefined)
+      updateData.location = validatedData.location;
+    if (validatedData.country !== undefined)
+      updateData.country = validatedData.country;
+    if (validatedData.sizeHectares !== undefined)
+      updateData.sizeHectares = validatedData.sizeHectares.toString();
+    if (validatedData.latitude !== undefined)
+      updateData.latitude = validatedData.latitude?.toString();
+    if (validatedData.longitude !== undefined)
+      updateData.longitude = validatedData.longitude?.toString();
+    if (validatedData.description !== undefined)
+      updateData.description = validatedData.description;
+    if (validatedData.managerId !== undefined)
+      updateData.managerId = validatedData.managerId;
 
     const [updatedFarm] = await db
       .update(farms)

@@ -1,7 +1,13 @@
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Header, Footer } from "@/components/layout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 interface PageProps {
@@ -29,8 +35,12 @@ function BlogHero({ locale }: { locale: string }) {
   return (
     <section className="gradient-hero py-16 md:py-24">
       <div className="container mx-auto px-4 text-center">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{t("title")}</h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">{t("subtitle")}</p>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+          {t("title")}
+        </h1>
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+          {t("subtitle")}
+        </p>
       </div>
     </section>
   );
@@ -118,7 +128,9 @@ function CropGuides({ locale }: { locale: string }) {
                   <CardTitle className="text-xl">{crop.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base">{crop.description}</CardDescription>
+                  <CardDescription className="text-base">
+                    {crop.description}
+                  </CardDescription>
                 </CardContent>
               </Card>
             </Link>

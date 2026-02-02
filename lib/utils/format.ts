@@ -1,4 +1,4 @@
-import { format as formatDate } from 'date-fns'
+import { format as formatDate } from "date-fns";
 
 /**
  * Format a number as currency (West African CFA Franc)
@@ -6,13 +6,13 @@ import { format as formatDate } from 'date-fns'
  * @param locale - The locale to use (default: 'fr-BF' for Burkina Faso)
  * @returns Formatted currency string
  */
-export function formatCurrency(amount: number, locale = 'fr-BF'): string {
+export function formatCurrency(amount: number, locale = "fr-BF"): string {
   return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: 'XOF', // West African CFA Franc
+    style: "currency",
+    currency: "XOF", // West African CFA Franc
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(amount)
+  }).format(amount);
 }
 
 /**
@@ -21,9 +21,12 @@ export function formatCurrency(amount: number, locale = 'fr-BF'): string {
  * @param formatStr - The format string (default: 'PP')
  * @returns Formatted date string
  */
-export function formatDateString(date: Date | string, formatStr = 'PP'): string {
-  const dateObj = typeof date === 'string' ? new Date(date) : date
-  return formatDate(dateObj, formatStr)
+export function formatDateString(
+  date: Date | string,
+  formatStr = "PP",
+): string {
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  return formatDate(dateObj, formatStr);
 }
 
 /**
@@ -32,43 +35,43 @@ export function formatDateString(date: Date | string, formatStr = 'PP'): string 
  * @returns Formatted date string (e.g., "2 days ago")
  */
 export function formatRelativeDate(date: Date | string): string {
-  const dateObj = typeof date === 'string' ? new Date(date) : date
-  const now = new Date()
-  const diffInMs = now.getTime() - dateObj.getTime()
-  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  const now = new Date();
+  const diffInMs = now.getTime() - dateObj.getTime();
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
   if (diffInDays === 0) {
-    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
     if (diffInHours === 0) {
-      const diffInMinutes = Math.floor(diffInMs / (1000 * 60))
+      const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
       if (diffInMinutes === 0) {
-        return 'just now'
+        return "just now";
       }
-      return `${diffInMinutes} minute${diffInMinutes === 1 ? '' : 's'} ago`
+      return `${diffInMinutes} minute${diffInMinutes === 1 ? "" : "s"} ago`;
     }
-    return `${diffInHours} hour${diffInHours === 1 ? '' : 's'} ago`
+    return `${diffInHours} hour${diffInHours === 1 ? "" : "s"} ago`;
   }
 
   if (diffInDays === 1) {
-    return 'yesterday'
+    return "yesterday";
   }
 
   if (diffInDays < 7) {
-    return `${diffInDays} days ago`
+    return `${diffInDays} days ago`;
   }
 
   if (diffInDays < 30) {
-    const weeks = Math.floor(diffInDays / 7)
-    return `${weeks} week${weeks === 1 ? '' : 's'} ago`
+    const weeks = Math.floor(diffInDays / 7);
+    return `${weeks} week${weeks === 1 ? "" : "s"} ago`;
   }
 
   if (diffInDays < 365) {
-    const months = Math.floor(diffInDays / 30)
-    return `${months} month${months === 1 ? '' : 's'} ago`
+    const months = Math.floor(diffInDays / 30);
+    return `${months} month${months === 1 ? "" : "s"} ago`;
   }
 
-  const years = Math.floor(diffInDays / 365)
-  return `${years} year${years === 1 ? '' : 's'} ago`
+  const years = Math.floor(diffInDays / 365);
+  return `${years} year${years === 1 ? "" : "s"} ago`;
 }
 
 /**
@@ -77,8 +80,8 @@ export function formatRelativeDate(date: Date | string): string {
  * @param locale - The locale to use (default: 'fr-BF')
  * @returns Formatted number string
  */
-export function formatNumber(num: number, locale = 'fr-BF'): string {
-  return new Intl.NumberFormat(locale).format(num)
+export function formatNumber(num: number, locale = "fr-BF"): string {
+  return new Intl.NumberFormat(locale).format(num);
 }
 
 /**
@@ -88,7 +91,7 @@ export function formatNumber(num: number, locale = 'fr-BF'): string {
  * @returns Formatted string with unit
  */
 export function formatHectares(hectares: number, decimals = 2): string {
-  return `${hectares.toFixed(decimals)} ha`
+  return `${hectares.toFixed(decimals)} ha`;
 }
 
 /**
@@ -98,5 +101,5 @@ export function formatHectares(hectares: number, decimals = 2): string {
  * @returns Formatted percentage string
  */
 export function formatPercentage(value: number, decimals = 1): string {
-  return `${value.toFixed(decimals)}%`
+  return `${value.toFixed(decimals)}%`;
 }

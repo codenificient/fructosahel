@@ -30,7 +30,9 @@ function AboutHero({ locale }: { locale: string }) {
   return (
     <section className="gradient-hero py-16 md:py-24">
       <div className="container mx-auto px-4 text-center">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{t("title")}</h1>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+          {t("title")}
+        </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
           {locale === "fr"
             ? "Transformer l'agriculture du Sahel grace a la technologie et a l'innovation"
@@ -56,7 +58,9 @@ function MissionSection({ locale }: { locale: string }) {
               <CardTitle className="text-2xl">{t("mission.title")}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground leading-relaxed">{t("mission.content")}</p>
+              <p className="text-muted-foreground leading-relaxed">
+                {t("mission.content")}
+              </p>
             </CardContent>
           </Card>
 
@@ -68,7 +72,9 @@ function MissionSection({ locale }: { locale: string }) {
               <CardTitle className="text-2xl">{t("vision.title")}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground leading-relaxed">{t("vision.content")}</p>
+              <p className="text-muted-foreground leading-relaxed">
+                {t("vision.content")}
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -107,7 +113,9 @@ function CountriesSection({ locale }: { locale: string }) {
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
           <h2 className="text-3xl font-bold tracking-tight">
-            {locale === "fr" ? "Nos Pays d'Operation" : "Our Operating Countries"}
+            {locale === "fr"
+              ? "Nos Pays d'Operation"
+              : "Our Operating Countries"}
           </h2>
           <p className="mt-2 text-muted-foreground">
             {locale === "fr"
@@ -131,14 +139,20 @@ function CountriesSection({ locale }: { locale: string }) {
                   </div>
                   <div className="grid grid-cols-2 gap-4 pt-4">
                     <div>
-                      <div className="text-2xl font-bold text-primary">{country.farms}</div>
+                      <div className="text-2xl font-bold text-primary">
+                        {country.farms}
+                      </div>
                       <div className="text-xs text-muted-foreground">
                         {locale === "fr" ? "Fermes" : "Farms"}
                       </div>
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-primary">{country.hectares}</div>
-                      <div className="text-xs text-muted-foreground">Hectares</div>
+                      <div className="text-2xl font-bold text-primary">
+                        {country.hectares}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Hectares
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -161,8 +175,12 @@ function TeamSection({ locale }: { locale: string }) {
           <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
             <Users className="h-6 w-6 text-primary" />
           </div>
-          <h2 className="text-3xl font-bold tracking-tight">{t("team.title")}</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">{t("team.content")}</p>
+          <h2 className="text-3xl font-bold tracking-tight">
+            {t("team.title")}
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
+            {t("team.content")}
+          </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">

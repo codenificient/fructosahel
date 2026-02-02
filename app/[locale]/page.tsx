@@ -11,7 +11,13 @@ import {
   Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Header, Footer } from "@/components/layout";
 
 interface PageProps {
@@ -105,7 +111,9 @@ function FeaturesSection({ locale }: { locale: string }) {
     <section className="border-t bg-muted/30 py-24">
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t("title")}</h2>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            {t("title")}
+          </h2>
           <p className="mt-4 text-lg text-muted-foreground">{t("subtitle")}</p>
         </div>
         <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -118,7 +126,9 @@ function FeaturesSection({ locale }: { locale: string }) {
                 <CardTitle>{t(feature.titleKey)}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-base">{t(feature.descKey)}</CardDescription>
+                <CardDescription className="text-base">
+                  {t(feature.descKey)}
+                </CardDescription>
               </CardContent>
             </Card>
           ))}
@@ -144,7 +154,9 @@ function CropsSection({ locale }: { locale: string }) {
     <section className="py-24">
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t("title")}</h2>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            {t("title")}
+          </h2>
           <p className="mt-4 text-lg text-muted-foreground">{t("subtitle")}</p>
         </div>
         <div className="mt-16 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
@@ -183,7 +195,9 @@ function StatsSection({ locale }: { locale: string }) {
           {stats.map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-4xl font-bold md:text-5xl">{stat.value}</div>
-              <div className="mt-2 text-primary-foreground/80">{stat.label}</div>
+              <div className="mt-2 text-primary-foreground/80">
+                {stat.label}
+              </div>
             </div>
           ))}
         </div>
@@ -199,8 +213,12 @@ function CTASection({ locale }: { locale: string }) {
     <section className="py-24">
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-3xl rounded-2xl bg-gradient-to-r from-primary to-primary/80 p-12 text-center text-primary-foreground">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t("title")}</h2>
-          <p className="mt-4 text-lg text-primary-foreground/90">{t("subtitle")}</p>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            {t("title")}
+          </h2>
+          <p className="mt-4 text-lg text-primary-foreground/90">
+            {t("subtitle")}
+          </p>
           <Button size="lg" variant="secondary" className="mt-8" asChild>
             <Link href={`/${locale}/dashboard`}>
               {t("button")}

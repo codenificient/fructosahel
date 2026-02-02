@@ -13,7 +13,7 @@ function getDb(): NeonHttpDatabase<typeof schema> {
   if (!connectionString) {
     throw new Error(
       "DATABASE_URL environment variable is not set. " +
-        "Please add it to your .env.local file."
+        "Please add it to your .env.local file.",
     );
   }
 

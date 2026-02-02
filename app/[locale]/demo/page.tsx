@@ -14,7 +14,13 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -87,18 +93,66 @@ export default function DashboardPage() {
   ];
 
   const recentTasks = [
-    { id: 1, title: "Irrigate mango field B2", status: "pending", priority: "high", dueDate: "Today" },
-    { id: 2, title: "Apply fertilizer to cashew plot", status: "in_progress", priority: "medium", dueDate: "Tomorrow" },
-    { id: 3, title: "Harvest ripe papayas", status: "pending", priority: "urgent", dueDate: "Today" },
-    { id: 4, title: "Pest inspection - pineapple field", status: "completed", priority: "medium", dueDate: "Yesterday" },
-    { id: 5, title: "Prepare new banana planting area", status: "pending", priority: "low", dueDate: "Next week" },
+    {
+      id: 1,
+      title: "Irrigate mango field B2",
+      status: "pending",
+      priority: "high",
+      dueDate: "Today",
+    },
+    {
+      id: 2,
+      title: "Apply fertilizer to cashew plot",
+      status: "in_progress",
+      priority: "medium",
+      dueDate: "Tomorrow",
+    },
+    {
+      id: 3,
+      title: "Harvest ripe papayas",
+      status: "pending",
+      priority: "urgent",
+      dueDate: "Today",
+    },
+    {
+      id: 4,
+      title: "Pest inspection - pineapple field",
+      status: "completed",
+      priority: "medium",
+      dueDate: "Yesterday",
+    },
+    {
+      id: 5,
+      title: "Prepare new banana planting area",
+      status: "pending",
+      priority: "low",
+      dueDate: "Next week",
+    },
   ];
 
   const cropStatus = [
-    { crop: "Mango", emoji: "🥭", fields: 8, status: "Flowering", progress: 45 },
+    {
+      crop: "Mango",
+      emoji: "🥭",
+      fields: 8,
+      status: "Flowering",
+      progress: 45,
+    },
     { crop: "Cashew", emoji: "🥜", fields: 5, status: "Growing", progress: 30 },
-    { crop: "Pineapple", emoji: "🍍", fields: 4, status: "Fruiting", progress: 75 },
-    { crop: "Banana", emoji: "🍌", fields: 3, status: "Harvesting", progress: 90 },
+    {
+      crop: "Pineapple",
+      emoji: "🍍",
+      fields: 4,
+      status: "Fruiting",
+      progress: 75,
+    },
+    {
+      crop: "Banana",
+      emoji: "🍌",
+      fields: 3,
+      status: "Harvesting",
+      progress: 90,
+    },
     { crop: "Papaya", emoji: "🍈", fields: 2, status: "Growing", progress: 40 },
   ];
 
@@ -128,10 +182,38 @@ export default function DashboardPage() {
   ];
 
   const salesTrendData = [
-    { date: "Week 1", Mango: 2500000, Cashew: 1800000, Pineapple: 1200000, Banana: 900000, Papaya: 600000 },
-    { date: "Week 2", Mango: 2800000, Cashew: 2100000, Pineapple: 1400000, Banana: 1100000, Papaya: 700000 },
-    { date: "Week 3", Mango: 3200000, Cashew: 2300000, Pineapple: 1600000, Banana: 1300000, Papaya: 800000 },
-    { date: "Week 4", Mango: 3500000, Cashew: 2600000, Pineapple: 1800000, Banana: 1500000, Papaya: 900000 },
+    {
+      date: "Week 1",
+      Mango: 2500000,
+      Cashew: 1800000,
+      Pineapple: 1200000,
+      Banana: 900000,
+      Papaya: 600000,
+    },
+    {
+      date: "Week 2",
+      Mango: 2800000,
+      Cashew: 2100000,
+      Pineapple: 1400000,
+      Banana: 1100000,
+      Papaya: 700000,
+    },
+    {
+      date: "Week 3",
+      Mango: 3200000,
+      Cashew: 2300000,
+      Pineapple: 1600000,
+      Banana: 1300000,
+      Papaya: 800000,
+    },
+    {
+      date: "Week 4",
+      Mango: 3500000,
+      Cashew: 2600000,
+      Pineapple: 1800000,
+      Banana: 1500000,
+      Papaya: 900000,
+    },
   ];
 
   const cropTypes = ["Mango", "Cashew", "Pineapple", "Banana", "Papaya"];
@@ -140,7 +222,9 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Welcome */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">{t("dashboard.title")}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">
+          {t("dashboard.title")}
+        </h1>
         <p className="text-muted-foreground">
           {t("dashboard.welcome")}, Admin! {t("dashboard.overview")}
         </p>
@@ -151,13 +235,19 @@ export default function DashboardPage() {
         {stats.map((stat) => (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {stat.title}
+              </CardTitle>
               <stat.icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stat.value}</div>
               <p className="text-xs text-muted-foreground">
-                <span className={stat.trend === "up" ? "text-green-600" : "text-red-600"}>
+                <span
+                  className={
+                    stat.trend === "up" ? "text-green-600" : "text-red-600"
+                  }
+                >
                   {stat.change}
                 </span>{" "}
                 from last month
@@ -172,7 +262,9 @@ export default function DashboardPage() {
         {financialStats.map((stat) => (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {stat.title}
+              </CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -183,10 +275,16 @@ export default function DashboardPage() {
                 ) : (
                   <ArrowDownRight className="mr-1 h-4 w-4 text-red-600" />
                 )}
-                <span className={stat.trend === "up" ? "text-green-600" : "text-red-600"}>
+                <span
+                  className={
+                    stat.trend === "up" ? "text-green-600" : "text-red-600"
+                  }
+                >
                   {stat.change}
                 </span>
-                <span className="ml-1 text-muted-foreground">vs last month</span>
+                <span className="ml-1 text-muted-foreground">
+                  vs last month
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -200,7 +298,9 @@ export default function DashboardPage() {
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle>{t("tasks.title")}</CardTitle>
-              <CardDescription>Recent tasks requiring attention</CardDescription>
+              <CardDescription>
+                Recent tasks requiring attention
+              </CardDescription>
             </div>
             <Button variant="outline" size="sm" asChild>
               <Link href="/en/dashboard/tasks">{t("common.viewAll")}</Link>
@@ -226,8 +326,8 @@ export default function DashboardPage() {
                           task.priority === "urgent"
                             ? "destructive"
                             : task.priority === "high"
-                            ? "warning"
-                            : "secondary"
+                              ? "warning"
+                              : "secondary"
                         }
                       >
                         {task.priority}
@@ -239,14 +339,16 @@ export default function DashboardPage() {
                           task.status === "completed"
                             ? "success"
                             : task.status === "in_progress"
-                            ? "default"
-                            : "outline"
+                              ? "default"
+                              : "outline"
                         }
                       >
                         {task.status.replace("_", " ")}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-muted-foreground">{task.dueDate}</TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {task.dueDate}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -259,10 +361,14 @@ export default function DashboardPage() {
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle>{t("crops.title")}</CardTitle>
-              <CardDescription>Current crop status across all farms</CardDescription>
+              <CardDescription>
+                Current crop status across all farms
+              </CardDescription>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="/en/dashboard/farms/crops">{t("common.viewAll")}</Link>
+              <Link href="/en/dashboard/farms/crops">
+                {t("common.viewAll")}
+              </Link>
             </Button>
           </CardHeader>
           <CardContent>
@@ -303,7 +409,9 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Revenue vs Expenses</CardTitle>
-              <CardDescription>Monthly financial performance (XOF)</CardDescription>
+              <CardDescription>
+                Monthly financial performance (XOF)
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <RevenueChart data={revenueData} />
@@ -314,7 +422,9 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Crop Distribution</CardTitle>
-              <CardDescription>Distribution of crops across all fields</CardDescription>
+              <CardDescription>
+                Distribution of crops across all fields
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <CropDistributionChart data={cropDistributionData} />
@@ -352,25 +462,41 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-            <Button variant="outline" className="h-auto flex-col gap-2 py-4" asChild>
+            <Button
+              variant="outline"
+              className="h-auto flex-col gap-2 py-4"
+              asChild
+            >
               <Link href="/en/dashboard/farms">
                 <MapPin className="h-6 w-6" />
                 <span>{t("farms.addFarm")}</span>
               </Link>
             </Button>
-            <Button variant="outline" className="h-auto flex-col gap-2 py-4" asChild>
+            <Button
+              variant="outline"
+              className="h-auto flex-col gap-2 py-4"
+              asChild
+            >
               <Link href="/en/dashboard/tasks">
                 <ListTodo className="h-6 w-6" />
                 <span>{t("tasks.addTask")}</span>
               </Link>
             </Button>
-            <Button variant="outline" className="h-auto flex-col gap-2 py-4" asChild>
+            <Button
+              variant="outline"
+              className="h-auto flex-col gap-2 py-4"
+              asChild
+            >
               <Link href="/en/dashboard/finance">
                 <DollarSign className="h-6 w-6" />
                 <span>{t("finance.addTransaction")}</span>
               </Link>
             </Button>
-            <Button variant="outline" className="h-auto flex-col gap-2 py-4" asChild>
+            <Button
+              variant="outline"
+              className="h-auto flex-col gap-2 py-4"
+              asChild
+            >
               <Link href="/en/dashboard/agents">
                 <Users className="h-6 w-6" />
                 <span>AI Advisors</span>

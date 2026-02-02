@@ -53,16 +53,28 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
     const updateData: Record<string, unknown> = { updatedAt: new Date() };
 
-    if (validatedData.cropType !== undefined) updateData.cropType = validatedData.cropType;
-    if (validatedData.variety !== undefined) updateData.variety = validatedData.variety;
-    if (validatedData.status !== undefined) updateData.status = validatedData.status;
-    if (validatedData.plantingDate !== undefined) updateData.plantingDate = validatedData.plantingDate;
-    if (validatedData.expectedHarvestDate !== undefined) updateData.expectedHarvestDate = validatedData.expectedHarvestDate;
-    if (validatedData.actualHarvestDate !== undefined) updateData.actualHarvestDate = validatedData.actualHarvestDate;
-    if (validatedData.numberOfPlants !== undefined) updateData.numberOfPlants = validatedData.numberOfPlants;
-    if (validatedData.expectedYieldKg !== undefined) updateData.expectedYieldKg = validatedData.expectedYieldKg?.toString();
-    if (validatedData.actualYieldKg !== undefined) updateData.actualYieldKg = validatedData.actualYieldKg?.toString();
-    if (validatedData.notes !== undefined) updateData.notes = validatedData.notes;
+    if (validatedData.cropType !== undefined)
+      updateData.cropType = validatedData.cropType;
+    if (validatedData.variety !== undefined)
+      updateData.variety = validatedData.variety;
+    if (validatedData.status !== undefined)
+      updateData.status = validatedData.status;
+    if (validatedData.plantingDate !== undefined)
+      updateData.plantingDate = validatedData.plantingDate;
+    if (validatedData.expectedHarvestDate !== undefined)
+      updateData.expectedHarvestDate = validatedData.expectedHarvestDate;
+    if (validatedData.actualHarvestDate !== undefined)
+      updateData.actualHarvestDate = validatedData.actualHarvestDate;
+    if (validatedData.numberOfPlants !== undefined)
+      updateData.numberOfPlants = validatedData.numberOfPlants;
+    if (validatedData.expectedYieldKg !== undefined)
+      updateData.expectedYieldKg = validatedData.expectedYieldKg?.toString();
+    if (validatedData.actualYieldKg !== undefined)
+      updateData.actualYieldKg = validatedData.actualYieldKg?.toString();
+    if (validatedData.notes !== undefined)
+      updateData.notes = validatedData.notes;
+    if (validatedData.imageUrl !== undefined)
+      updateData.imageUrl = validatedData.imageUrl || null;
 
     const [updatedCrop] = await db
       .update(crops)

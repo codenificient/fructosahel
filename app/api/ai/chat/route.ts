@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     if (!agentType || !messages) {
       return NextResponse.json(
         { error: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     if (!agentConfig) {
       return NextResponse.json(
         { error: "Invalid agent type" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -31,7 +31,10 @@ export async function POST(request: NextRequest) {
     if (!process.env.ANTHROPIC_API_KEY) {
       // Return a mock response if no API key
       return NextResponse.json({
-        content: getMockResponse(agentType, messages[messages.length - 1]?.content || ""),
+        content: getMockResponse(
+          agentType,
+          messages[messages.length - 1]?.content || "",
+        ),
       });
     }
 
@@ -46,7 +49,7 @@ export async function POST(request: NextRequest) {
     console.error("AI Chat Error:", error);
     return NextResponse.json(
       { error: "Failed to process chat request" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -158,7 +161,11 @@ What specific marketing challenge can I help you with today?`;
   }
 
   if (agentType === "finance") {
-    if (lowerMessage.includes("cost") || lowerMessage.includes("invest") || lowerMessage.includes("cout")) {
+    if (
+      lowerMessage.includes("cost") ||
+      lowerMessage.includes("invest") ||
+      lowerMessage.includes("cout")
+    ) {
       return `**Farm Investment Analysis**
 
 Here's a rough cost breakdown for establishing 1 hectare of fruit farm in the Sahel:

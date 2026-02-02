@@ -31,7 +31,8 @@ export function CalendarDay({
   // Check if any tasks are overdue
   const hasOverdueTasks = dayTasks.some((task) => {
     if (!task.dueDate) return false;
-    if (task.status === "completed" || task.status === "cancelled") return false;
+    if (task.status === "completed" || task.status === "cancelled")
+      return false;
     return new Date(task.dueDate) < new Date();
   });
 
@@ -46,20 +47,18 @@ export function CalendarDay({
         isCurrentMonth && "bg-background",
         isToday && "border-primary border-2 bg-primary/5",
         isSelected && "ring-2 ring-primary ring-offset-2",
-        hasOverdueTasks && "border-red-500 bg-red-50 dark:bg-red-950/20"
+        hasOverdueTasks && "border-red-500 bg-red-50 dark:bg-red-950/20",
       )}
     >
       {/* Date number */}
       <div
         className={cn(
           "mb-1 flex items-center justify-between",
-          isToday && "font-bold text-primary"
+          isToday && "font-bold text-primary",
         )}
       >
         <span className="text-sm">{date.getDate()}</span>
-        {isToday && (
-          <div className="h-2 w-2 rounded-full bg-primary" />
-        )}
+        {isToday && <div className="h-2 w-2 rounded-full bg-primary" />}
       </div>
 
       {/* Task count badge */}

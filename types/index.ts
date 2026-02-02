@@ -48,7 +48,13 @@ export type NewGrowingGuide = typeof growingGuides.$inferInsert;
 
 // Enum types
 export type Country = "burkina_faso" | "mali" | "niger";
-export type CropType = "pineapple" | "cashew" | "avocado" | "mango" | "banana" | "papaya";
+export type CropType =
+  | "pineapple"
+  | "cashew"
+  | "avocado"
+  | "mango"
+  | "banana"
+  | "papaya";
 export type CropStatus =
   | "planning"
   | "planted"

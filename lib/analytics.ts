@@ -6,7 +6,7 @@ import type {
   FarmEvent,
   CropEvent,
   CustomEvent,
-} from '@/types/analytics';
+} from "@/types/analytics";
 
 /**
  * Analytics Wrapper Class
@@ -22,17 +22,17 @@ class Analytics {
   constructor() {
     // Initialize configuration from environment variables
     this.config = {
-      apiKey: process.env.NEXT_PUBLIC_ANALYTICS_API_KEY || '',
-      endpoint: process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT || '',
-      enabled: process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === 'true',
-      debug: process.env.NODE_ENV === 'development',
+      apiKey: process.env.NEXT_PUBLIC_ANALYTICS_API_KEY || "",
+      endpoint: process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT || "",
+      enabled: process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true",
+      debug: process.env.NODE_ENV === "development",
     };
 
     // Generate a session ID
     this.sessionId = this.generateSessionId();
 
     if (this.config.debug) {
-      console.log('[Analytics] Initialized with config:', {
+      console.log("[Analytics] Initialized with config:", {
         enabled: this.config.enabled,
         endpoint: this.config.endpoint,
         sessionId: this.sessionId,
@@ -44,14 +44,14 @@ class Analytics {
    * Generate a unique session ID
    */
   private generateSessionId(): string {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // Check for existing session ID in sessionStorage
-      const existing = sessionStorage.getItem('analytics_session_id');
+      const existing = sessionStorage.getItem("analytics_session_id");
       if (existing) return existing;
 
       // Generate new session ID
       const sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
-      sessionStorage.setItem('analytics_session_id', sessionId);
+      sessionStorage.setItem("analytics_session_id", sessionId);
       return sessionId;
     }
     return `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
@@ -61,8 +61,8 @@ class Analytics {
    * Get current user ID (if available)
    */
   private getUserId(): string | undefined {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('analytics_user_id') || undefined;
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("analytics_user_id") || undefined;
     }
     return undefined;
   }
@@ -71,11 +71,11 @@ class Analytics {
    * Set user ID for tracking
    */
   setUserId(userId: string | null): void {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       if (userId) {
-        localStorage.setItem('analytics_user_id', userId);
+        localStorage.setItem("analytics_user_id", userId);
       } else {
-        localStorage.removeItem('analytics_user_id');
+        localStorage.removeItem("analytics_user_id");
       }
     }
   }
@@ -84,10 +84,10 @@ class Analytics {
    * Get current locale from URL
    */
   private getLocale(): string | undefined {
-    if (typeof window !== 'undefined') {
-      const pathParts = window.location.pathname.split('/');
+    if (typeof window !== "undefined") {
+      const pathParts = window.location.pathname.split("/");
       const locale = pathParts[1];
-      return ['en', 'fr'].includes(locale) ? locale : undefined;
+      return ["en", "fr"].includes(locale) ? locale : undefined;
     }
     return undefined;
   }
@@ -99,7 +99,7 @@ class Analytics {
     // Don't track if analytics is disabled
     if (!this.config.enabled) {
       if (this.config.debug) {
-        console.log('[Analytics] Tracking disabled, event not sent:', event);
+        console.log("[Analytics] Tracking disabled, event not sent:", event);
       }
       return;
     }
@@ -114,7 +114,7 @@ class Analytics {
     };
 
     if (this.config.debug) {
-      console.log('[Analytics] Tracking event:', enrichedEvent);
+      console.log("[Analytics] Tracking event:", enrichedEvent);
     }
 
     // Add to queue and process
@@ -138,10 +138,10 @@ class Analytics {
 
       try {
         // Send to our API route which proxies to the analytics endpoint
-        const response = await fetch('/api/analytics/track', {
-          method: 'POST',
+        const response = await fetch("/api/analytics/track", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(event),
           // Use keepalive to ensure tracking completes even if user navigates away
@@ -149,12 +149,15 @@ class Analytics {
         });
 
         if (!response.ok && this.config.debug) {
-          console.warn('[Analytics] Failed to track event:', await response.text());
+          console.warn(
+            "[Analytics] Failed to track event:",
+            await response.text(),
+          );
         }
       } catch (error) {
         // Fail silently - don't disrupt user experience
         if (this.config.debug) {
-          console.error('[Analytics] Error tracking event:', error);
+          console.error("[Analytics] Error tracking event:", error);
         }
       }
     }
@@ -168,8 +171,9 @@ class Analytics {
   pageView(path: string, title?: string): void {
     const event: PageViewEvent = {
       path,
-      title: title || (typeof document !== 'undefined' ? document.title : undefined),
-      referrer: typeof document !== 'undefined' ? document.referrer : undefined,
+      title:
+        title || (typeof document !== "undefined" ? document.title : undefined),
+      referrer: typeof document !== "undefined" ? document.referrer : undefined,
     };
 
     this.track(event);
@@ -179,16 +183,16 @@ class Analytics {
    * Track an authentication action
    */
   authAction(
-    action: AuthEvent['action'],
+    action: AuthEvent["action"],
     options?: {
-      method?: AuthEvent['method'];
+      method?: AuthEvent["method"];
       success?: boolean;
       errorMessage?: string;
-    }
+    },
   ): void {
     const event: AuthEvent = {
       action,
-      method: options?.method || 'email',
+      method: options?.method || "email",
       success: options?.success ?? true,
       errorMessage: options?.errorMessage,
     };
@@ -200,13 +204,13 @@ class Analytics {
    * Track a farm management action
    */
   farmAction(
-    action: FarmEvent['action'],
+    action: FarmEvent["action"],
     options?: {
       farmId?: string;
       farmSize?: number;
       location?: string;
       cropTypes?: string[];
-    }
+    },
   ): void {
     const event: FarmEvent = {
       action,
@@ -220,15 +224,15 @@ class Analytics {
    * Track a crop management action
    */
   cropAction(
-    action: CropEvent['action'],
+    action: CropEvent["action"],
     options?: {
       cropId?: string;
-      cropType?: CropEvent['cropType'];
+      cropType?: CropEvent["cropType"];
       plantingDate?: string;
       expectedHarvestDate?: string;
-      healthStatus?: CropEvent['healthStatus'];
+      healthStatus?: CropEvent["healthStatus"];
       quantity?: number;
-    }
+    },
   ): void {
     const event: CropEvent = {
       action,
@@ -248,7 +252,7 @@ class Analytics {
       label?: string;
       value?: number;
       [key: string]: unknown;
-    }
+    },
   ): void {
     const event: CustomEvent = {
       eventName,

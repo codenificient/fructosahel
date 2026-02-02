@@ -2,9 +2,25 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Plus, MoreHorizontal, Edit, Trash2, Mail, Phone, User as UserIcon, AlertCircle, RefreshCw } from "lucide-react";
+import {
+  Plus,
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  Mail,
+  Phone,
+  User as UserIcon,
+  AlertCircle,
+  RefreshCw,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -42,10 +58,21 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useUsers, useCreateUser, useUpdateUser, useDeleteUser } from "@/lib/hooks";
+import {
+  useUsers,
+  useCreateUser,
+  useUpdateUser,
+  useDeleteUser,
+} from "@/lib/hooks";
 import { useToastContext } from "@/components/toast-provider";
 import type { User, NewUser, UserRole } from "@/types";
 
@@ -95,7 +122,10 @@ export default function TeamPage() {
     avatarUrl: "",
   });
 
-  const roleColors: Record<UserRole, "default" | "secondary" | "destructive" | "outline"> = {
+  const roleColors: Record<
+    UserRole,
+    "default" | "secondary" | "destructive" | "outline"
+  > = {
     admin: "default",
     manager: "secondary",
     worker: "outline",
@@ -147,7 +177,8 @@ export default function TeamPage() {
       toast({
         variant: "error",
         title: "Error",
-        description: err instanceof Error ? err.message : "Failed to create team member",
+        description:
+          err instanceof Error ? err.message : "Failed to create team member",
       });
     }
   };
@@ -180,7 +211,8 @@ export default function TeamPage() {
       toast({
         variant: "error",
         title: "Error",
-        description: err instanceof Error ? err.message : "Failed to update team member",
+        description:
+          err instanceof Error ? err.message : "Failed to update team member",
       });
     }
   };
@@ -196,7 +228,8 @@ export default function TeamPage() {
       toast({
         variant: "error",
         title: "Error",
-        description: err instanceof Error ? err.message : "Failed to delete team member",
+        description:
+          err instanceof Error ? err.message : "Failed to delete team member",
       });
     }
   };
@@ -278,8 +311,12 @@ export default function TeamPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t("team.title")}</h1>
-            <p className="text-muted-foreground">Manage your team members and their roles</p>
+            <h1 className="text-3xl font-bold tracking-tight">
+              {t("team.title")}
+            </h1>
+            <p className="text-muted-foreground">
+              Manage your team members and their roles
+            </p>
           </div>
         </div>
 
@@ -308,8 +345,12 @@ export default function TeamPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{t("team.title")}</h1>
-          <p className="text-muted-foreground">Manage your team members and their roles</p>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {t("team.title")}
+          </h1>
+          <p className="text-muted-foreground">
+            Manage your team members and their roles
+          </p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
@@ -321,7 +362,9 @@ export default function TeamPage() {
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
               <DialogTitle>{t("team.addMember")}</DialogTitle>
-              <DialogDescription>Add a new team member to your organization</DialogDescription>
+              <DialogDescription>
+                Add a new team member to your organization
+              </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
@@ -330,7 +373,9 @@ export default function TeamPage() {
                   id="name"
                   placeholder="Enter full name"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -340,7 +385,9 @@ export default function TeamPage() {
                   type="email"
                   placeholder="email@example.com"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -349,23 +396,35 @@ export default function TeamPage() {
                   id="phone"
                   placeholder="+226 XX XX XX XX"
                   value={formData.phone || ""}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="role">Role</Label>
                 <Select
                   value={formData.role}
-                  onValueChange={(value) => setFormData({ ...formData, role: value as UserRole })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, role: value as UserRole })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="admin">{t("team.roles.admin")}</SelectItem>
-                    <SelectItem value="manager">{t("team.roles.manager")}</SelectItem>
-                    <SelectItem value="worker">{t("team.roles.worker")}</SelectItem>
-                    <SelectItem value="viewer">{t("team.roles.viewer")}</SelectItem>
+                    <SelectItem value="admin">
+                      {t("team.roles.admin")}
+                    </SelectItem>
+                    <SelectItem value="manager">
+                      {t("team.roles.manager")}
+                    </SelectItem>
+                    <SelectItem value="worker">
+                      {t("team.roles.worker")}
+                    </SelectItem>
+                    <SelectItem value="viewer">
+                      {t("team.roles.viewer")}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -373,7 +432,9 @@ export default function TeamPage() {
                 <Label htmlFor="language">Language</Label>
                 <Select
                   value={formData.language}
-                  onValueChange={(value) => setFormData({ ...formData, language: value as "en" | "fr" })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, language: value as "en" | "fr" })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select language" />
@@ -399,7 +460,9 @@ export default function TeamPage() {
               <Button
                 type="submit"
                 onClick={handleAddMember}
-                disabled={createUser.isLoading || !formData.name || !formData.email}
+                disabled={
+                  createUser.isLoading || !formData.name || !formData.email
+                }
               >
                 {createUser.isLoading ? "Adding..." : t("common.save")}
               </Button>
@@ -419,7 +482,9 @@ export default function TeamPage() {
         <Label htmlFor="role-filter">Filter by role:</Label>
         <Select
           value={roleFilter || "all"}
-          onValueChange={(value) => setRoleFilter(value === "all" ? undefined : value as UserRole)}
+          onValueChange={(value) =>
+            setRoleFilter(value === "all" ? undefined : (value as UserRole))
+          }
         >
           <SelectTrigger className="w-[200px]">
             <SelectValue placeholder="All roles" />
@@ -505,11 +570,15 @@ export default function TeamPage() {
                       <div className="flex items-center gap-3">
                         <Avatar>
                           <AvatarImage src={member.avatarUrl || undefined} />
-                          <AvatarFallback>{getInitials(member.name)}</AvatarFallback>
+                          <AvatarFallback>
+                            {getInitials(member.name)}
+                          </AvatarFallback>
                         </Avatar>
                         <div>
                           <div className="font-medium">{member.name}</div>
-                          <div className="text-sm text-muted-foreground">{member.email}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {member.email}
+                          </div>
                         </div>
                       </div>
                     </TableCell>
@@ -529,7 +598,9 @@ export default function TeamPage() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{member.language === "en" ? "English" : "Français"}</span>
+                      <span className="text-sm">
+                        {member.language === "en" ? "English" : "Français"}
+                      </span>
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -540,12 +611,16 @@ export default function TeamPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem
-                            onClick={() => window.open(`mailto:${member.email}`, "_blank")}
+                            onClick={() =>
+                              window.open(`mailto:${member.email}`, "_blank")
+                            }
                           >
                             <Mail className="mr-2 h-4 w-4" />
                             Send Email
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => openEditDialog(member)}>
+                          <DropdownMenuItem
+                            onClick={() => openEditDialog(member)}
+                          >
                             <Edit className="mr-2 h-4 w-4" />
                             {t("common.edit")}
                           </DropdownMenuItem>
@@ -586,7 +661,9 @@ export default function TeamPage() {
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Edit Team Member</DialogTitle>
-            <DialogDescription>Update team member information</DialogDescription>
+            <DialogDescription>
+              Update team member information
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
@@ -595,7 +672,9 @@ export default function TeamPage() {
                 id="edit-name"
                 placeholder="Enter full name"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
               />
             </div>
             <div className="grid gap-2">
@@ -608,7 +687,9 @@ export default function TeamPage() {
                 disabled
                 className="opacity-50 cursor-not-allowed"
               />
-              <p className="text-xs text-muted-foreground">Email cannot be changed</p>
+              <p className="text-xs text-muted-foreground">
+                Email cannot be changed
+              </p>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="edit-phone">Phone</Label>
@@ -616,23 +697,33 @@ export default function TeamPage() {
                 id="edit-phone"
                 placeholder="+226 XX XX XX XX"
                 value={formData.phone || ""}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
               />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="edit-role">Role</Label>
               <Select
                 value={formData.role}
-                onValueChange={(value) => setFormData({ ...formData, role: value as UserRole })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, role: value as UserRole })
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select role" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="admin">{t("team.roles.admin")}</SelectItem>
-                  <SelectItem value="manager">{t("team.roles.manager")}</SelectItem>
-                  <SelectItem value="worker">{t("team.roles.worker")}</SelectItem>
-                  <SelectItem value="viewer">{t("team.roles.viewer")}</SelectItem>
+                  <SelectItem value="manager">
+                    {t("team.roles.manager")}
+                  </SelectItem>
+                  <SelectItem value="worker">
+                    {t("team.roles.worker")}
+                  </SelectItem>
+                  <SelectItem value="viewer">
+                    {t("team.roles.viewer")}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -640,7 +731,9 @@ export default function TeamPage() {
               <Label htmlFor="edit-language">Language</Label>
               <Select
                 value={formData.language}
-                onValueChange={(value) => setFormData({ ...formData, language: value as "en" | "fr" })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, language: value as "en" | "fr" })
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select language" />
@@ -682,12 +775,16 @@ export default function TeamPage() {
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete {selectedUser?.name} from your team. This action cannot be undone.
+              This will permanently delete {selectedUser?.name} from your team.
+              This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

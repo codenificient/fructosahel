@@ -3,7 +3,13 @@
 import { useTranslations } from "next-intl";
 import { Plus, Users, Shield, User, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -24,7 +30,10 @@ const roleLabels: Record<UserRole, string> = {
   viewer: "Viewer",
 };
 
-const roleColors: Record<UserRole, "default" | "secondary" | "destructive" | "outline"> = {
+const roleColors: Record<
+  UserRole,
+  "default" | "secondary" | "destructive" | "outline"
+> = {
   admin: "destructive",
   manager: "default",
   worker: "secondary",
@@ -42,14 +51,18 @@ export default function DemoTeamPage() {
   const t = useTranslations();
 
   const roleStats = {
-    admin: demoUsers.filter(u => u.role === "admin").length,
-    manager: demoUsers.filter(u => u.role === "manager").length,
-    worker: demoUsers.filter(u => u.role === "worker").length,
-    viewer: demoUsers.filter(u => u.role === "viewer").length,
+    admin: demoUsers.filter((u) => u.role === "admin").length,
+    manager: demoUsers.filter((u) => u.role === "manager").length,
+    worker: demoUsers.filter((u) => u.role === "worker").length,
+    viewer: demoUsers.filter((u) => u.role === "viewer").length,
   };
 
   const getInitials = (name: string) => {
-    return name.split(" ").map(n => n[0]).join("").toUpperCase();
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
   };
 
   return (
@@ -72,7 +85,8 @@ export default function DemoTeamPage() {
       {/* Demo Banner */}
       <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
         <p className="text-sm text-amber-800 dark:text-amber-200">
-          This is a demo page with sample data. Sign in to manage your real team.
+          This is a demo page with sample data. Sign in to manage your real
+          team.
         </p>
       </div>
 
@@ -129,7 +143,8 @@ export default function DemoTeamPage() {
         <CardHeader>
           <CardTitle>Team Members</CardTitle>
           <CardDescription>
-            All team members across your organization ({demoUsers.length} members)
+            All team members across your organization ({demoUsers.length}{" "}
+            members)
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -151,7 +166,9 @@ export default function DemoTeamPage() {
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9">
-                          <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+                          <AvatarFallback>
+                            {getInitials(user.name)}
+                          </AvatarFallback>
                         </Avatar>
                         <div>
                           <div className="font-medium">{user.name}</div>
@@ -161,7 +178,10 @@ export default function DemoTeamPage() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.phone || "-"}</TableCell>
                     <TableCell>
-                      <Badge variant={roleColors[user.role]} className="flex w-fit items-center gap-1">
+                      <Badge
+                        variant={roleColors[user.role]}
+                        className="flex w-fit items-center gap-1"
+                      >
                         <RoleIcon className="h-3 w-3" />
                         {roleLabels[user.role]}
                       </Badge>

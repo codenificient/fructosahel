@@ -12,32 +12,112 @@ interface PageProps {
 }
 
 // Crop data with detailed growing information
-const cropData: Record<string, {
-  emoji: string;
-  nameEn: string;
-  nameFr: string;
-  descriptionEn: string;
-  descriptionFr: string;
-  growingSchedule: { month: string; tasksEn: string[]; tasksFr: string[] }[];
-  waterNeeds: { titleEn: string; titleFr: string; detailsEn: string[]; detailsFr: string[] };
-  fertilizer: { titleEn: string; titleFr: string; detailsEn: string[]; detailsFr: string[] };
-  pestControl: { titleEn: string; titleFr: string; pestsEn: string[]; pestsFr: string[]; solutionsEn: string[]; solutionsFr: string[] };
-  harvesting: { titleEn: string; titleFr: string; tipsEn: string[]; tipsFr: string[] };
-  sahelTips: { titleEn: string; titleFr: string; tipsEn: string[]; tipsFr: string[] };
-}> = {
+const cropData: Record<
+  string,
+  {
+    emoji: string;
+    nameEn: string;
+    nameFr: string;
+    descriptionEn: string;
+    descriptionFr: string;
+    growingSchedule: { month: string; tasksEn: string[]; tasksFr: string[] }[];
+    waterNeeds: {
+      titleEn: string;
+      titleFr: string;
+      detailsEn: string[];
+      detailsFr: string[];
+    };
+    fertilizer: {
+      titleEn: string;
+      titleFr: string;
+      detailsEn: string[];
+      detailsFr: string[];
+    };
+    pestControl: {
+      titleEn: string;
+      titleFr: string;
+      pestsEn: string[];
+      pestsFr: string[];
+      solutionsEn: string[];
+      solutionsFr: string[];
+    };
+    harvesting: {
+      titleEn: string;
+      titleFr: string;
+      tipsEn: string[];
+      tipsFr: string[];
+    };
+    sahelTips: {
+      titleEn: string;
+      titleFr: string;
+      tipsEn: string[];
+      tipsFr: string[];
+    };
+  }
+> = {
   pineapple: {
     emoji: "🍍",
     nameEn: "Pineapple",
     nameFr: "Ananas",
-    descriptionEn: "Pineapple (Ananas comosus) is a tropical fruit that can be successfully grown in the Sahel region with proper irrigation. It's a hardy plant that can tolerate some drought but produces best with consistent moisture.",
-    descriptionFr: "L'ananas (Ananas comosus) est un fruit tropical qui peut etre cultive avec succes dans la region du Sahel avec une irrigation appropriee. C'est une plante resistante qui peut tolerer une certaine secheresse mais produit mieux avec une humidite constante.",
+    descriptionEn:
+      "Pineapple (Ananas comosus) is a tropical fruit that can be successfully grown in the Sahel region with proper irrigation. It's a hardy plant that can tolerate some drought but produces best with consistent moisture.",
+    descriptionFr:
+      "L'ananas (Ananas comosus) est un fruit tropical qui peut etre cultive avec succes dans la region du Sahel avec une irrigation appropriee. C'est une plante resistante qui peut tolerer une certaine secheresse mais produit mieux avec une humidite constante.",
     growingSchedule: [
-      { month: "Jan-Feb", tasksEn: ["Prepare planting beds", "Apply organic matter"], tasksFr: ["Preparer les plates-bandes", "Appliquer la matiere organique"] },
-      { month: "Mar-Apr", tasksEn: ["Plant suckers/crowns", "Set up drip irrigation"], tasksFr: ["Planter les rejets/couronnes", "Installer l'irrigation goutte a goutte"] },
-      { month: "May-Jun", tasksEn: ["Monitor growth", "Weed control", "First fertilizer application"], tasksFr: ["Surveiller la croissance", "Desherbage", "Premiere application d'engrais"] },
-      { month: "Jul-Aug", tasksEn: ["Rainy season care", "Disease monitoring", "Mulching"], tasksFr: ["Soins saison des pluies", "Surveillance des maladies", "Paillage"] },
-      { month: "Sep-Oct", tasksEn: ["Flower induction preparation", "Second fertilizer"], tasksFr: ["Preparation induction florale", "Deuxieme engrais"] },
-      { month: "Nov-Dec", tasksEn: ["Ethylene treatment for flowering", "Fruit development monitoring"], tasksFr: ["Traitement ethylene pour floraison", "Suivi developpement fruit"] },
+      {
+        month: "Jan-Feb",
+        tasksEn: ["Prepare planting beds", "Apply organic matter"],
+        tasksFr: [
+          "Preparer les plates-bandes",
+          "Appliquer la matiere organique",
+        ],
+      },
+      {
+        month: "Mar-Apr",
+        tasksEn: ["Plant suckers/crowns", "Set up drip irrigation"],
+        tasksFr: [
+          "Planter les rejets/couronnes",
+          "Installer l'irrigation goutte a goutte",
+        ],
+      },
+      {
+        month: "May-Jun",
+        tasksEn: [
+          "Monitor growth",
+          "Weed control",
+          "First fertilizer application",
+        ],
+        tasksFr: [
+          "Surveiller la croissance",
+          "Desherbage",
+          "Premiere application d'engrais",
+        ],
+      },
+      {
+        month: "Jul-Aug",
+        tasksEn: ["Rainy season care", "Disease monitoring", "Mulching"],
+        tasksFr: [
+          "Soins saison des pluies",
+          "Surveillance des maladies",
+          "Paillage",
+        ],
+      },
+      {
+        month: "Sep-Oct",
+        tasksEn: ["Flower induction preparation", "Second fertilizer"],
+        tasksFr: ["Preparation induction florale", "Deuxieme engrais"],
+      },
+      {
+        month: "Nov-Dec",
+        tasksEn: [
+          "Ethylene treatment for flowering",
+          "Fruit development monitoring",
+        ],
+        tasksFr: [
+          "Traitement ethylene pour floraison",
+          "Suivi developpement fruit",
+        ],
+      },
     ],
     waterNeeds: {
       titleEn: "Water Requirements",
@@ -79,7 +159,12 @@ const cropData: Record<string, {
       titleEn: "Pest Control",
       titleFr: "Lutte Antiparasitaire",
       pestsEn: ["Mealybugs", "Pineapple scale", "Nematodes", "Fruit flies"],
-      pestsFr: ["Cochenilles", "Cochenille de l'ananas", "Nematodes", "Mouches des fruits"],
+      pestsFr: [
+        "Cochenilles",
+        "Cochenille de l'ananas",
+        "Nematodes",
+        "Mouches des fruits",
+      ],
       solutionsEn: [
         "Neem oil spray for mealybugs",
         "Crop rotation to reduce nematodes",
@@ -136,15 +221,48 @@ const cropData: Record<string, {
     emoji: "🥜",
     nameEn: "Cashew",
     nameFr: "Noix de Cajou",
-    descriptionEn: "Cashew (Anacardium occidentale) is one of the most important cash crops in the Sahel. The tree is well-adapted to hot, dry conditions and can produce for 25+ years with proper care.",
-    descriptionFr: "L'anacardier (Anacardium occidentale) est l'une des cultures de rente les plus importantes du Sahel. L'arbre est bien adapte aux conditions chaudes et seches et peut produire pendant plus de 25 ans avec des soins appropries.",
+    descriptionEn:
+      "Cashew (Anacardium occidentale) is one of the most important cash crops in the Sahel. The tree is well-adapted to hot, dry conditions and can produce for 25+ years with proper care.",
+    descriptionFr:
+      "L'anacardier (Anacardium occidentale) est l'une des cultures de rente les plus importantes du Sahel. L'arbre est bien adapte aux conditions chaudes et seches et peut produire pendant plus de 25 ans avec des soins appropries.",
     growingSchedule: [
-      { month: "Jan-Feb", tasksEn: ["Pruning after harvest", "Clean orchard floor"], tasksFr: ["Taille apres recolte", "Nettoyer le sol du verger"] },
-      { month: "Mar-Apr", tasksEn: ["Flowering period", "Pest monitoring", "Light irrigation"], tasksFr: ["Periode de floraison", "Surveillance des ravageurs", "Irrigation legere"] },
-      { month: "May-Jun", tasksEn: ["Fruit development", "Apply NPK fertilizer"], tasksFr: ["Developpement du fruit", "Appliquer engrais NPK"] },
-      { month: "Jul-Aug", tasksEn: ["Protect from excess rain", "Weed control"], tasksFr: ["Proteger de l'exces de pluie", "Desherbage"] },
-      { month: "Sep-Oct", tasksEn: ["Prepare for harvest", "Check drying facilities"], tasksFr: ["Preparer la recolte", "Verifier les installations de sechage"] },
-      { month: "Nov-Dec", tasksEn: ["Harvest nuts", "Processing and storage"], tasksFr: ["Recolter les noix", "Transformation et stockage"] },
+      {
+        month: "Jan-Feb",
+        tasksEn: ["Pruning after harvest", "Clean orchard floor"],
+        tasksFr: ["Taille apres recolte", "Nettoyer le sol du verger"],
+      },
+      {
+        month: "Mar-Apr",
+        tasksEn: ["Flowering period", "Pest monitoring", "Light irrigation"],
+        tasksFr: [
+          "Periode de floraison",
+          "Surveillance des ravageurs",
+          "Irrigation legere",
+        ],
+      },
+      {
+        month: "May-Jun",
+        tasksEn: ["Fruit development", "Apply NPK fertilizer"],
+        tasksFr: ["Developpement du fruit", "Appliquer engrais NPK"],
+      },
+      {
+        month: "Jul-Aug",
+        tasksEn: ["Protect from excess rain", "Weed control"],
+        tasksFr: ["Proteger de l'exces de pluie", "Desherbage"],
+      },
+      {
+        month: "Sep-Oct",
+        tasksEn: ["Prepare for harvest", "Check drying facilities"],
+        tasksFr: [
+          "Preparer la recolte",
+          "Verifier les installations de sechage",
+        ],
+      },
+      {
+        month: "Nov-Dec",
+        tasksEn: ["Harvest nuts", "Processing and storage"],
+        tasksFr: ["Recolter les noix", "Transformation et stockage"],
+      },
     ],
     waterNeeds: {
       titleEn: "Water Requirements",
@@ -185,8 +303,18 @@ const cropData: Record<string, {
     pestControl: {
       titleEn: "Pest Control",
       titleFr: "Lutte Antiparasitaire",
-      pestsEn: ["Tea mosquito bug", "Stem borers", "Leaf miners", "Anthracnose"],
-      pestsFr: ["Punaise moustique du the", "Foreurs de tiges", "Mineuses de feuilles", "Anthracnose"],
+      pestsEn: [
+        "Tea mosquito bug",
+        "Stem borers",
+        "Leaf miners",
+        "Anthracnose",
+      ],
+      pestsFr: [
+        "Punaise moustique du the",
+        "Foreurs de tiges",
+        "Mineuses de feuilles",
+        "Anthracnose",
+      ],
       solutionsEn: [
         "Spray neem-based insecticides for tea mosquito",
         "Prune and burn infested branches",
@@ -243,15 +371,52 @@ const cropData: Record<string, {
     emoji: "🥭",
     nameEn: "Mango",
     nameFr: "Mangue",
-    descriptionEn: "Mango (Mangifera indica) is a major fruit crop in the Sahel, particularly suited to the hot climate. With over 100 varieties, it's important to select those adapted to local conditions.",
-    descriptionFr: "La mangue (Mangifera indica) est une culture fruitiere majeure au Sahel, particulierement adaptee au climat chaud. Avec plus de 100 varietes, il est important de choisir celles adaptees aux conditions locales.",
+    descriptionEn:
+      "Mango (Mangifera indica) is a major fruit crop in the Sahel, particularly suited to the hot climate. With over 100 varieties, it's important to select those adapted to local conditions.",
+    descriptionFr:
+      "La mangue (Mangifera indica) est une culture fruitiere majeure au Sahel, particulierement adaptee au climat chaud. Avec plus de 100 varietes, il est important de choisir celles adaptees aux conditions locales.",
     growingSchedule: [
-      { month: "Jan-Feb", tasksEn: ["Flowering season", "Pest monitoring", "Avoid irrigation"], tasksFr: ["Saison de floraison", "Surveillance des ravageurs", "Eviter l'irrigation"] },
-      { month: "Mar-Apr", tasksEn: ["Fruit set", "Thinning if needed", "Light watering"], tasksFr: ["Nouaison", "Eclaircissage si necessaire", "Arrosage leger"] },
-      { month: "May-Jun", tasksEn: ["Harvest early varieties", "Fruit fly control"], tasksFr: ["Recolter varietes precoces", "Lutte contre mouches des fruits"] },
-      { month: "Jul-Aug", tasksEn: ["Rainy season", "Post-harvest pruning", "Apply fertilizer"], tasksFr: ["Saison des pluies", "Taille post-recolte", "Appliquer engrais"] },
-      { month: "Sep-Oct", tasksEn: ["New growth management", "Disease prevention"], tasksFr: ["Gestion nouvelle croissance", "Prevention maladies"] },
-      { month: "Nov-Dec", tasksEn: ["Reduce irrigation", "Prepare for flowering"], tasksFr: ["Reduire irrigation", "Preparer floraison"] },
+      {
+        month: "Jan-Feb",
+        tasksEn: ["Flowering season", "Pest monitoring", "Avoid irrigation"],
+        tasksFr: [
+          "Saison de floraison",
+          "Surveillance des ravageurs",
+          "Eviter l'irrigation",
+        ],
+      },
+      {
+        month: "Mar-Apr",
+        tasksEn: ["Fruit set", "Thinning if needed", "Light watering"],
+        tasksFr: ["Nouaison", "Eclaircissage si necessaire", "Arrosage leger"],
+      },
+      {
+        month: "May-Jun",
+        tasksEn: ["Harvest early varieties", "Fruit fly control"],
+        tasksFr: [
+          "Recolter varietes precoces",
+          "Lutte contre mouches des fruits",
+        ],
+      },
+      {
+        month: "Jul-Aug",
+        tasksEn: ["Rainy season", "Post-harvest pruning", "Apply fertilizer"],
+        tasksFr: [
+          "Saison des pluies",
+          "Taille post-recolte",
+          "Appliquer engrais",
+        ],
+      },
+      {
+        month: "Sep-Oct",
+        tasksEn: ["New growth management", "Disease prevention"],
+        tasksFr: ["Gestion nouvelle croissance", "Prevention maladies"],
+      },
+      {
+        month: "Nov-Dec",
+        tasksEn: ["Reduce irrigation", "Prepare for flowering"],
+        tasksFr: ["Reduire irrigation", "Preparer floraison"],
+      },
     ],
     waterNeeds: {
       titleEn: "Water Requirements",
@@ -292,8 +457,18 @@ const cropData: Record<string, {
     pestControl: {
       titleEn: "Pest Control",
       titleFr: "Lutte Antiparasitaire",
-      pestsEn: ["Fruit flies", "Mango mealybug", "Anthracnose", "Powdery mildew"],
-      pestsFr: ["Mouches des fruits", "Cochenille du manguier", "Anthracnose", "Oidium"],
+      pestsEn: [
+        "Fruit flies",
+        "Mango mealybug",
+        "Anthracnose",
+        "Powdery mildew",
+      ],
+      pestsFr: [
+        "Mouches des fruits",
+        "Cochenille du manguier",
+        "Anthracnose",
+        "Oidium",
+      ],
       solutionsEn: [
         "Fruit fly traps and protein baits",
         "Hot water treatment for harvested fruit",
@@ -350,15 +525,53 @@ const cropData: Record<string, {
     emoji: "🥑",
     nameEn: "Avocado",
     nameFr: "Avocat",
-    descriptionEn: "Avocado (Persea americana) requires more water than other Sahel crops but can be grown successfully with irrigation in suitable microclimates, particularly near rivers or with reliable water sources.",
-    descriptionFr: "L'avocat (Persea americana) necessite plus d'eau que les autres cultures du Sahel mais peut etre cultive avec succes avec irrigation dans des microclimats appropries, particulierement pres des rivieres ou avec des sources d'eau fiables.",
+    descriptionEn:
+      "Avocado (Persea americana) requires more water than other Sahel crops but can be grown successfully with irrigation in suitable microclimates, particularly near rivers or with reliable water sources.",
+    descriptionFr:
+      "L'avocat (Persea americana) necessite plus d'eau que les autres cultures du Sahel mais peut etre cultive avec succes avec irrigation dans des microclimats appropries, particulierement pres des rivieres ou avec des sources d'eau fiables.",
     growingSchedule: [
-      { month: "Jan-Feb", tasksEn: ["Flowering begins", "Regular irrigation", "Bee activity important"], tasksFr: ["Debut floraison", "Irrigation reguliere", "Activite des abeilles importante"] },
-      { month: "Mar-Apr", tasksEn: ["Fruit set", "Maintain consistent moisture"], tasksFr: ["Nouaison", "Maintenir humidite constante"] },
-      { month: "May-Jun", tasksEn: ["Fruit development", "Apply potassium fertilizer"], tasksFr: ["Developpement fruit", "Appliquer engrais potassique"] },
-      { month: "Jul-Aug", tasksEn: ["Rainy season", "Monitor for root rot", "Weed control"], tasksFr: ["Saison pluies", "Surveiller pourriture racines", "Desherbage"] },
-      { month: "Sep-Oct", tasksEn: ["Harvest early varieties", "Post-harvest care"], tasksFr: ["Recolter varietes precoces", "Soins post-recolte"] },
-      { month: "Nov-Dec", tasksEn: ["Main harvest season", "Prepare for next cycle"], tasksFr: ["Saison principale recolte", "Preparer cycle suivant"] },
+      {
+        month: "Jan-Feb",
+        tasksEn: [
+          "Flowering begins",
+          "Regular irrigation",
+          "Bee activity important",
+        ],
+        tasksFr: [
+          "Debut floraison",
+          "Irrigation reguliere",
+          "Activite des abeilles importante",
+        ],
+      },
+      {
+        month: "Mar-Apr",
+        tasksEn: ["Fruit set", "Maintain consistent moisture"],
+        tasksFr: ["Nouaison", "Maintenir humidite constante"],
+      },
+      {
+        month: "May-Jun",
+        tasksEn: ["Fruit development", "Apply potassium fertilizer"],
+        tasksFr: ["Developpement fruit", "Appliquer engrais potassique"],
+      },
+      {
+        month: "Jul-Aug",
+        tasksEn: ["Rainy season", "Monitor for root rot", "Weed control"],
+        tasksFr: [
+          "Saison pluies",
+          "Surveiller pourriture racines",
+          "Desherbage",
+        ],
+      },
+      {
+        month: "Sep-Oct",
+        tasksEn: ["Harvest early varieties", "Post-harvest care"],
+        tasksFr: ["Recolter varietes precoces", "Soins post-recolte"],
+      },
+      {
+        month: "Nov-Dec",
+        tasksEn: ["Main harvest season", "Prepare for next cycle"],
+        tasksFr: ["Saison principale recolte", "Preparer cycle suivant"],
+      },
     ],
     waterNeeds: {
       titleEn: "Water Requirements",
@@ -399,8 +612,18 @@ const cropData: Record<string, {
     pestControl: {
       titleEn: "Pest Control",
       titleFr: "Lutte Antiparasitaire",
-      pestsEn: ["Phytophthora root rot", "Anthracnose", "Thrips", "Scale insects"],
-      pestsFr: ["Pourriture des racines Phytophthora", "Anthracnose", "Thrips", "Cochenilles"],
+      pestsEn: [
+        "Phytophthora root rot",
+        "Anthracnose",
+        "Thrips",
+        "Scale insects",
+      ],
+      pestsFr: [
+        "Pourriture des racines Phytophthora",
+        "Anthracnose",
+        "Thrips",
+        "Cochenilles",
+      ],
       solutionsEn: [
         "Improve drainage for root rot prevention",
         "Phosphonate trunk injections",
@@ -457,15 +680,53 @@ const cropData: Record<string, {
     emoji: "🍌",
     nameEn: "Banana",
     nameFr: "Banane",
-    descriptionEn: "Banana (Musa spp.) is a high-value crop that can be grown in Sahel oases and irrigated areas. It requires consistent moisture but can produce year-round with proper management.",
-    descriptionFr: "La banane (Musa spp.) est une culture a haute valeur qui peut etre cultivee dans les oasis du Sahel et les zones irriguees. Elle necessite une humidite constante mais peut produire toute l'annee avec une gestion appropriee.",
+    descriptionEn:
+      "Banana (Musa spp.) is a high-value crop that can be grown in Sahel oases and irrigated areas. It requires consistent moisture but can produce year-round with proper management.",
+    descriptionFr:
+      "La banane (Musa spp.) est une culture a haute valeur qui peut etre cultivee dans les oasis du Sahel et les zones irriguees. Elle necessite une humidite constante mais peut produire toute l'annee avec une gestion appropriee.",
     growingSchedule: [
-      { month: "Jan-Feb", tasksEn: ["Sucker selection", "Remove dry leaves", "Fertilize"], tasksFr: ["Selection des rejets", "Retirer feuilles seches", "Fertiliser"] },
-      { month: "Mar-Apr", tasksEn: ["Plant new suckers", "Irrigate heavily", "Mulch"], tasksFr: ["Planter nouveaux rejets", "Irriguer abondamment", "Pailler"] },
-      { month: "May-Jun", tasksEn: ["Monitor growth", "Weed control", "Support if needed"], tasksFr: ["Surveiller croissance", "Desherbage", "Tuteurage si necessaire"] },
-      { month: "Jul-Aug", tasksEn: ["Rainy season care", "Reduce irrigation", "Disease check"], tasksFr: ["Soins saison pluies", "Reduire irrigation", "Verifier maladies"] },
-      { month: "Sep-Oct", tasksEn: ["Bunch emergence", "Prop stems", "Bag bunches"], tasksFr: ["Emergence regime", "Etayer tiges", "Ensacher regimes"] },
-      { month: "Nov-Dec", tasksEn: ["Harvest mature bunches", "Process pseudostem"], tasksFr: ["Recolter regimes matures", "Traiter pseudo-tronc"] },
+      {
+        month: "Jan-Feb",
+        tasksEn: ["Sucker selection", "Remove dry leaves", "Fertilize"],
+        tasksFr: [
+          "Selection des rejets",
+          "Retirer feuilles seches",
+          "Fertiliser",
+        ],
+      },
+      {
+        month: "Mar-Apr",
+        tasksEn: ["Plant new suckers", "Irrigate heavily", "Mulch"],
+        tasksFr: ["Planter nouveaux rejets", "Irriguer abondamment", "Pailler"],
+      },
+      {
+        month: "May-Jun",
+        tasksEn: ["Monitor growth", "Weed control", "Support if needed"],
+        tasksFr: [
+          "Surveiller croissance",
+          "Desherbage",
+          "Tuteurage si necessaire",
+        ],
+      },
+      {
+        month: "Jul-Aug",
+        tasksEn: ["Rainy season care", "Reduce irrigation", "Disease check"],
+        tasksFr: [
+          "Soins saison pluies",
+          "Reduire irrigation",
+          "Verifier maladies",
+        ],
+      },
+      {
+        month: "Sep-Oct",
+        tasksEn: ["Bunch emergence", "Prop stems", "Bag bunches"],
+        tasksFr: ["Emergence regime", "Etayer tiges", "Ensacher regimes"],
+      },
+      {
+        month: "Nov-Dec",
+        tasksEn: ["Harvest mature bunches", "Process pseudostem"],
+        tasksFr: ["Recolter regimes matures", "Traiter pseudo-tronc"],
+      },
     ],
     waterNeeds: {
       titleEn: "Water Requirements",
@@ -506,8 +767,18 @@ const cropData: Record<string, {
     pestControl: {
       titleEn: "Pest Control",
       titleFr: "Lutte Antiparasitaire",
-      pestsEn: ["Banana weevil", "Nematodes", "Black Sigatoka", "Panama disease"],
-      pestsFr: ["Charancon du bananier", "Nematodes", "Cercosporiose noire", "Maladie de Panama"],
+      pestsEn: [
+        "Banana weevil",
+        "Nematodes",
+        "Black Sigatoka",
+        "Panama disease",
+      ],
+      pestsFr: [
+        "Charancon du bananier",
+        "Nematodes",
+        "Cercosporiose noire",
+        "Maladie de Panama",
+      ],
       solutionsEn: [
         "Use tissue culture plants to avoid weevils",
         "Hot water treatment for suckers",
@@ -564,15 +835,56 @@ const cropData: Record<string, {
     emoji: "🍈",
     nameEn: "Papaya",
     nameFr: "Papaye",
-    descriptionEn: "Papaya (Carica papaya) is fast-growing and can fruit within 9-12 months of planting. It's relatively well-suited to Sahel conditions with proper irrigation and can produce year-round.",
-    descriptionFr: "La papaye (Carica papaya) pousse rapidement et peut fructifier dans les 9-12 mois apres plantation. Elle est relativement bien adaptee aux conditions du Sahel avec une irrigation appropriee et peut produire toute l'annee.",
+    descriptionEn:
+      "Papaya (Carica papaya) is fast-growing and can fruit within 9-12 months of planting. It's relatively well-suited to Sahel conditions with proper irrigation and can produce year-round.",
+    descriptionFr:
+      "La papaye (Carica papaya) pousse rapidement et peut fructifier dans les 9-12 mois apres plantation. Elle est relativement bien adaptee aux conditions du Sahel avec une irrigation appropriee et peut produire toute l'annee.",
     growingSchedule: [
-      { month: "Jan-Feb", tasksEn: ["Prepare nursery beds", "Sow seeds in trays"], tasksFr: ["Preparer pepiniere", "Semer graines en bacs"] },
-      { month: "Mar-Apr", tasksEn: ["Transplant seedlings", "Set up irrigation"], tasksFr: ["Transplanter plants", "Installer irrigation"] },
-      { month: "May-Jun", tasksEn: ["Monitor growth", "Apply fertilizer monthly", "Weed control"], tasksFr: ["Surveiller croissance", "Appliquer engrais mensuellement", "Desherbage"] },
-      { month: "Jul-Aug", tasksEn: ["Flowering begins", "Select female/hermaphrodite plants", "Disease monitoring"], tasksFr: ["Debut floraison", "Selectionner plants femelles/hermaphrodites", "Surveillance maladies"] },
-      { month: "Sep-Oct", tasksEn: ["First fruits developing", "Support heavy bearing plants"], tasksFr: ["Premiers fruits en developpement", "Soutenir plants charges"] },
-      { month: "Nov-Dec", tasksEn: ["Begin harvesting", "Continue fertilizing"], tasksFr: ["Debut recolte", "Continuer fertilisation"] },
+      {
+        month: "Jan-Feb",
+        tasksEn: ["Prepare nursery beds", "Sow seeds in trays"],
+        tasksFr: ["Preparer pepiniere", "Semer graines en bacs"],
+      },
+      {
+        month: "Mar-Apr",
+        tasksEn: ["Transplant seedlings", "Set up irrigation"],
+        tasksFr: ["Transplanter plants", "Installer irrigation"],
+      },
+      {
+        month: "May-Jun",
+        tasksEn: ["Monitor growth", "Apply fertilizer monthly", "Weed control"],
+        tasksFr: [
+          "Surveiller croissance",
+          "Appliquer engrais mensuellement",
+          "Desherbage",
+        ],
+      },
+      {
+        month: "Jul-Aug",
+        tasksEn: [
+          "Flowering begins",
+          "Select female/hermaphrodite plants",
+          "Disease monitoring",
+        ],
+        tasksFr: [
+          "Debut floraison",
+          "Selectionner plants femelles/hermaphrodites",
+          "Surveillance maladies",
+        ],
+      },
+      {
+        month: "Sep-Oct",
+        tasksEn: ["First fruits developing", "Support heavy bearing plants"],
+        tasksFr: [
+          "Premiers fruits en developpement",
+          "Soutenir plants charges",
+        ],
+      },
+      {
+        month: "Nov-Dec",
+        tasksEn: ["Begin harvesting", "Continue fertilizing"],
+        tasksFr: ["Debut recolte", "Continuer fertilisation"],
+      },
     ],
     waterNeeds: {
       titleEn: "Water Requirements",
@@ -613,8 +925,18 @@ const cropData: Record<string, {
     pestControl: {
       titleEn: "Pest Control",
       titleFr: "Lutte Antiparasitaire",
-      pestsEn: ["Papaya ringspot virus", "Fruit flies", "Mealybugs", "Powdery mildew"],
-      pestsFr: ["Virus taches annulaires papayer", "Mouches des fruits", "Cochenilles", "Oidium"],
+      pestsEn: [
+        "Papaya ringspot virus",
+        "Fruit flies",
+        "Mealybugs",
+        "Powdery mildew",
+      ],
+      pestsFr: [
+        "Virus taches annulaires papayer",
+        "Mouches des fruits",
+        "Cochenilles",
+        "Oidium",
+      ],
       solutionsEn: [
         "Use virus-resistant varieties",
         "Remove infected plants immediately",
@@ -697,7 +1019,9 @@ export default async function CropGuidePage({ params }: PageProps) {
               <span className="text-6xl">{crop.emoji}</span>
               <div>
                 <h1 className="text-4xl font-bold">{name}</h1>
-                <p className="mt-2 text-lg text-muted-foreground">{locale === "fr" ? "Guide de Culture" : "Growing Guide"}</p>
+                <p className="mt-2 text-lg text-muted-foreground">
+                  {locale === "fr" ? "Guide de Culture" : "Growing Guide"}
+                </p>
               </div>
             </div>
           </div>
@@ -718,23 +1042,33 @@ export default async function CropGuidePage({ params }: PageProps) {
               <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
                 <TabsTrigger value="schedule" className="gap-2">
                   <Leaf className="h-4 w-4" />
-                  <span className="hidden sm:inline">{locale === "fr" ? "Calendrier" : "Schedule"}</span>
+                  <span className="hidden sm:inline">
+                    {locale === "fr" ? "Calendrier" : "Schedule"}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger value="water" className="gap-2">
                   <Droplets className="h-4 w-4" />
-                  <span className="hidden sm:inline">{locale === "fr" ? "Eau" : "Water"}</span>
+                  <span className="hidden sm:inline">
+                    {locale === "fr" ? "Eau" : "Water"}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger value="fertilizer" className="gap-2">
                   <Leaf className="h-4 w-4" />
-                  <span className="hidden sm:inline">{locale === "fr" ? "Engrais" : "Fertilizer"}</span>
+                  <span className="hidden sm:inline">
+                    {locale === "fr" ? "Engrais" : "Fertilizer"}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger value="pests" className="gap-2">
                   <Bug className="h-4 w-4" />
-                  <span className="hidden sm:inline">{locale === "fr" ? "Ravageurs" : "Pests"}</span>
+                  <span className="hidden sm:inline">
+                    {locale === "fr" ? "Ravageurs" : "Pests"}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger value="harvest" className="gap-2">
                   <Scissors className="h-4 w-4" />
-                  <span className="hidden sm:inline">{locale === "fr" ? "Recolte" : "Harvest"}</span>
+                  <span className="hidden sm:inline">
+                    {locale === "fr" ? "Recolte" : "Harvest"}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger value="sahel" className="gap-2">
                   <Sun className="h-4 w-4" />
@@ -746,15 +1080,27 @@ export default async function CropGuidePage({ params }: PageProps) {
               <TabsContent value="schedule">
                 <Card>
                   <CardHeader>
-                    <CardTitle>{locale === "fr" ? "Calendrier de Culture" : "Growing Schedule"}</CardTitle>
+                    <CardTitle>
+                      {locale === "fr"
+                        ? "Calendrier de Culture"
+                        : "Growing Schedule"}
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                       {crop.growingSchedule.map((period) => (
-                        <div key={period.month} className="rounded-lg border p-4">
-                          <Badge variant="secondary" className="mb-3">{period.month}</Badge>
+                        <div
+                          key={period.month}
+                          className="rounded-lg border p-4"
+                        >
+                          <Badge variant="secondary" className="mb-3">
+                            {period.month}
+                          </Badge>
                           <ul className="space-y-1 text-sm">
-                            {(locale === "fr" ? period.tasksFr : period.tasksEn).map((task, i) => (
+                            {(locale === "fr"
+                              ? period.tasksFr
+                              : period.tasksEn
+                            ).map((task, i) => (
                               <li key={i} className="flex items-start gap-2">
                                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                                 {task}
@@ -774,12 +1120,17 @@ export default async function CropGuidePage({ params }: PageProps) {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Droplets className="h-5 w-5 text-blue-500" />
-                      {locale === "fr" ? crop.waterNeeds.titleFr : crop.waterNeeds.titleEn}
+                      {locale === "fr"
+                        ? crop.waterNeeds.titleFr
+                        : crop.waterNeeds.titleEn}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3">
-                      {(locale === "fr" ? crop.waterNeeds.detailsFr : crop.waterNeeds.detailsEn).map((detail, i) => (
+                      {(locale === "fr"
+                        ? crop.waterNeeds.detailsFr
+                        : crop.waterNeeds.detailsEn
+                      ).map((detail, i) => (
                         <li key={i} className="flex items-start gap-3">
                           <Droplets className="mt-0.5 h-4 w-4 shrink-0 text-blue-500" />
                           {detail}
@@ -796,12 +1147,17 @@ export default async function CropGuidePage({ params }: PageProps) {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Leaf className="h-5 w-5 text-green-500" />
-                      {locale === "fr" ? crop.fertilizer.titleFr : crop.fertilizer.titleEn}
+                      {locale === "fr"
+                        ? crop.fertilizer.titleFr
+                        : crop.fertilizer.titleEn}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3">
-                      {(locale === "fr" ? crop.fertilizer.detailsFr : crop.fertilizer.detailsEn).map((detail, i) => (
+                      {(locale === "fr"
+                        ? crop.fertilizer.detailsFr
+                        : crop.fertilizer.detailsEn
+                      ).map((detail, i) => (
                         <li key={i} className="flex items-start gap-3">
                           <Leaf className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
                           {detail}
@@ -818,22 +1174,36 @@ export default async function CropGuidePage({ params }: PageProps) {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Bug className="h-5 w-5 text-red-500" />
-                      {locale === "fr" ? crop.pestControl.titleFr : crop.pestControl.titleEn}
+                      {locale === "fr"
+                        ? crop.pestControl.titleFr
+                        : crop.pestControl.titleEn}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div>
-                      <h4 className="mb-3 font-semibold">{locale === "fr" ? "Ravageurs Communs" : "Common Pests"}</h4>
+                      <h4 className="mb-3 font-semibold">
+                        {locale === "fr" ? "Ravageurs Communs" : "Common Pests"}
+                      </h4>
                       <div className="flex flex-wrap gap-2">
-                        {(locale === "fr" ? crop.pestControl.pestsFr : crop.pestControl.pestsEn).map((pest, i) => (
-                          <Badge key={i} variant="destructive">{pest}</Badge>
+                        {(locale === "fr"
+                          ? crop.pestControl.pestsFr
+                          : crop.pestControl.pestsEn
+                        ).map((pest, i) => (
+                          <Badge key={i} variant="destructive">
+                            {pest}
+                          </Badge>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <h4 className="mb-3 font-semibold">{locale === "fr" ? "Solutions" : "Solutions"}</h4>
+                      <h4 className="mb-3 font-semibold">
+                        {locale === "fr" ? "Solutions" : "Solutions"}
+                      </h4>
                       <ul className="space-y-2">
-                        {(locale === "fr" ? crop.pestControl.solutionsFr : crop.pestControl.solutionsEn).map((solution, i) => (
+                        {(locale === "fr"
+                          ? crop.pestControl.solutionsFr
+                          : crop.pestControl.solutionsEn
+                        ).map((solution, i) => (
                           <li key={i} className="flex items-start gap-3">
                             <Bug className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
                             {solution}
@@ -851,12 +1221,17 @@ export default async function CropGuidePage({ params }: PageProps) {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Scissors className="h-5 w-5 text-orange-500" />
-                      {locale === "fr" ? crop.harvesting.titleFr : crop.harvesting.titleEn}
+                      {locale === "fr"
+                        ? crop.harvesting.titleFr
+                        : crop.harvesting.titleEn}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3">
-                      {(locale === "fr" ? crop.harvesting.tipsFr : crop.harvesting.tipsEn).map((tip, i) => (
+                      {(locale === "fr"
+                        ? crop.harvesting.tipsFr
+                        : crop.harvesting.tipsEn
+                      ).map((tip, i) => (
                         <li key={i} className="flex items-start gap-3">
                           <Scissors className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" />
                           {tip}
@@ -873,12 +1248,17 @@ export default async function CropGuidePage({ params }: PageProps) {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Sun className="h-5 w-5 text-yellow-500" />
-                      {locale === "fr" ? crop.sahelTips.titleFr : crop.sahelTips.titleEn}
+                      {locale === "fr"
+                        ? crop.sahelTips.titleFr
+                        : crop.sahelTips.titleEn}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3">
-                      {(locale === "fr" ? crop.sahelTips.tipsFr : crop.sahelTips.tipsEn).map((tip, i) => (
+                      {(locale === "fr"
+                        ? crop.sahelTips.tipsFr
+                        : crop.sahelTips.tipsEn
+                      ).map((tip, i) => (
                         <li key={i} className="flex items-start gap-3">
                           <Sun className="mt-0.5 h-4 w-4 shrink-0 text-yellow-500" />
                           {tip}

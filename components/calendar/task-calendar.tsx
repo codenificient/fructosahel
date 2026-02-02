@@ -28,7 +28,11 @@ interface TaskCalendarProps {
   isUpdating?: boolean;
 }
 
-export function TaskCalendar({ tasks, onUpdateTask, isUpdating = false }: TaskCalendarProps) {
+export function TaskCalendar({
+  tasks,
+  onUpdateTask,
+  isUpdating = false,
+}: TaskCalendarProps) {
   const t = useTranslations();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -75,7 +79,8 @@ export function TaskCalendar({ tasks, onUpdateTask, isUpdating = false }: TaskCa
   // Task update handlers
   const handleMarkComplete = (task: Task) => {
     if (onUpdateTask) {
-      const newStatus: TaskStatus = task.status === "completed" ? "pending" : "completed";
+      const newStatus: TaskStatus =
+        task.status === "completed" ? "pending" : "completed";
       onUpdateTask(task.id, { status: newStatus });
     }
   };
@@ -98,25 +103,13 @@ export function TaskCalendar({ tasks, onUpdateTask, isUpdating = false }: TaskCa
               {format(currentMonth, "MMMM yyyy")}
             </CardTitle>
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={goToToday}
-              >
+              <Button variant="outline" size="sm" onClick={goToToday}>
                 Today
               </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={goToPreviousMonth}
-              >
+              <Button variant="outline" size="icon" onClick={goToPreviousMonth}>
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={goToNextMonth}
-              >
+              <Button variant="outline" size="icon" onClick={goToNextMonth}>
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
@@ -141,7 +134,9 @@ export function TaskCalendar({ tasks, onUpdateTask, isUpdating = false }: TaskCa
               {daysInCalendar.map((date) => {
                 const isCurrentMonth = isSameMonth(date, currentMonth);
                 const isTodayDate = isToday(date);
-                const isSelected = selectedDate ? isSameDay(date, selectedDate) : false;
+                const isSelected = selectedDate
+                  ? isSameDay(date, selectedDate)
+                  : false;
 
                 return (
                   <CalendarDay

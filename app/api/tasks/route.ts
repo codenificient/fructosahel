@@ -3,6 +3,7 @@ import { eq, and, or } from "drizzle-orm";
 import { db, tasks } from "@/lib/db";
 import { createTaskSchema } from "@/lib/validations/tasks";
 import { handleApiError, success, created } from "@/lib/api/errors";
+import { notifyNewTaskAssigned } from "@/lib/services/notification-service";
 
 // GET /api/tasks - List all tasks
 export async function GET(request: NextRequest) {
@@ -67,6 +68,19 @@ export async function POST(request: NextRequest) {
         dueDate: validatedData.dueDate,
       })
       .returning();
+
+    // Send notification if task is assigned to someone
+    if (validatedData.assignedTo) {
+      // Fire and forget - don't block the response
+      notifyNewTaskAssigned(
+        newTask.id,
+        newTask.title,
+        validatedData.assignedTo,
+        validatedData.priority || "medium",
+      ).catch((error) => {
+        console.error("Failed to send task notification:", error);
+      });
+    }
 
     return created(newTask);
   } catch (error) {

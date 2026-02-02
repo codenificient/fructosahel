@@ -3,15 +3,29 @@
 import {
   Bot,
   Calculator,
+  History,
   Loader2,
+  MessageSquare,
   Plus,
   Send,
   Sprout,
+  Trash2,
   TrendingUp,
   User,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,7 +36,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  type ConversationListItem,
+  useAddMessage,
+  useConversation,
+  useConversations,
+  useCreateConversation,
+  useDeleteConversation,
+} from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 import type { AgentType } from "@/types";
 
@@ -48,18 +71,59 @@ const agentColors = {
 export default function AgentsPage() {
   const t = useTranslations();
   const [selectedAgent, setSelectedAgent] = useState<AgentType>("agronomist");
+  const [currentConversationId, setCurrentConversationId] = useState<
+    string | null
+  >(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  // Hooks for conversation management
+  const {
+    conversations,
+    isLoading: loadingConversations,
+    refetch: refetchConversations,
+  } = useConversations();
+  const { conversation: loadedConversation, isLoading: loadingConversation } =
+    useConversation(currentConversationId);
+  const { createConversation } = useCreateConversation();
+  const { deleteConversation, isLoading: deletingConversation } =
+    useDeleteConversation();
+  const { addMessage } = useAddMessage();
 
+  // Filter conversations by selected agent type
+  const filteredConversations = conversations.filter(
+    (conv) => conv.agentType === selectedAgent,
+  );
+
+  // Group conversations by date
+  const groupedConversations = groupConversationsByDate(filteredConversations);
+
+  const scrollToBottom = useCallback(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: scroll when messages change
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [scrollToBottom, messages]);
+
+  // Load conversation messages when a conversation is selected
+  useEffect(() => {
+    if (loadedConversation?.messages) {
+      const loadedMessages: Message[] = loadedConversation.messages.map(
+        (msg) => ({
+          id: msg.id,
+          role: msg.role as "user" | "assistant",
+          content: msg.content,
+          timestamp: new Date(msg.createdAt),
+        }),
+      );
+      setMessages(loadedMessages);
+    }
+  }, [loadedConversation]);
 
   const agents: {
     type: AgentType;
@@ -88,7 +152,7 @@ export default function AgentsPage() {
   ];
 
   const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+    if (!input.trim() || isLoading || isStreaming) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -100,6 +164,22 @@ export default function AgentsPage() {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
+
+    // Create a conversation if we don't have one
+    let conversationId = currentConversationId;
+    if (!conversationId) {
+      const newConversation = await createConversation(selectedAgent);
+      if (newConversation) {
+        conversationId = newConversation.id;
+        setCurrentConversationId(conversationId);
+      } else {
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    // Save user message to database
+    await addMessage(conversationId, "user", userMessage.content);
 
     // Create empty assistant message for streaming
     const assistantMessageId = (Date.now() + 1).toString();
@@ -120,6 +200,7 @@ export default function AgentsPage() {
             role: m.role,
             content: m.content,
           })),
+          conversationId,
         }),
       });
 
@@ -128,17 +209,21 @@ export default function AgentsPage() {
       // Add empty assistant message and start streaming
       setMessages((prev) => [...prev, assistantMessage]);
       setIsLoading(false);
+      setIsStreaming(true);
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
 
       if (!reader) throw new Error("No response body");
 
+      let fullResponse = "";
+
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
+        fullResponse += chunk;
         setMessages((prev) =>
           prev.map((m) =>
             m.id === assistantMessageId
@@ -147,6 +232,14 @@ export default function AgentsPage() {
           ),
         );
       }
+
+      // Save assistant message to database
+      await addMessage(conversationId, "assistant", fullResponse);
+
+      // Refresh conversations list to update the sidebar
+      refetchConversations();
+
+      setIsStreaming(false);
     } catch (error) {
       console.error("Chat error:", error);
       const errorMessage: Message = {
@@ -168,6 +261,7 @@ export default function AgentsPage() {
         return [...prev, errorMessage];
       });
       setIsLoading(false);
+      setIsStreaming(false);
     }
   };
 
@@ -179,6 +273,28 @@ export default function AgentsPage() {
   };
 
   const startNewConversation = () => {
+    setCurrentConversationId(null);
+    setMessages([]);
+  };
+
+  const handleSelectConversation = (conversationId: string) => {
+    setCurrentConversationId(conversationId);
+  };
+
+  const handleDeleteConversation = async (conversationId: string) => {
+    const success = await deleteConversation(conversationId);
+    if (success) {
+      if (currentConversationId === conversationId) {
+        setCurrentConversationId(null);
+        setMessages([]);
+      }
+      refetchConversations();
+    }
+  };
+
+  const handleAgentChange = (agentType: AgentType) => {
+    setSelectedAgent(agentType);
+    setCurrentConversationId(null);
     setMessages([]);
   };
 
@@ -186,12 +302,15 @@ export default function AgentsPage() {
 
   return (
     <div className="flex h-[calc(100vh-8rem)] gap-6">
-      {/* Agent Selection Sidebar */}
-      <div className="w-80 space-y-4">
+      {/* Left Sidebar - Agent Selection & Conversation History */}
+      <div className="w-80 flex flex-col gap-4">
+        {/* Agent Selection */}
         <Card>
-          <CardHeader>
-            <CardTitle>{t("agents.title")}</CardTitle>
-            <CardDescription>{t("agents.selectAgent")}</CardDescription>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">{t("agents.title")}</CardTitle>
+            <CardDescription className="text-xs">
+              {t("agents.selectAgent")}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             {agents.map((agent) => {
@@ -201,10 +320,7 @@ export default function AgentsPage() {
                 <button
                   type="button"
                   key={agent.type}
-                  onClick={() => {
-                    setSelectedAgent(agent.type);
-                    setMessages([]);
-                  }}
+                  onClick={() => handleAgentChange(agent.type)}
                   className={cn(
                     "flex w-full items-start gap-3 rounded-lg border p-3 text-left transition-all hover:bg-muted",
                     isSelected && "border-primary bg-primary/5",
@@ -216,7 +332,9 @@ export default function AgentsPage() {
                     <Icon className="h-5 w-5" />
                   </div>
                   <div className="flex-1">
-                    <div className="font-medium">{t(agent.nameKey)}</div>
+                    <div className="font-medium text-sm">
+                      {t(agent.nameKey)}
+                    </div>
                     <div className="text-xs text-muted-foreground line-clamp-2">
                       {t(agent.descKey)}
                     </div>
@@ -224,6 +342,75 @@ export default function AgentsPage() {
                 </button>
               );
             })}
+          </CardContent>
+        </Card>
+
+        {/* Conversation History */}
+        <Card className="flex-1 flex flex-col min-h-0">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <History className="h-4 w-4" />
+                <CardTitle className="text-base">
+                  {t("agents.conversationHistory")}
+                </CardTitle>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="flex-1 p-0 min-h-0">
+            {loadingConversations ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : filteredConversations.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
+                <MessageSquare className="h-8 w-8 text-muted-foreground mb-2" />
+                <p className="text-sm text-muted-foreground">
+                  {t("agents.noConversations")}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {t("agents.startConversation")}
+                </p>
+              </div>
+            ) : (
+              <ScrollArea className="h-full px-4 pb-4">
+                <div className="space-y-4">
+                  {groupedConversations.today.length > 0 && (
+                    <ConversationGroup
+                      label={t("agents.today")}
+                      conversations={groupedConversations.today}
+                      currentConversationId={currentConversationId}
+                      onSelect={handleSelectConversation}
+                      onDelete={handleDeleteConversation}
+                      deletingConversation={deletingConversation}
+                      t={t}
+                    />
+                  )}
+                  {groupedConversations.yesterday.length > 0 && (
+                    <ConversationGroup
+                      label={t("agents.yesterday")}
+                      conversations={groupedConversations.yesterday}
+                      currentConversationId={currentConversationId}
+                      onSelect={handleSelectConversation}
+                      onDelete={handleDeleteConversation}
+                      deletingConversation={deletingConversation}
+                      t={t}
+                    />
+                  )}
+                  {groupedConversations.older.length > 0 && (
+                    <ConversationGroup
+                      label={t("agents.older")}
+                      conversations={groupedConversations.older}
+                      currentConversationId={currentConversationId}
+                      onSelect={handleSelectConversation}
+                      onDelete={handleDeleteConversation}
+                      deletingConversation={deletingConversation}
+                      t={t}
+                    />
+                  )}
+                </div>
+              </ScrollArea>
+            )}
           </CardContent>
         </Card>
 
@@ -258,7 +445,11 @@ export default function AgentsPage() {
 
         {/* Messages */}
         <CardContent className="flex-1 overflow-y-auto p-4">
-          {messages.length === 0 ? (
+          {loadingConversation ? (
+            <div className="flex h-full items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            </div>
+          ) : messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center text-center">
               <div
                 className={cn("rounded-full p-4", agentColors[selectedAgent])}
@@ -457,8 +648,11 @@ export default function AgentsPage() {
               className="min-h-[44px] max-h-32 resize-none"
               rows={1}
             />
-            <Button onClick={handleSend} disabled={!input.trim() || isLoading}>
-              {isLoading ? (
+            <Button
+              onClick={handleSend}
+              disabled={!input.trim() || isLoading || isStreaming}
+            >
+              {isLoading || isStreaming ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <Send className="h-4 w-4" />
@@ -469,4 +663,107 @@ export default function AgentsPage() {
       </Card>
     </div>
   );
+}
+
+// Helper component for conversation groups
+function ConversationGroup({
+  label,
+  conversations,
+  currentConversationId,
+  onSelect,
+  onDelete,
+  deletingConversation,
+  t,
+}: {
+  label: string;
+  conversations: ConversationListItem[];
+  currentConversationId: string | null;
+  onSelect: (id: string) => void;
+  onDelete: (id: string) => void;
+  deletingConversation: boolean;
+  t: ReturnType<typeof useTranslations>;
+}) {
+  return (
+    <div>
+      <p className="text-xs font-medium text-muted-foreground mb-2">{label}</p>
+      <div className="space-y-1">
+        {conversations.map((conv) => (
+          <button
+            type="button"
+            key={conv.id}
+            className={cn(
+              "group flex w-full items-center gap-2 rounded-lg p-2 text-sm text-left transition-colors hover:bg-muted cursor-pointer",
+              currentConversationId === conv.id && "bg-muted",
+            )}
+            onClick={() => onSelect(conv.id)}
+          >
+            <MessageSquare className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
+            <span className="flex-1 truncate">{conv.title}</span>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={(e) => e.stopPropagation()}
+                  disabled={deletingConversation}
+                >
+                  <Trash2 className="h-3 w-3 text-muted-foreground hover:text-destructive" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    {t("agents.deleteConversation")}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t("agents.deleteConfirm")}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => onDelete(conv.id)}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    {t("common.delete")}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Helper function to group conversations by date
+function groupConversationsByDate(conversations: ConversationListItem[]) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const groups = {
+    today: [] as ConversationListItem[],
+    yesterday: [] as ConversationListItem[],
+    older: [] as ConversationListItem[],
+  };
+
+  conversations.forEach((conv) => {
+    const convDate = new Date(conv.updatedAt);
+    convDate.setHours(0, 0, 0, 0);
+
+    if (convDate.getTime() === today.getTime()) {
+      groups.today.push(conv);
+    } else if (convDate.getTime() === yesterday.getTime()) {
+      groups.yesterday.push(conv);
+    } else {
+      groups.older.push(conv);
+    }
+  });
+
+  return groups;
 }

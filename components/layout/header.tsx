@@ -63,12 +63,18 @@ export function Header({ locale }: HeaderProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem asChild>
-                <Link href={`/en`} className={cn(locale === "en" && "font-bold")}>
+                <Link
+                  href={`/en`}
+                  className={cn(locale === "en" && "font-bold")}
+                >
                   English
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={`/fr`} className={cn(locale === "fr" && "font-bold")}>
+                <Link
+                  href={`/fr`}
+                  className={cn(locale === "fr" && "font-bold")}
+                >
                   Francais
                 </Link>
               </DropdownMenuItem>
@@ -92,7 +98,11 @@ export function Header({ locale }: HeaderProps) {
             className="md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </Button>
         </div>
       </nav>

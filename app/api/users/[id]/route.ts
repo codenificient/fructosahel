@@ -58,9 +58,12 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
     if (validatedData.name !== undefined) updateData.name = validatedData.name;
     if (validatedData.role !== undefined) updateData.role = validatedData.role;
-    if (validatedData.avatarUrl !== undefined) updateData.avatarUrl = validatedData.avatarUrl;
-    if (validatedData.phone !== undefined) updateData.phone = validatedData.phone;
-    if (validatedData.language !== undefined) updateData.language = validatedData.language;
+    if (validatedData.avatarUrl !== undefined)
+      updateData.avatarUrl = validatedData.avatarUrl;
+    if (validatedData.phone !== undefined)
+      updateData.phone = validatedData.phone;
+    if (validatedData.language !== undefined)
+      updateData.language = validatedData.language;
 
     const [updatedUser] = await db
       .update(users)

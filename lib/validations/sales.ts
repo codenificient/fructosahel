@@ -15,7 +15,9 @@ export const createSaleSchema = z.object({
   createdBy: z.string().uuid().optional(),
 });
 
-export const updateSaleSchema = createSaleSchema.partial().omit({ farmId: true, createdBy: true });
+export const updateSaleSchema = createSaleSchema
+  .partial()
+  .omit({ farmId: true, createdBy: true });
 
 export type CreateSaleInput = z.infer<typeof createSaleSchema>;
 export type UpdateSaleInput = z.infer<typeof updateSaleSchema>;

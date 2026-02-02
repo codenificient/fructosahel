@@ -74,13 +74,105 @@ NEXT_PUBLIC_ANALYTICS_ENDPOINT=https://analytics-dashboard-phi-six.vercel.app/ap
 # Google Analytics (optional)
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 
-# Sentry Error Tracking (optional)
-SENTRY_DSN=https://xxxxx@sentry.io/xxxxx
-SENTRY_AUTH_TOKEN=xxxxx
-
 # Feature Flags (optional)
 NEXT_PUBLIC_ENABLE_BETA_FEATURES=false
 ```
+
+### Sentry Error Monitoring Configuration
+
+Sentry is configured for comprehensive error tracking and performance monitoring. Follow these steps to set it up:
+
+#### 1. Create a Sentry Project
+
+1. Sign up at https://sentry.io
+2. Create a new project:
+   - Platform: Next.js
+   - Project name: `fructosahel`
+3. Note your DSN from Settings > Projects > fructosahel > Client Keys (DSN)
+
+#### 2. Required Environment Variables
+
+Add these to your Vercel project settings:
+
+```bash
+# Client-side DSN (exposed to browser)
+NEXT_PUBLIC_SENTRY_DSN=https://YOUR_PUBLIC_KEY@YOUR_ORG.ingest.sentry.io/YOUR_PROJECT_ID
+
+# Server-side DSN
+SENTRY_DSN=https://YOUR_PUBLIC_KEY@YOUR_ORG.ingest.sentry.io/YOUR_PROJECT_ID
+
+# Organization and project for source map uploads
+SENTRY_ORG=your-sentry-org
+SENTRY_PROJECT=fructosahel
+
+# Auth token for source map uploads (create at Settings > Account > Auth Tokens)
+# Required scopes: project:read, project:releases, org:read
+SENTRY_AUTH_TOKEN=sntrys_YOUR_AUTH_TOKEN
+```
+
+#### 3. Vercel Integration (Recommended)
+
+For seamless integration:
+
+1. Go to Vercel Dashboard > Integrations
+2. Search for "Sentry" and install
+3. Connect your Sentry organization
+4. Select the FructoSahel project
+5. Environment variables will be auto-configured
+
+#### 4. Error Tracking Features
+
+The following are automatically tracked:
+
+- **Client Errors**: JavaScript errors, unhandled rejections
+- **Server Errors**: API route errors, SSR errors
+- **Edge Errors**: Middleware errors
+- **Performance**: Page loads, API response times
+- **User Context**: Authenticated user info for error correlation
+
+#### 5. Custom Error Categories
+
+Errors are categorized for easier filtering:
+
+| Category | Description |
+|----------|-------------|
+| `api` | API route errors |
+| `ai` | AI/LLM request failures |
+| `auth` | Authentication failures |
+| `database` | Database query errors |
+| `validation` | Input validation errors |
+| `network` | Network/connectivity issues |
+| `ui` | Client-side UI errors |
+
+#### 6. Verifying Sentry Setup
+
+After deployment, verify Sentry is working:
+
+```bash
+# Trigger a test error (in development)
+curl -X POST https://your-app.vercel.app/api/sentry-example-api
+
+# Or in the browser console:
+throw new Error("Sentry Test Error");
+```
+
+Check your Sentry dashboard for the error.
+
+#### 7. Recommended Sentry Dashboard Setup
+
+1. **Create Alerts:**
+   - New issue alert for production errors
+   - Spike detection for error rate increases
+   - Performance regression alerts
+
+2. **Set Up Teams:**
+   - Assign errors to team members
+   - Configure notification preferences
+
+3. **Create Custom Dashboards:**
+   - Error rate by endpoint
+   - AI request failures
+   - Performance by page
 
 ## Pre-Deployment Checklist
 

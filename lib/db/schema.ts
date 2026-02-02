@@ -38,10 +38,27 @@ export const taskStatusEnum = pgEnum("task_status", [
   "completed",
   "cancelled",
 ]);
-export const taskPriorityEnum = pgEnum("task_priority", ["low", "medium", "high", "urgent"]);
-export const transactionTypeEnum = pgEnum("transaction_type", ["income", "expense"]);
-export const agentTypeEnum = pgEnum("agent_type", ["marketing", "finance", "agronomist"]);
-export const userRoleEnum = pgEnum("user_role", ["admin", "manager", "worker", "viewer"]);
+export const taskPriorityEnum = pgEnum("task_priority", [
+  "low",
+  "medium",
+  "high",
+  "urgent",
+]);
+export const transactionTypeEnum = pgEnum("transaction_type", [
+  "income",
+  "expense",
+]);
+export const agentTypeEnum = pgEnum("agent_type", [
+  "marketing",
+  "finance",
+  "agronomist",
+]);
+export const userRoleEnum = pgEnum("user_role", [
+  "admin",
+  "manager",
+  "worker",
+  "viewer",
+]);
 
 // Users table
 export const users = pgTable("users", {
@@ -102,6 +119,7 @@ export const crops = pgTable("crops", {
   expectedYieldKg: decimal("expected_yield_kg", { precision: 10, scale: 2 }),
   actualYieldKg: decimal("actual_yield_kg", { precision: 10, scale: 2 }),
   notes: text("notes"),
+  imageUrl: text("image_url"), // Optional photo of the crop
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -324,13 +342,16 @@ export const salesRelations = relations(sales, ({ one }) => ({
   }),
 }));
 
-export const agentConversationsRelations = relations(agentConversations, ({ one, many }) => ({
-  user: one(users, {
-    fields: [agentConversations.userId],
-    references: [users.id],
+export const agentConversationsRelations = relations(
+  agentConversations,
+  ({ one, many }) => ({
+    user: one(users, {
+      fields: [agentConversations.userId],
+      references: [users.id],
+    }),
+    messages: many(agentMessages),
   }),
-  messages: many(agentMessages),
-}));
+);
 
 export const agentMessagesRelations = relations(agentMessages, ({ one }) => ({
   conversation: one(agentConversations, {
@@ -345,3 +366,56 @@ export const blogPostsRelations = relations(blogPosts, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+// Push notification subscriptions
+export const pushSubscriptions = pgTable("push_subscriptions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+  endpoint: text("endpoint").notNull().unique(),
+  p256dh: text("p256dh").notNull(),
+  auth: text("auth").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Notification preferences
+export const notificationPreferences = pgTable("notification_preferences", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull()
+    .unique(),
+  enabled: boolean("enabled").default(true).notNull(),
+  taskReminders: boolean("task_reminders").default(true).notNull(),
+  urgentAlerts: boolean("urgent_alerts").default(true).notNull(),
+  dailyDigest: boolean("daily_digest").default(false).notNull(),
+  newTaskAssigned: boolean("new_task_assigned").default(true).notNull(),
+  taskOverdue: boolean("task_overdue").default(true).notNull(),
+  reminderHoursBefore: integer("reminder_hours_before").default(24).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Push subscriptions relations
+export const pushSubscriptionsRelations = relations(
+  pushSubscriptions,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [pushSubscriptions.userId],
+      references: [users.id],
+    }),
+  }),
+);
+
+// Notification preferences relations
+export const notificationPreferencesRelations = relations(
+  notificationPreferences,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [notificationPreferences.userId],
+      references: [users.id],
+    }),
+  }),
+);

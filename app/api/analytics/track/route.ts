@@ -1,4 +1,7 @@
-import type { AnalyticsResponse, EventData } from "@codenificient/analytics-sdk";
+import type {
+  AnalyticsResponse,
+  EventData,
+} from "@codenificient/analytics-sdk";
 import { NextRequest, NextResponse } from "next/server";
 
 const ANALYTICS_ENDPOINT =
@@ -32,14 +35,31 @@ interface AnalyticsApiPayload {
 export async function POST(request: NextRequest) {
   try {
     const body: AnalyticsRequestPayload = await request.json();
-    const { events, namespace, eventType, properties, page, element, slug, action: eventAction } = body;
+    const {
+      events,
+      namespace,
+      eventType,
+      properties,
+      page,
+      element,
+      slug,
+      action: eventAction,
+    } = body;
     const pagePath = body.path; // Use body.path directly to avoid variable shadowing
 
     // Validate required fields
-    if (!events && !namespace && !eventType && !page && !element && !slug && !pagePath) {
+    if (
+      !events &&
+      !namespace &&
+      !eventType &&
+      !page &&
+      !element &&
+      !slug &&
+      !pagePath
+    ) {
       return NextResponse.json(
         { error: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -160,7 +180,7 @@ export async function POST(request: NextRequest) {
           details: errorText,
           status: response.status,
         },
-        { status: response.status }
+        { status: response.status },
       );
     }
 
@@ -183,7 +203,7 @@ export async function POST(request: NextRequest) {
         error: "Internal server error",
         details: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -216,7 +236,7 @@ export async function GET(request: NextRequest) {
 
     const response = await fetch(
       `${ANALYTICS_ENDPOINT}/analytics?${queryParams.toString()}`,
-      { method: "GET", headers }
+      { method: "GET", headers },
     );
 
     if (!response.ok) {
@@ -232,7 +252,7 @@ export async function GET(request: NextRequest) {
           details: errorText,
           status: response.status,
         },
-        { status: response.status }
+        { status: response.status },
       );
     }
 
@@ -250,7 +270,7 @@ export async function GET(request: NextRequest) {
         error: "Internal server error",
         details: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -266,6 +286,6 @@ export async function OPTIONS() {
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
       },
-    }
+    },
   );
 }

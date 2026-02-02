@@ -17,9 +17,13 @@ export function Footer({ locale }: FooterProps) {
           <div className="space-y-4">
             <Link href={`/${locale}`} className="flex items-center gap-2">
               <Sprout className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold text-primary">FructoSahel</span>
+              <span className="text-xl font-bold text-primary">
+                FructoSahel
+              </span>
             </Link>
-            <p className="text-sm text-muted-foreground">{t("common.tagline")}</p>
+            <p className="text-sm text-muted-foreground">
+              {t("common.tagline")}
+            </p>
           </div>
 
           {/* Quick Links */}
@@ -114,7 +118,9 @@ export function Footer({ locale }: FooterProps) {
 
         {/* Bottom */}
         <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} FructoSahel. All rights reserved.</p>
+          <p>
+            &copy; {new Date().getFullYear()} FructoSahel. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

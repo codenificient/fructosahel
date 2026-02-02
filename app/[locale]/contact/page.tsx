@@ -2,7 +2,13 @@
 
 import { useTranslations } from "next-intl";
 import { Header, Footer } from "@/components/layout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -71,7 +77,9 @@ function ContactContent({ locale }: { locale: string }) {
           <Card>
             <CardHeader>
               <CardTitle>
-                {locale === "fr" ? "Envoyez-nous un message" : "Send us a message"}
+                {locale === "fr"
+                  ? "Envoyez-nous un message"
+                  : "Send us a message"}
               </CardTitle>
               <CardDescription>
                 {locale === "fr"
@@ -84,18 +92,29 @@ function ContactContent({ locale }: { locale: string }) {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="name">{t("form.name")}</Label>
-                    <Input id="name" placeholder={locale === "fr" ? "Votre nom" : "Your name"} />
+                    <Input
+                      id="name"
+                      placeholder={locale === "fr" ? "Votre nom" : "Your name"}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">{t("form.email")}</Label>
-                    <Input id="email" type="email" placeholder="email@example.com" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="email@example.com"
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="subject">{t("form.subject")}</Label>
                   <Input
                     id="subject"
-                    placeholder={locale === "fr" ? "Sujet de votre message" : "Subject of your message"}
+                    placeholder={
+                      locale === "fr"
+                        ? "Sujet de votre message"
+                        : "Subject of your message"
+                    }
                   />
                 </div>
                 <div className="space-y-2">
@@ -103,7 +122,9 @@ function ContactContent({ locale }: { locale: string }) {
                   <Textarea
                     id="message"
                     rows={5}
-                    placeholder={locale === "fr" ? "Votre message..." : "Your message..."}
+                    placeholder={
+                      locale === "fr" ? "Votre message..." : "Your message..."
+                    }
                   />
                 </div>
                 <Button type="submit" className="w-full">
@@ -119,7 +140,9 @@ function ContactContent({ locale }: { locale: string }) {
             <Card>
               <CardHeader>
                 <CardTitle>
-                  {locale === "fr" ? "Informations de Contact" : "Contact Information"}
+                  {locale === "fr"
+                    ? "Informations de Contact"
+                    : "Contact Information"}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -129,14 +152,18 @@ function ContactContent({ locale }: { locale: string }) {
                     <p className="font-medium">
                       {locale === "fr" ? "Siege Social" : "Headquarters"}
                     </p>
-                    <p className="text-sm text-muted-foreground">{t("info.address")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("info.address")}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Mail className="h-5 w-5 text-primary" />
                   <div>
                     <p className="font-medium">Email</p>
-                    <p className="text-sm text-muted-foreground">{t("info.email")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("info.email")}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -145,14 +172,18 @@ function ContactContent({ locale }: { locale: string }) {
                     <p className="font-medium">
                       {locale === "fr" ? "Telephone" : "Phone"}
                     </p>
-                    <p className="text-sm text-muted-foreground">{t("info.phone")}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("info.phone")}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Clock className="h-5 w-5 text-primary" />
                   <div>
                     <p className="font-medium">
-                      {locale === "fr" ? "Heures d'ouverture" : "Business Hours"}
+                      {locale === "fr"
+                        ? "Heures d'ouverture"
+                        : "Business Hours"}
                     </p>
                     <p className="text-sm text-muted-foreground">
                       {locale === "fr"
@@ -174,12 +205,19 @@ function ContactContent({ locale }: { locale: string }) {
               <CardContent>
                 <div className="space-y-4">
                   {offices.map((office) => (
-                    <div key={office.country} className="flex items-start gap-3 rounded-lg border p-3">
+                    <div
+                      key={office.country}
+                      className="flex items-start gap-3 rounded-lg border p-3"
+                    >
                       <span className="text-2xl">{office.flag}</span>
                       <div className="flex-1">
                         <p className="font-medium">{office.country}</p>
-                        <p className="text-sm text-muted-foreground">{office.city}</p>
-                        <p className="text-sm text-muted-foreground">{office.address}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {office.city}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {office.address}
+                        </p>
                         <div className="mt-2 flex flex-wrap gap-4 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <Phone className="h-3 w-3" />

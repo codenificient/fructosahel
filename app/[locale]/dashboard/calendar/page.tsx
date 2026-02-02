@@ -4,7 +4,13 @@ import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { startOfMonth, endOfMonth } from "date-fns";
 import { Calendar, AlertCircle, RefreshCw } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TaskCalendar } from "@/components/calendar/task-calendar";
@@ -35,15 +41,20 @@ export default function CalendarPage() {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
 
-  const monthTasks = tasks?.filter((task) => {
-    if (!task.dueDate) return false;
-    const dueDate = new Date(task.dueDate);
-    return dueDate >= monthStart && dueDate <= monthEnd;
-  }) || [];
+  const monthTasks =
+    tasks?.filter((task) => {
+      if (!task.dueDate) return false;
+      const dueDate = new Date(task.dueDate);
+      return dueDate >= monthStart && dueDate <= monthEnd;
+    }) || [];
 
   const pendingTasks = monthTasks.filter((t) => t.status === "pending").length;
-  const inProgressTasks = monthTasks.filter((t) => t.status === "in_progress").length;
-  const completedTasks = monthTasks.filter((t) => t.status === "completed").length;
+  const inProgressTasks = monthTasks.filter(
+    (t) => t.status === "in_progress",
+  ).length;
+  const completedTasks = monthTasks.filter(
+    (t) => t.status === "completed",
+  ).length;
 
   const overdueTasks = monthTasks.filter((task) => {
     if (!task.dueDate || task.status === "completed") return false;
@@ -121,7 +132,9 @@ export default function CalendarPage() {
               <CardTitle className="text-sm font-medium">Pending</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">{pendingTasks}</div>
+              <div className="text-2xl font-bold text-yellow-600">
+                {pendingTasks}
+              </div>
               <p className="text-xs text-muted-foreground">Not started</p>
             </CardContent>
           </Card>
@@ -130,7 +143,9 @@ export default function CalendarPage() {
               <CardTitle className="text-sm font-medium">In Progress</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{inProgressTasks}</div>
+              <div className="text-2xl font-bold text-blue-600">
+                {inProgressTasks}
+              </div>
               <p className="text-xs text-muted-foreground">Active tasks</p>
             </CardContent>
           </Card>
@@ -139,7 +154,9 @@ export default function CalendarPage() {
               <CardTitle className="text-sm font-medium">Overdue</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">{overdueTasks}</div>
+              <div className="text-2xl font-bold text-red-600">
+                {overdueTasks}
+              </div>
               <p className="text-xs text-muted-foreground">Need attention</p>
             </CardContent>
           </Card>

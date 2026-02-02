@@ -2,7 +2,13 @@
 
 import { useTranslations } from "next-intl";
 import { Calendar } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { demoTasks } from "@/lib/demo-data";
 
@@ -25,19 +31,31 @@ export default function DemoCalendarPage() {
   const firstDay = getFirstDayOfMonth(currentMonth, currentYear);
 
   const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   const getTasksForDay = (day: number) => {
-    return demoTasks.filter(task => {
+    return demoTasks.filter((task) => {
       if (!task.dueDate) return false;
       const dueDate = new Date(task.dueDate);
-      return dueDate.getDate() === day &&
-             dueDate.getMonth() === currentMonth &&
-             dueDate.getFullYear() === currentYear;
+      return (
+        dueDate.getDate() === day &&
+        dueDate.getMonth() === currentMonth &&
+        dueDate.getFullYear() === currentYear
+      );
     });
   };
 
@@ -57,41 +75,53 @@ export default function DemoCalendarPage() {
             <Calendar className="h-8 w-8" />
             Task Calendar
           </h1>
-          <p className="text-muted-foreground">View and manage your scheduled tasks</p>
+          <p className="text-muted-foreground">
+            View and manage your scheduled tasks
+          </p>
         </div>
       </div>
 
       {/* Demo Banner */}
       <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
         <p className="text-sm text-amber-800 dark:text-amber-200">
-          This is a demo page with sample data. Sign in to manage your real calendar.
+          This is a demo page with sample data. Sign in to manage your real
+          calendar.
         </p>
       </div>
 
       {/* Calendar */}
       <Card>
         <CardHeader>
-          <CardTitle>{monthNames[currentMonth]} {currentYear}</CardTitle>
+          <CardTitle>
+            {monthNames[currentMonth]} {currentYear}
+          </CardTitle>
           <CardDescription>Tasks scheduled for this month</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-7 gap-1">
             {/* Day headers */}
-            {dayNames.map(day => (
-              <div key={day} className="p-2 text-center text-sm font-medium text-muted-foreground">
+            {dayNames.map((day) => (
+              <div
+                key={day}
+                className="p-2 text-center text-sm font-medium text-muted-foreground"
+              >
                 {day}
               </div>
             ))}
 
             {/* Empty cells for days before the first day of the month */}
             {Array.from({ length: firstDay }).map((_, index) => (
-              <div key={`empty-${index}`} className="p-2 min-h-[100px] bg-muted/30 rounded" />
+              <div
+                key={`empty-${index}`}
+                className="p-2 min-h-[100px] bg-muted/30 rounded"
+              />
             ))}
 
             {/* Days of the month */}
             {Array.from({ length: daysInMonth }).map((_, index) => {
               const day = index + 1;
-              const isToday = day === today.getDate() && currentMonth === today.getMonth();
+              const isToday =
+                day === today.getDate() && currentMonth === today.getMonth();
               const tasks = getTasksForDay(day);
 
               return (
@@ -101,11 +131,13 @@ export default function DemoCalendarPage() {
                     isToday ? "bg-primary/10 border-primary" : "border-border"
                   }`}
                 >
-                  <div className={`text-sm font-medium mb-1 ${isToday ? "text-primary" : ""}`}>
+                  <div
+                    className={`text-sm font-medium mb-1 ${isToday ? "text-primary" : ""}`}
+                  >
                     {day}
                   </div>
                   <div className="space-y-1">
-                    {tasks.slice(0, 3).map(task => (
+                    {tasks.slice(0, 3).map((task) => (
                       <div
                         key={task.id}
                         className={`text-xs p-1 rounded text-white truncate ${priorityColors[task.priority]}`}

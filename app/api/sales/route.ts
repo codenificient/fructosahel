@@ -41,11 +41,18 @@ export async function GET(request: NextRequest) {
 
     // Calculate totals
     const totals = {
-      totalQuantityKg: filtered.reduce((sum, s) => sum + parseFloat(s.quantityKg), 0),
-      totalRevenue: filtered.reduce((sum, s) => sum + parseFloat(s.totalAmount), 0),
+      totalQuantityKg: filtered.reduce(
+        (sum, s) => sum + parseFloat(s.quantityKg),
+        0,
+      ),
+      totalRevenue: filtered.reduce(
+        (sum, s) => sum + parseFloat(s.totalAmount),
+        0,
+      ),
       averagePricePerKg:
         filtered.length > 0
-          ? filtered.reduce((sum, s) => sum + parseFloat(s.pricePerKg), 0) / filtered.length
+          ? filtered.reduce((sum, s) => sum + parseFloat(s.pricePerKg), 0) /
+            filtered.length
           : 0,
       byCropType: filtered.reduce(
         (acc, s) => {
@@ -56,7 +63,7 @@ export async function GET(request: NextRequest) {
           acc[s.cropType].revenue += parseFloat(s.totalAmount);
           return acc;
         },
-        {} as Record<string, { quantity: number; revenue: number }>
+        {} as Record<string, { quantity: number; revenue: number }>,
       ),
     };
 
@@ -77,7 +84,8 @@ export async function POST(request: NextRequest) {
 
     // Calculate total amount if not provided
     const totalAmount =
-      validatedData.totalAmount ?? validatedData.quantityKg * validatedData.pricePerKg;
+      validatedData.totalAmount ??
+      validatedData.quantityKg * validatedData.pricePerKg;
 
     const [newSale] = await db
       .insert(sales)

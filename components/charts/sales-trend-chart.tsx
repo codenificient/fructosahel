@@ -39,10 +39,20 @@ const formatCurrency = (value: number) => {
 export function SalesTrendChart({ data, crops }: SalesTrendChartProps) {
   return (
     <ResponsiveContainer width="100%" height={350}>
-      <AreaChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+      <AreaChart
+        data={data}
+        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+      >
         <defs>
           {crops.map((crop) => (
-            <linearGradient key={crop} id={`color${crop}`} x1="0" y1="0" x2="0" y2="1">
+            <linearGradient
+              key={crop}
+              id={`color${crop}`}
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
               <stop
                 offset="5%"
                 stopColor={CROP_COLORS[crop] || "#6b7280"}

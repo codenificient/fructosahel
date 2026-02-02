@@ -19,19 +19,20 @@ export default async function proxy(request: NextRequest) {
 
   // Check if this is a protected route
   const isProtectedRoute = protectedRoutes.some((route) =>
-    pathnameWithoutLocale.startsWith(route)
+    pathnameWithoutLocale.startsWith(route),
   );
 
   // Check if this is an auth route (should be public)
   const isAuthRoute = authRoutes.some((route) =>
-    pathnameWithoutLocale.startsWith(route)
+    pathnameWithoutLocale.startsWith(route),
   );
 
   // If it's a protected route, check for authentication
   if (isProtectedRoute && !isAuthRoute) {
     // Check for Stack Auth session cookie
-    const sessionCookie = request.cookies.get("stack-refresh-token") ||
-                          request.cookies.get("stack-access-token");
+    const sessionCookie =
+      request.cookies.get("stack-refresh-token") ||
+      request.cookies.get("stack-access-token");
 
     if (!sessionCookie) {
       // Get the current locale from the pathname

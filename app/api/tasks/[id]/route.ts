@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { db, tasks } from "@/lib/db";
 import { updateTaskSchema } from "@/lib/validations/tasks";
 import { handleApiError, success, notFound } from "@/lib/api/errors";
+import { notifyNewTaskAssigned } from "@/lib/services/notification-service";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -52,26 +53,51 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
     const updateData: Record<string, unknown> = { updatedAt: new Date() };
 
-    if (validatedData.title !== undefined) updateData.title = validatedData.title;
-    if (validatedData.description !== undefined) updateData.description = validatedData.description;
-    if (validatedData.farmId !== undefined) updateData.farmId = validatedData.farmId;
-    if (validatedData.cropId !== undefined) updateData.cropId = validatedData.cropId;
-    if (validatedData.assignedTo !== undefined) updateData.assignedTo = validatedData.assignedTo;
+    if (validatedData.title !== undefined)
+      updateData.title = validatedData.title;
+    if (validatedData.description !== undefined)
+      updateData.description = validatedData.description;
+    if (validatedData.farmId !== undefined)
+      updateData.farmId = validatedData.farmId;
+    if (validatedData.cropId !== undefined)
+      updateData.cropId = validatedData.cropId;
+    if (validatedData.assignedTo !== undefined)
+      updateData.assignedTo = validatedData.assignedTo;
     if (validatedData.status !== undefined) {
       updateData.status = validatedData.status;
       if (validatedData.status === "completed") {
         updateData.completedAt = new Date();
       }
     }
-    if (validatedData.priority !== undefined) updateData.priority = validatedData.priority;
-    if (validatedData.dueDate !== undefined) updateData.dueDate = validatedData.dueDate;
-    if (validatedData.completedAt !== undefined) updateData.completedAt = validatedData.completedAt;
+    if (validatedData.priority !== undefined)
+      updateData.priority = validatedData.priority;
+    if (validatedData.dueDate !== undefined)
+      updateData.dueDate = validatedData.dueDate;
+    if (validatedData.completedAt !== undefined)
+      updateData.completedAt = validatedData.completedAt;
 
     const [updatedTask] = await db
       .update(tasks)
       .set(updateData)
       .where(eq(tasks.id, id))
       .returning();
+
+    // Send notification if task is being assigned to a new person
+    if (
+      validatedData.assignedTo !== undefined &&
+      validatedData.assignedTo !== existing.assignedTo &&
+      validatedData.assignedTo !== null
+    ) {
+      // Fire and forget - don't block the response
+      notifyNewTaskAssigned(
+        updatedTask.id,
+        updatedTask.title,
+        validatedData.assignedTo,
+        updatedTask.priority,
+      ).catch((error) => {
+        console.error("Failed to send task reassignment notification:", error);
+      });
+    }
 
     return success(updatedTask);
   } catch (error) {

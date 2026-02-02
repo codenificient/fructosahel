@@ -9,10 +9,17 @@
 
 import { useToastContext } from "@/components/toast-provider";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function ToastExamples() {
-  const { toast, success, error, warning, info, dismiss, dismissAll } = useToastContext();
+  const { toast, success, error, warning, info, dismiss, dismissAll } =
+    useToastContext();
 
   // Example 1: Basic success toast
   const showSuccessToast = () => {
@@ -23,7 +30,7 @@ export default function ToastExamples() {
   const showErrorToast = () => {
     error(
       "Failed to Save",
-      "There was an error saving your changes. Please try again later."
+      "There was an error saving your changes. Please try again later.",
     );
   };
 
@@ -31,7 +38,7 @@ export default function ToastExamples() {
   const showWarningToast = () => {
     warning(
       "Missing Information",
-      "Please fill in all required fields before submitting"
+      "Please fill in all required fields before submitting",
     );
   };
 
@@ -88,7 +95,7 @@ export default function ToastExamples() {
     if (!formData.name || !formData.location || formData.size <= 0) {
       error(
         "Validation Error",
-        "Please fill in all required fields with valid values"
+        "Please fill in all required fields with valid values",
       );
       return;
     }
@@ -113,7 +120,7 @@ export default function ToastExamples() {
     } catch (err) {
       error(
         "Error",
-        err instanceof Error ? err.message : "An unexpected error occurred"
+        err instanceof Error ? err.message : "An unexpected error occurred",
       );
     }
   };
@@ -140,16 +147,32 @@ export default function ToastExamples() {
             <CardDescription>Standard toast notification types</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Button onClick={showSuccessToast} variant="default" className="w-full">
+            <Button
+              onClick={showSuccessToast}
+              variant="default"
+              className="w-full"
+            >
               Show Success Toast
             </Button>
-            <Button onClick={showErrorToast} variant="destructive" className="w-full">
+            <Button
+              onClick={showErrorToast}
+              variant="destructive"
+              className="w-full"
+            >
               Show Error Toast
             </Button>
-            <Button onClick={showWarningToast} variant="outline" className="w-full">
+            <Button
+              onClick={showWarningToast}
+              variant="outline"
+              className="w-full"
+            >
               Show Warning Toast
             </Button>
-            <Button onClick={showInfoToast} variant="secondary" className="w-full">
+            <Button
+              onClick={showInfoToast}
+              variant="secondary"
+              className="w-full"
+            >
               Show Info Toast
             </Button>
           </CardContent>
@@ -158,19 +181,37 @@ export default function ToastExamples() {
         <Card>
           <CardHeader>
             <CardTitle>Advanced Examples</CardTitle>
-            <CardDescription>Custom configurations and behaviors</CardDescription>
+            <CardDescription>
+              Custom configurations and behaviors
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Button onClick={showCustomToast} variant="default" className="w-full">
+            <Button
+              onClick={showCustomToast}
+              variant="default"
+              className="w-full"
+            >
               Custom Duration (7s)
             </Button>
-            <Button onClick={showPersistentToast} variant="default" className="w-full">
+            <Button
+              onClick={showPersistentToast}
+              variant="default"
+              className="w-full"
+            >
               Persistent Toast
             </Button>
-            <Button onClick={showMultipleToasts} variant="default" className="w-full">
+            <Button
+              onClick={showMultipleToasts}
+              variant="default"
+              className="w-full"
+            >
               Multiple Toasts
             </Button>
-            <Button onClick={handleDismissAll} variant="outline" className="w-full">
+            <Button
+              onClick={handleDismissAll}
+              variant="outline"
+              className="w-full"
+            >
               Dismiss All
             </Button>
           </CardContent>
@@ -182,10 +223,18 @@ export default function ToastExamples() {
             <CardDescription>Common use cases</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Button onClick={handleFormSubmit} variant="default" className="w-full">
+            <Button
+              onClick={handleFormSubmit}
+              variant="default"
+              className="w-full"
+            >
               Form Validation
             </Button>
-            <Button onClick={handleApiCall} variant="default" className="w-full">
+            <Button
+              onClick={handleApiCall}
+              variant="default"
+              className="w-full"
+            >
               API Call Example
             </Button>
           </CardContent>
@@ -201,7 +250,7 @@ export default function ToastExamples() {
             <div>
               <h3 className="font-semibold mb-2">1. Basic Success Toast</h3>
               <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm overflow-x-auto">
-{`const { success } = useToastContext();
+                {`const { success } = useToastContext();
 
 success("Operation Successful", "The action was completed successfully");`}
               </pre>
@@ -210,7 +259,7 @@ success("Operation Successful", "The action was completed successfully");`}
             <div>
               <h3 className="font-semibold mb-2">2. Error Handling</h3>
               <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm overflow-x-auto">
-{`const { error } = useToastContext();
+                {`const { error } = useToastContext();
 
 try {
   await createFarm(data);
@@ -223,7 +272,7 @@ try {
             <div>
               <h3 className="font-semibold mb-2">3. Custom Configuration</h3>
               <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm overflow-x-auto">
-{`const { toast } = useToastContext();
+                {`const { toast } = useToastContext();
 
 toast({
   variant: "success",

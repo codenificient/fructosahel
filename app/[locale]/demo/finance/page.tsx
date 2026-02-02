@@ -2,9 +2,21 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Plus, DollarSign, TrendingUp, TrendingDown, Wallet } from "lucide-react";
+import {
+  Plus,
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+  Wallet,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -15,7 +27,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { demoTransactions, demoSales, calculateTransactionTotals, calculateSalesTotals } from "@/lib/demo-data";
+import {
+  demoTransactions,
+  demoSales,
+  calculateTransactionTotals,
+  calculateSalesTotals,
+} from "@/lib/demo-data";
 
 export default function DemoFinancePage() {
   const t = useTranslations();
@@ -52,7 +69,8 @@ export default function DemoFinancePage() {
       {/* Demo Banner */}
       <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
         <p className="text-sm text-amber-800 dark:text-amber-200">
-          This is a demo page with sample data. Sign in to manage your real finances.
+          This is a demo page with sample data. Sign in to manage your real
+          finances.
         </p>
       </div>
 
@@ -66,7 +84,9 @@ export default function DemoFinancePage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{formatCurrency(txTotals.income)}</div>
+            <div className="text-2xl font-bold text-green-600">
+              {formatCurrency(txTotals.income)}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -77,7 +97,9 @@ export default function DemoFinancePage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{formatCurrency(txTotals.expense)}</div>
+            <div className="text-2xl font-bold text-red-600">
+              {formatCurrency(txTotals.expense)}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -88,7 +110,9 @@ export default function DemoFinancePage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{formatCurrency(txTotals.balance)}</div>
+            <div className="text-2xl font-bold text-blue-600">
+              {formatCurrency(txTotals.balance)}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -99,7 +123,9 @@ export default function DemoFinancePage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(saleTotals.totalRevenue)}</div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(saleTotals.totalRevenue)}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -107,7 +133,9 @@ export default function DemoFinancePage() {
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
-          <TabsTrigger value="transactions">{t("finance.transactions")}</TabsTrigger>
+          <TabsTrigger value="transactions">
+            {t("finance.transactions")}
+          </TabsTrigger>
           <TabsTrigger value="sales">{t("finance.sales")}</TabsTrigger>
         </TabsList>
 
@@ -137,12 +165,19 @@ export default function DemoFinancePage() {
                         <Badge variant="outline">{tx.category}</Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge variant={tx.type === "income" ? "default" : "destructive"}>
+                        <Badge
+                          variant={
+                            tx.type === "income" ? "default" : "destructive"
+                          }
+                        >
                           {tx.type === "income" ? "Income" : "Expense"}
                         </Badge>
                       </TableCell>
-                      <TableCell className={`text-right font-medium ${tx.type === "income" ? "text-green-600" : "text-red-600"}`}>
-                        {tx.type === "income" ? "+" : "-"}{formatCurrency(parseFloat(tx.amount))}
+                      <TableCell
+                        className={`text-right font-medium ${tx.type === "income" ? "text-green-600" : "text-red-600"}`}
+                      >
+                        {tx.type === "income" ? "+" : "-"}
+                        {formatCurrency(parseFloat(tx.amount))}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -173,9 +208,13 @@ export default function DemoFinancePage() {
                   {demoSales.map((sale) => (
                     <TableRow key={sale.id}>
                       <TableCell>{formatDate(sale.saleDate)}</TableCell>
-                      <TableCell className="capitalize">{sale.cropType}</TableCell>
+                      <TableCell className="capitalize">
+                        {sale.cropType}
+                      </TableCell>
                       <TableCell>{sale.buyerName}</TableCell>
-                      <TableCell>{parseFloat(sale.quantityKg).toLocaleString()} kg</TableCell>
+                      <TableCell>
+                        {parseFloat(sale.quantityKg).toLocaleString()} kg
+                      </TableCell>
                       <TableCell className="text-right font-medium text-green-600">
                         {formatCurrency(parseFloat(sale.totalAmount))}
                       </TableCell>

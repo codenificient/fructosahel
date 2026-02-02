@@ -4,7 +4,13 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { MapPin, Plus, MoreHorizontal, Edit, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -37,7 +43,10 @@ const countryFlags: Record<string, string> = {
 export default function DemoFarmsPage() {
   const t = useTranslations();
 
-  const totalHectares = demoFarms.reduce((acc, f) => acc + parseFloat(f.sizeHectares), 0);
+  const totalHectares = demoFarms.reduce(
+    (acc, f) => acc + parseFloat(f.sizeHectares),
+    0,
+  );
   const uniqueCountries = new Set(demoFarms.map((f) => f.country)).size;
 
   return (
@@ -45,7 +54,9 @@ export default function DemoFarmsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{t("farms.title")}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {t("farms.title")}
+          </h1>
           <p className="text-muted-foreground">{t("farms.subtitle")}</p>
         </div>
         <Button disabled>
@@ -57,7 +68,8 @@ export default function DemoFarmsPage() {
       {/* Demo Banner */}
       <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
         <p className="text-sm text-amber-800 dark:text-amber-200">
-          This is a demo page with sample data. Sign in to manage your real farms.
+          This is a demo page with sample data. Sign in to manage your real
+          farms.
         </p>
       </div>
 
@@ -73,7 +85,9 @@ export default function DemoFarmsPage() {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total Hectares</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Hectares
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalHectares.toFixed(1)}</div>
@@ -101,7 +115,9 @@ export default function DemoFarmsPage() {
       <Card>
         <CardHeader>
           <CardTitle>All Farms</CardTitle>
-          <CardDescription>A list of all your farms across the Sahel region</CardDescription>
+          <CardDescription>
+            A list of all your farms across the Sahel region
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -130,7 +146,9 @@ export default function DemoFarmsPage() {
                       {countryFlags[farm.country]} {countryLabels[farm.country]}
                     </Badge>
                   </TableCell>
-                  <TableCell>{parseFloat(farm.sizeHectares).toFixed(1)}</TableCell>
+                  <TableCell>
+                    {parseFloat(farm.sizeHectares).toFixed(1)}
+                  </TableCell>
                   <TableCell>
                     {new Date(farm.createdAt).toLocaleDateString()}
                   </TableCell>

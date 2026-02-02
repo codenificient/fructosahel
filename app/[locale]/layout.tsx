@@ -8,6 +8,12 @@ import { stackServerApp } from "@/lib/stack";
 import { routing } from "@/i18n/routing";
 import { ToastProvider } from "@/components/toast-provider";
 import { AnalyticsProvider } from "@/components/analytics-provider";
+import { SentryUserProvider } from "@/components/sentry-user-provider";
+import {
+  ServiceWorkerProvider,
+  ServiceWorkerUpdatePrompt,
+} from "@/components/service-worker-provider";
+import { OfflineBanner } from "@/components/offline-indicator";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -97,7 +103,9 @@ export const metadata: Metadata = {
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
   verification: {
     google: "google-site-verification-code",
@@ -166,7 +174,9 @@ export default async function LocaleLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
         />
       </head>
       <body
@@ -175,11 +185,17 @@ export default async function LocaleLayout({
         <StackProvider app={stackServerApp}>
           <StackTheme>
             <NextIntlClientProvider messages={messages}>
-              <AnalyticsProvider>
-                <ToastProvider>
-                  {children}
-                </ToastProvider>
-              </AnalyticsProvider>
+              <ServiceWorkerProvider>
+                <SentryUserProvider>
+                  <AnalyticsProvider>
+                    <ToastProvider>
+                      <OfflineBanner />
+                      {children}
+                      <ServiceWorkerUpdatePrompt />
+                    </ToastProvider>
+                  </AnalyticsProvider>
+                </SentryUserProvider>
+              </ServiceWorkerProvider>
             </NextIntlClientProvider>
           </StackTheme>
         </StackProvider>

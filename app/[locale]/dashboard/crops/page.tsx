@@ -15,7 +15,13 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -52,11 +58,22 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useCrops, useCreateCrop, useUpdateCrop, useDeleteCrop } from "@/lib/hooks/use-crops";
+import {
+  useCrops,
+  useCreateCrop,
+  useUpdateCrop,
+  useDeleteCrop,
+} from "@/lib/hooks/use-crops";
 import { useToastContext } from "@/components/toast-provider";
 import type { Crop, CropType, CropStatus } from "@/types";
 import type { CreateCropInput } from "@/lib/validations/crops";
@@ -81,7 +98,10 @@ const cropStatusLabels: Record<CropStatus, string> = {
   dormant: "Dormant",
 };
 
-const statusColors: Record<CropStatus, "default" | "secondary" | "destructive" | "outline"> = {
+const statusColors: Record<
+  CropStatus,
+  "default" | "secondary" | "destructive" | "outline"
+> = {
   planning: "outline",
   planted: "secondary",
   growing: "default",
@@ -96,14 +116,21 @@ export default function CropsPage() {
   const t = useTranslations();
   const { toast } = useToastContext();
   const [typeFilter, setTypeFilter] = useState<CropType | undefined>(undefined);
-  const [statusFilter, setStatusFilter] = useState<CropStatus | undefined>(undefined);
+  const [statusFilter, setStatusFilter] = useState<CropStatus | undefined>(
+    undefined,
+  );
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedCrop, setSelectedCrop] = useState<Crop | null>(null);
 
   // Hooks
-  const { data: crops, isLoading, error, refetch } = useCrops({
+  const {
+    data: crops,
+    isLoading,
+    error,
+    refetch,
+  } = useCrops({
     cropType: typeFilter,
     status: statusFilter,
   });
@@ -195,7 +222,8 @@ export default function CropsPage() {
       toast({
         variant: "error",
         title: "Error",
-        description: err instanceof Error ? err.message : "Failed to create crop",
+        description:
+          err instanceof Error ? err.message : "Failed to create crop",
       });
     }
   };
@@ -218,7 +246,8 @@ export default function CropsPage() {
       toast({
         variant: "error",
         title: "Error",
-        description: err instanceof Error ? err.message : "Failed to update crop",
+        description:
+          err instanceof Error ? err.message : "Failed to update crop",
       });
     }
   };
@@ -232,7 +261,8 @@ export default function CropsPage() {
       toast({
         variant: "error",
         title: "Error",
-        description: err instanceof Error ? err.message : "Failed to delete crop",
+        description:
+          err instanceof Error ? err.message : "Failed to delete crop",
       });
     }
   };
@@ -247,7 +277,9 @@ export default function CropsPage() {
       plantingDate: crop.plantingDate || undefined,
       expectedHarvestDate: crop.expectedHarvestDate || undefined,
       numberOfPlants: crop.numberOfPlants || undefined,
-      expectedYieldKg: crop.expectedYieldKg ? Number(crop.expectedYieldKg) : undefined,
+      expectedYieldKg: crop.expectedYieldKg
+        ? Number(crop.expectedYieldKg)
+        : undefined,
       notes: crop.notes || "",
     });
     setIsEditDialogOpen(true);
@@ -276,12 +308,16 @@ export default function CropsPage() {
 
   // Calculate stats
   const totalCrops = filteredCrops.length;
-  const activeCrops = filteredCrops.filter(c =>
-    ["growing", "flowering", "fruiting", "harvesting"].includes(c.status)
+  const activeCrops = filteredCrops.filter((c) =>
+    ["growing", "flowering", "fruiting", "harvesting"].includes(c.status),
   ).length;
-  const totalPlants = filteredCrops.reduce((sum, c) => sum + (c.numberOfPlants || 0), 0);
-  const expectedYield = filteredCrops.reduce((sum, c) =>
-    sum + (c.expectedYieldKg ? parseFloat(c.expectedYieldKg) : 0), 0
+  const totalPlants = filteredCrops.reduce(
+    (sum, c) => sum + (c.numberOfPlants || 0),
+    0,
+  );
+  const expectedYield = filteredCrops.reduce(
+    (sum, c) => sum + (c.expectedYieldKg ? parseFloat(c.expectedYieldKg) : 0),
+    0,
   );
 
   // Loading state
@@ -338,7 +374,12 @@ export default function CropsPage() {
           <AlertTitle>Error</AlertTitle>
           <AlertDescription className="flex items-center justify-between">
             <span>Failed to load crops: {error.message}</span>
-            <Button variant="outline" size="sm" onClick={() => refetch()} className="ml-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => refetch()}
+              className="ml-4"
+            >
               <RefreshCw className="mr-2 h-4 w-4" />
               Retry
             </Button>
@@ -357,7 +398,9 @@ export default function CropsPage() {
             <Sprout className="h-8 w-8 text-green-600" />
             Crops
           </h1>
-          <p className="text-muted-foreground">Manage your crop plantings and track growth</p>
+          <p className="text-muted-foreground">
+            Manage your crop plantings and track growth
+          </p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
@@ -369,7 +412,9 @@ export default function CropsPage() {
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
               <DialogTitle>Add New Crop</DialogTitle>
-              <DialogDescription>Add a new crop planting to your farm</DialogDescription>
+              <DialogDescription>
+                Add a new crop planting to your farm
+              </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
@@ -377,7 +422,9 @@ export default function CropsPage() {
                 <Input
                   placeholder="Enter field ID"
                   value={formData.fieldId || ""}
-                  onChange={(e) => setFormData({ ...formData, fieldId: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, fieldId: e.target.value })
+                  }
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -385,14 +432,18 @@ export default function CropsPage() {
                   <Label>Crop Type</Label>
                   <Select
                     value={formData.cropType}
-                    onValueChange={(value) => setFormData({ ...formData, cropType: value as CropType })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, cropType: value as CropType })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {Object.entries(cropTypeLabels).map(([value, label]) => (
-                        <SelectItem key={value} value={value}>{label}</SelectItem>
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -402,7 +453,9 @@ export default function CropsPage() {
                   <Input
                     placeholder="e.g., Kent, Hass"
                     value={formData.variety || ""}
-                    onChange={(e) => setFormData({ ...formData, variety: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, variety: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -411,15 +464,21 @@ export default function CropsPage() {
                   <Label>Status</Label>
                   <Select
                     value={formData.status}
-                    onValueChange={(value) => setFormData({ ...formData, status: value as CropStatus })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, status: value as CropStatus })
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {Object.entries(cropStatusLabels).map(([value, label]) => (
-                        <SelectItem key={value} value={value}>{label}</SelectItem>
-                      ))}
+                      {Object.entries(cropStatusLabels).map(
+                        ([value, label]) => (
+                          <SelectItem key={value} value={value}>
+                            {label}
+                          </SelectItem>
+                        ),
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -429,7 +488,12 @@ export default function CropsPage() {
                     type="number"
                     placeholder="0"
                     value={formData.numberOfPlants || ""}
-                    onChange={(e) => setFormData({ ...formData, numberOfPlants: parseInt(e.target.value) || undefined })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        numberOfPlants: parseInt(e.target.value) || undefined,
+                      })
+                    }
                   />
                 </div>
               </div>
@@ -438,16 +502,42 @@ export default function CropsPage() {
                   <Label>Planting Date</Label>
                   <Input
                     type="date"
-                    value={formData.plantingDate ? new Date(formData.plantingDate).toISOString().split("T")[0] : ""}
-                    onChange={(e) => setFormData({ ...formData, plantingDate: e.target.value ? new Date(e.target.value) : undefined })}
+                    value={
+                      formData.plantingDate
+                        ? new Date(formData.plantingDate)
+                            .toISOString()
+                            .split("T")[0]
+                        : ""
+                    }
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        plantingDate: e.target.value
+                          ? new Date(e.target.value)
+                          : undefined,
+                      })
+                    }
                   />
                 </div>
                 <div className="grid gap-2">
                   <Label>Expected Harvest</Label>
                   <Input
                     type="date"
-                    value={formData.expectedHarvestDate ? new Date(formData.expectedHarvestDate).toISOString().split("T")[0] : ""}
-                    onChange={(e) => setFormData({ ...formData, expectedHarvestDate: e.target.value ? new Date(e.target.value) : undefined })}
+                    value={
+                      formData.expectedHarvestDate
+                        ? new Date(formData.expectedHarvestDate)
+                            .toISOString()
+                            .split("T")[0]
+                        : ""
+                    }
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        expectedHarvestDate: e.target.value
+                          ? new Date(e.target.value)
+                          : undefined,
+                      })
+                    }
                   />
                 </div>
               </div>
@@ -457,7 +547,12 @@ export default function CropsPage() {
                   type="number"
                   placeholder="0"
                   value={formData.expectedYieldKg || ""}
-                  onChange={(e) => setFormData({ ...formData, expectedYieldKg: parseFloat(e.target.value) || undefined })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      expectedYieldKg: parseFloat(e.target.value) || undefined,
+                    })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -465,15 +560,26 @@ export default function CropsPage() {
                 <Textarea
                   placeholder="Additional notes..."
                   value={formData.notes || ""}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, notes: e.target.value })
+                  }
                 />
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => { setIsAddDialogOpen(false); resetForm(); }}>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsAddDialogOpen(false);
+                  resetForm();
+                }}
+              >
                 Cancel
               </Button>
-              <Button onClick={handleCreateCrop} disabled={createCrop.isLoading}>
+              <Button
+                onClick={handleCreateCrop}
+                disabled={createCrop.isLoading}
+              >
                 {createCrop.isLoading ? "Adding..." : "Add Crop"}
               </Button>
             </DialogFooter>
@@ -487,7 +593,9 @@ export default function CropsPage() {
           <Label>Crop Type:</Label>
           <Select
             value={typeFilter || "all"}
-            onValueChange={(value) => setTypeFilter(value === "all" ? undefined : value as CropType)}
+            onValueChange={(value) =>
+              setTypeFilter(value === "all" ? undefined : (value as CropType))
+            }
           >
             <SelectTrigger className="w-[150px]">
               <SelectValue placeholder="All types" />
@@ -495,7 +603,9 @@ export default function CropsPage() {
             <SelectContent>
               <SelectItem value="all">All types</SelectItem>
               {Object.entries(cropTypeLabels).map(([value, label]) => (
-                <SelectItem key={value} value={value}>{label}</SelectItem>
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -504,7 +614,11 @@ export default function CropsPage() {
           <Label>Status:</Label>
           <Select
             value={statusFilter || "all"}
-            onValueChange={(value) => setStatusFilter(value === "all" ? undefined : value as CropStatus)}
+            onValueChange={(value) =>
+              setStatusFilter(
+                value === "all" ? undefined : (value as CropStatus),
+              )
+            }
           >
             <SelectTrigger className="w-[150px]">
               <SelectValue placeholder="All statuses" />
@@ -512,7 +626,9 @@ export default function CropsPage() {
             <SelectContent>
               <SelectItem value="all">All statuses</SelectItem>
               {Object.entries(cropStatusLabels).map(([value, label]) => (
-                <SelectItem key={value} value={value}>{label}</SelectItem>
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -540,7 +656,9 @@ export default function CropsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{activeCrops}</div>
+            <div className="text-2xl font-bold text-green-600">
+              {activeCrops}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -551,7 +669,9 @@ export default function CropsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(totalPlants)}</div>
+            <div className="text-2xl font-bold">
+              {formatNumber(totalPlants)}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -562,7 +682,9 @@ export default function CropsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(expectedYield)} kg</div>
+            <div className="text-2xl font-bold">
+              {formatNumber(expectedYield)} kg
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -625,9 +747,13 @@ export default function CropsPage() {
                     </TableCell>
                     <TableCell>{formatNumber(crop.numberOfPlants)}</TableCell>
                     <TableCell>{formatDate(crop.plantingDate)}</TableCell>
-                    <TableCell>{formatDate(crop.expectedHarvestDate)}</TableCell>
                     <TableCell>
-                      {crop.expectedYieldKg ? `${formatNumber(crop.expectedYieldKg)} kg` : "-"}
+                      {formatDate(crop.expectedHarvestDate)}
+                    </TableCell>
+                    <TableCell>
+                      {crop.expectedYieldKg
+                        ? `${formatNumber(crop.expectedYieldKg)} kg`
+                        : "-"}
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -637,7 +763,9 @@ export default function CropsPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => openEditDialog(crop)}>
+                          <DropdownMenuItem
+                            onClick={() => openEditDialog(crop)}
+                          >
                             <Edit className="mr-2 h-4 w-4" />
                             Edit
                           </DropdownMenuItem>
@@ -672,14 +800,18 @@ export default function CropsPage() {
                 <Label>Crop Type</Label>
                 <Select
                   value={formData.cropType}
-                  onValueChange={(value) => setFormData({ ...formData, cropType: value as CropType })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, cropType: value as CropType })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(cropTypeLabels).map(([value, label]) => (
-                      <SelectItem key={value} value={value}>{label}</SelectItem>
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -689,7 +821,9 @@ export default function CropsPage() {
                 <Input
                   placeholder="e.g., Kent, Hass"
                   value={formData.variety || ""}
-                  onChange={(e) => setFormData({ ...formData, variety: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, variety: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -698,14 +832,18 @@ export default function CropsPage() {
                 <Label>Status</Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(value) => setFormData({ ...formData, status: value as CropStatus })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, status: value as CropStatus })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(cropStatusLabels).map(([value, label]) => (
-                      <SelectItem key={value} value={value}>{label}</SelectItem>
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -716,7 +854,12 @@ export default function CropsPage() {
                   type="number"
                   placeholder="0"
                   value={formData.numberOfPlants || ""}
-                  onChange={(e) => setFormData({ ...formData, numberOfPlants: parseInt(e.target.value) || undefined })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      numberOfPlants: parseInt(e.target.value) || undefined,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -727,15 +870,33 @@ export default function CropsPage() {
                   type="number"
                   placeholder="0"
                   value={formData.expectedYieldKg || ""}
-                  onChange={(e) => setFormData({ ...formData, expectedYieldKg: parseFloat(e.target.value) || undefined })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      expectedYieldKg: parseFloat(e.target.value) || undefined,
+                    })
+                  }
                 />
               </div>
               <div className="grid gap-2">
                 <Label>Expected Harvest</Label>
                 <Input
                   type="date"
-                  value={formData.expectedHarvestDate ? new Date(formData.expectedHarvestDate).toISOString().split("T")[0] : ""}
-                  onChange={(e) => setFormData({ ...formData, expectedHarvestDate: e.target.value ? new Date(e.target.value) : undefined })}
+                  value={
+                    formData.expectedHarvestDate
+                      ? new Date(formData.expectedHarvestDate)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      expectedHarvestDate: e.target.value
+                        ? new Date(e.target.value)
+                        : undefined,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -744,12 +905,21 @@ export default function CropsPage() {
               <Textarea
                 placeholder="Additional notes..."
                 value={formData.notes || ""}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, notes: e.target.value })
+                }
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => { setIsEditDialogOpen(false); setSelectedCrop(null); resetForm(); }}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsEditDialogOpen(false);
+                setSelectedCrop(null);
+                resetForm();
+              }}
+            >
               Cancel
             </Button>
             <Button onClick={handleUpdateCrop} disabled={updateCrop.isLoading}>
@@ -760,16 +930,25 @@ export default function CropsPage() {
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete this crop record. This action cannot be undone.
+              This will permanently delete this crop record. This action cannot
+              be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => { setIsDeleteDialogOpen(false); setSelectedCrop(null); }}>
+            <AlertDialogCancel
+              onClick={() => {
+                setIsDeleteDialogOpen(false);
+                setSelectedCrop(null);
+              }}
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction

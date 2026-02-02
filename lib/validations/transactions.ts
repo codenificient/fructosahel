@@ -14,7 +14,9 @@ export const createTransactionSchema = z.object({
   attachmentUrl: z.string().url().optional(),
 });
 
-export const updateTransactionSchema = createTransactionSchema.partial().omit({ createdBy: true });
+export const updateTransactionSchema = createTransactionSchema
+  .partial()
+  .omit({ createdBy: true });
 
 export type CreateTransactionInput = z.infer<typeof createTransactionSchema>;
 export type UpdateTransactionInput = z.infer<typeof updateTransactionSchema>;

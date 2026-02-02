@@ -91,7 +91,9 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
 }
 
@@ -145,9 +147,17 @@
 
 /* Gradient backgrounds */
 .gradient-primary {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary)) 0%,
+    hsl(var(--primary) / 0.8) 100%
+  );
 }
 
 .gradient-hero {
-  background: linear-gradient(135deg, hsl(142 76% 36% / 0.1) 0%, hsl(47 96% 53% / 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    hsl(142 76% 36% / 0.1) 0%,
+    hsl(47 96% 53% / 0.1) 100%
+  );
 }

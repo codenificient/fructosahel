@@ -84,6 +84,7 @@ export const demoCrops: Crop[] = [
     expectedYieldKg: "12500",
     actualYieldKg: null,
     notes: "Premium export variety, third season",
+    imageUrl: null,
     createdAt: new Date("2022-06-15"),
     updatedAt: new Date("2024-11-20"),
   },
@@ -100,6 +101,7 @@ export const demoCrops: Crop[] = [
     expectedYieldKg: "5400",
     actualYieldKg: null,
     notes: "First harvest expected next year",
+    imageUrl: null,
     createdAt: new Date("2023-07-01"),
     updatedAt: new Date("2024-11-18"),
   },
@@ -116,6 +118,7 @@ export const demoCrops: Crop[] = [
     expectedYieldKg: "7500",
     actualYieldKg: "6800",
     notes: "Sweet Cayenne for local market",
+    imageUrl: null,
     createdAt: new Date("2024-01-15"),
     updatedAt: new Date("2024-11-22"),
   },
@@ -132,6 +135,7 @@ export const demoCrops: Crop[] = [
     expectedYieldKg: "16000",
     actualYieldKg: null,
     notes: "Organic plantain for hotels",
+    imageUrl: null,
     createdAt: new Date("2024-03-01"),
     updatedAt: new Date("2024-11-19"),
   },
@@ -148,6 +152,7 @@ export const demoCrops: Crop[] = [
     expectedYieldKg: "8000",
     actualYieldKg: "7200",
     notes: "Solo variety, continuous harvest",
+    imageUrl: null,
     createdAt: new Date("2024-02-01"),
     updatedAt: new Date("2024-11-21"),
   },
@@ -164,6 +169,7 @@ export const demoCrops: Crop[] = [
     expectedYieldKg: "3600",
     actualYieldKg: null,
     notes: "Premium Hass for restaurant market",
+    imageUrl: null,
     createdAt: new Date("2021-08-01"),
     updatedAt: new Date("2024-11-20"),
   },
@@ -180,6 +186,7 @@ export const demoCrops: Crop[] = [
     expectedYieldKg: "15000",
     actualYieldKg: null,
     notes: "New planting, local variety",
+    imageUrl: null,
     createdAt: new Date("2024-06-01"),
     updatedAt: new Date("2024-11-15"),
   },
@@ -196,6 +203,7 @@ export const demoCrops: Crop[] = [
     expectedYieldKg: "6000",
     actualYieldKg: "5800",
     notes: "Successful harvest, sold to export cooperative",
+    imageUrl: null,
     createdAt: new Date("2020-07-15"),
     updatedAt: new Date("2024-03-20"),
   },
@@ -604,11 +612,11 @@ export const demoSales: Sale[] = [
 // Helper to calculate transaction totals
 export function calculateTransactionTotals(transactions: Transaction[]) {
   const income = transactions
-    .filter(t => t.type === "income")
+    .filter((t) => t.type === "income")
     .reduce((sum, t) => sum + parseFloat(t.amount), 0);
 
   const expense = transactions
-    .filter(t => t.type === "expense")
+    .filter((t) => t.type === "expense")
     .reduce((sum, t) => sum + parseFloat(t.amount), 0);
 
   return {
@@ -620,8 +628,14 @@ export function calculateTransactionTotals(transactions: Transaction[]) {
 
 // Helper to calculate sales totals
 export function calculateSalesTotals(sales: Sale[]) {
-  const totalRevenue = sales.reduce((sum, s) => sum + parseFloat(s.totalAmount), 0);
-  const totalQuantity = sales.reduce((sum, s) => sum + parseFloat(s.quantityKg), 0);
+  const totalRevenue = sales.reduce(
+    (sum, s) => sum + parseFloat(s.totalAmount),
+    0,
+  );
+  const totalQuantity = sales.reduce(
+    (sum, s) => sum + parseFloat(s.quantityKg),
+    0,
+  );
 
   return {
     totalRevenue,

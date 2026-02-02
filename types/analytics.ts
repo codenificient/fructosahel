@@ -21,25 +21,25 @@ export interface PageViewEvent extends BaseEventProperties {
 
 // Authentication events
 export type AuthEventType =
-  | 'signup'
-  | 'login'
-  | 'logout'
-  | 'password_reset'
-  | 'email_verification';
+  | "signup"
+  | "login"
+  | "logout"
+  | "password_reset"
+  | "email_verification";
 
 export interface AuthEvent extends BaseEventProperties {
   action: AuthEventType;
-  method?: 'email' | 'google' | 'facebook' | 'other';
+  method?: "email" | "google" | "facebook" | "other";
   success: boolean;
   errorMessage?: string;
 }
 
 // Farm management events
 export type FarmEventType =
-  | 'farm_created'
-  | 'farm_updated'
-  | 'farm_deleted'
-  | 'farm_viewed';
+  | "farm_created"
+  | "farm_updated"
+  | "farm_deleted"
+  | "farm_viewed";
 
 export interface FarmEvent extends BaseEventProperties {
   action: FarmEventType;
@@ -51,28 +51,28 @@ export interface FarmEvent extends BaseEventProperties {
 
 // Crop management events
 export type CropEventType =
-  | 'crop_added'
-  | 'crop_updated'
-  | 'crop_removed'
-  | 'crop_harvested'
-  | 'crop_health_checked';
+  | "crop_added"
+  | "crop_updated"
+  | "crop_removed"
+  | "crop_harvested"
+  | "crop_health_checked";
 
 export interface CropEvent extends BaseEventProperties {
   action: CropEventType;
   cropId?: string;
-  cropType?: 'pineapple' | 'cashew' | 'mango' | 'avocado' | 'banana' | 'papaya';
+  cropType?: "pineapple" | "cashew" | "mango" | "avocado" | "banana" | "papaya";
   plantingDate?: string;
   expectedHarvestDate?: string;
-  healthStatus?: 'excellent' | 'good' | 'fair' | 'poor' | 'critical';
+  healthStatus?: "excellent" | "good" | "fair" | "poor" | "critical";
   quantity?: number;
 }
 
 // AI Agent events
 export type AIEventType =
-  | 'ai_query_submitted'
-  | 'ai_response_received'
-  | 'ai_suggestion_accepted'
-  | 'ai_suggestion_rejected';
+  | "ai_query_submitted"
+  | "ai_response_received"
+  | "ai_suggestion_accepted"
+  | "ai_suggestion_rejected";
 
 export interface AIEvent extends BaseEventProperties {
   action: AIEventType;

@@ -75,7 +75,7 @@ export function useToast() {
 
       return id;
     },
-    [dismiss]
+    [dismiss],
   );
 
   // Helper methods for different toast types
@@ -83,28 +83,28 @@ export function useToast() {
     (title: string, description?: string, duration?: number) => {
       return toast({ title, description, variant: "success", duration });
     },
-    [toast]
+    [toast],
   );
 
   const error = useCallback(
     (title: string, description?: string, duration?: number) => {
       return toast({ title, description, variant: "error", duration });
     },
-    [toast]
+    [toast],
   );
 
   const warning = useCallback(
     (title: string, description?: string, duration?: number) => {
       return toast({ title, description, variant: "warning", duration });
     },
-    [toast]
+    [toast],
   );
 
   const info = useCallback(
     (title: string, description?: string, duration?: number) => {
       return toast({ title, description, variant: "default", duration });
     },
-    [toast]
+    [toast],
   );
 
   // Cleanup timeouts on unmount

@@ -51,10 +51,14 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     const updateData: Record<string, unknown> = { updatedAt: new Date() };
 
     if (validatedData.name !== undefined) updateData.name = validatedData.name;
-    if (validatedData.sizeHectares !== undefined) updateData.sizeHectares = validatedData.sizeHectares.toString();
-    if (validatedData.soilType !== undefined) updateData.soilType = validatedData.soilType;
-    if (validatedData.irrigationType !== undefined) updateData.irrigationType = validatedData.irrigationType;
-    if (validatedData.notes !== undefined) updateData.notes = validatedData.notes;
+    if (validatedData.sizeHectares !== undefined)
+      updateData.sizeHectares = validatedData.sizeHectares.toString();
+    if (validatedData.soilType !== undefined)
+      updateData.soilType = validatedData.soilType;
+    if (validatedData.irrigationType !== undefined)
+      updateData.irrigationType = validatedData.irrigationType;
+    if (validatedData.notes !== undefined)
+      updateData.notes = validatedData.notes;
 
     const [updatedField] = await db
       .update(fields)

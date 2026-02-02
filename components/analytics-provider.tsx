@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
-import { getAnalytics } from '@/lib/analytics';
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { getAnalytics } from "@/lib/analytics";
 
 /**
  * Analytics Provider Component
@@ -17,7 +17,7 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     const analytics = getAnalytics();
 
     // Get the page title
-    const title = typeof document !== 'undefined' ? document.title : undefined;
+    const title = typeof document !== "undefined" ? document.title : undefined;
 
     // Track the page view
     analytics.pageView(pathname, title);
@@ -31,11 +31,11 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
       analytics.flush();
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     // Cleanup
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 

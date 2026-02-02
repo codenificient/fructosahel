@@ -68,6 +68,7 @@ export async function POST(request: NextRequest) {
         expectedYieldKg: validatedData.expectedYieldKg?.toString(),
         actualYieldKg: validatedData.actualYieldKg?.toString(),
         notes: validatedData.notes,
+        imageUrl: validatedData.imageUrl || null,
       })
       .returning();
 
