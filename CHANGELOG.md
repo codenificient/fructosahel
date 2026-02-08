@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/codenificient/fructosahel/compare/v1.2.0...v1.2.1) (2026-02-08)
+
+### Bug Fixes
+
+* **deps:** resolve 11 of 12 Dependabot security vulnerabilities ([07d3d31](https://github.com/codenificient/fructosahel/commit/07d3d31a06bfed383ee24d171f967b33be97d0c4))
+
 ## [1.2.0](https://github.com/codenificient/fructosahel/compare/v1.1.0...v1.2.0) (2026-02-08)
 
 ### Features
