@@ -12,6 +12,7 @@ import {
   DollarSign,
   Users,
   Bot,
+  FileBarChart,
   ChevronLeft,
   ChevronRight,
   FlaskConical,
@@ -65,6 +66,11 @@ export function DemoSidebar({ locale }: DemoSidebarProps) {
       href: `/${locale}/demo/team`,
       icon: Users,
       label: t("team.title"),
+    },
+    {
+      href: `/${locale}/demo/reports`,
+      icon: FileBarChart,
+      label: t("reports.title"),
     },
     {
       href: `/${locale}/demo/agents`,

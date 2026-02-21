@@ -1,17 +1,16 @@
 "use client";
 
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import {
   MapPin,
   Sprout,
   ListTodo,
-  TrendingUp,
-  TrendingDown,
   DollarSign,
-  ArrowUpRight,
-  ArrowDownRight,
-  Calendar,
   Users,
+  AlertCircle,
+  Plus,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -39,184 +38,365 @@ import {
   SalesTrendChart,
 } from "@/components/charts";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useFarms } from "@/lib/hooks/use-farms";
+import { useCrops } from "@/lib/hooks/use-crops";
+import { useTasks } from "@/lib/hooks/use-tasks";
+import { useTransactions } from "@/lib/hooks/use-transactions";
+import { useSales } from "@/lib/hooks/use-sales";
+
+const CROP_EMOJI: Record<string, string> = {
+  mango: "\uD83E\uDD6D",
+  cashew: "\uD83E\uDD5C",
+  pineapple: "\uD83C\uDF4D",
+  banana: "\uD83C\uDF4C",
+  papaya: "\uD83C\uDF48",
+  avocado: "\uD83E\uDD51",
+};
+
+const STATUS_PROGRESS: Record<string, number> = {
+  planning: 5,
+  planted: 15,
+  growing: 30,
+  flowering: 45,
+  fruiting: 65,
+  harvesting: 85,
+  harvested: 100,
+  dormant: 0,
+};
 
 export default function DashboardPage() {
   const t = useTranslations();
+  const locale = useLocale();
 
-  // Mock data - in production this would come from the database
-  const stats = [
-    {
-      title: t("dashboard.stats.totalFarms"),
-      value: "12",
-      change: "+2",
-      trend: "up",
-      icon: MapPin,
-    },
-    {
-      title: t("dashboard.stats.totalHectares"),
-      value: "450",
-      change: "+25",
-      trend: "up",
-      icon: Sprout,
-    },
-    {
-      title: t("dashboard.stats.activeCrops"),
-      value: "34",
-      change: "+8",
-      trend: "up",
-      icon: Sprout,
-    },
-    {
-      title: t("dashboard.stats.pendingTasks"),
-      value: "18",
-      change: "-5",
-      trend: "down",
-      icon: ListTodo,
-    },
-  ];
+  const {
+    data: farms,
+    isLoading: farmsLoading,
+    error: farmsError,
+    refetch: refetchFarms,
+  } = useFarms();
+  const {
+    data: crops,
+    isLoading: cropsLoading,
+    error: cropsError,
+    refetch: refetchCrops,
+  } = useCrops();
+  const {
+    data: tasks,
+    isLoading: tasksLoading,
+    error: tasksError,
+    refetch: refetchTasks,
+  } = useTasks();
+  const {
+    data: txData,
+    isLoading: txLoading,
+    error: txError,
+    refetch: refetchTx,
+  } = useTransactions();
+  const {
+    data: salesData,
+    isLoading: salesLoading,
+    error: salesError,
+    refetch: refetchSales,
+  } = useSales();
 
-  const financialStats = [
-    {
-      title: t("dashboard.stats.monthlyRevenue"),
-      value: "12,450,000",
-      change: "+12%",
-      trend: "up",
-      icon: TrendingUp,
-    },
-    {
-      title: t("dashboard.stats.monthlyExpenses"),
-      value: "8,230,000",
-      change: "+5%",
-      trend: "up",
-      icon: TrendingDown,
-    },
-  ];
+  const isLoading =
+    farmsLoading || cropsLoading || tasksLoading || txLoading || salesLoading;
+  const error = farmsError || cropsError || tasksError || txError || salesError;
 
-  const recentTasks = [
-    {
-      id: 1,
-      title: "Irrigate mango field B2",
-      status: "pending",
-      priority: "high",
-      dueDate: "Today",
-    },
-    {
-      id: 2,
-      title: "Apply fertilizer to cashew plot",
-      status: "in_progress",
-      priority: "medium",
-      dueDate: "Tomorrow",
-    },
-    {
-      id: 3,
-      title: "Harvest ripe papayas",
-      status: "pending",
-      priority: "urgent",
-      dueDate: "Today",
-    },
-    {
-      id: 4,
-      title: "Pest inspection - pineapple field",
-      status: "completed",
-      priority: "medium",
-      dueDate: "Yesterday",
-    },
-    {
-      id: 5,
-      title: "Prepare new banana planting area",
-      status: "pending",
-      priority: "low",
-      dueDate: "Next week",
-    },
-  ];
+  const refetchAll = async () => {
+    await Promise.all([
+      refetchFarms(),
+      refetchCrops(),
+      refetchTasks(),
+      refetchTx(),
+      refetchSales(),
+    ]);
+  };
 
-  const cropStatus = [
-    {
-      crop: "Mango",
-      emoji: "🥭",
-      fields: 8,
-      status: "Flowering",
-      progress: 45,
-    },
-    { crop: "Cashew", emoji: "🥜", fields: 5, status: "Growing", progress: 30 },
-    {
-      crop: "Pineapple",
-      emoji: "🍍",
-      fields: 4,
-      status: "Fruiting",
-      progress: 75,
-    },
-    {
-      crop: "Banana",
-      emoji: "🍌",
-      fields: 3,
-      status: "Harvesting",
-      progress: 90,
-    },
-    { crop: "Papaya", emoji: "🍈", fields: 2, status: "Growing", progress: 40 },
-  ];
+  // Derived stats
+  const stats = useMemo(() => {
+    const farmCount = farms?.length ?? 0;
+    const totalHectares = (farms ?? []).reduce(
+      (sum, f) => sum + parseFloat(f.sizeHectares),
+      0,
+    );
+    const activeCrops = (crops ?? []).filter(
+      (c) => c.status !== "harvested" && c.status !== "dormant",
+    ).length;
+    const pendingTasks = (tasks ?? []).filter(
+      (t) => t.status === "pending",
+    ).length;
 
-  // Mock data for charts
-  const revenueData = [
-    { month: "Jan", revenue: 8500000, expenses: 6200000 },
-    { month: "Feb", revenue: 9200000, expenses: 6800000 },
-    { month: "Mar", revenue: 10100000, expenses: 7100000 },
-    { month: "Apr", revenue: 11500000, expenses: 7800000 },
-    { month: "May", revenue: 10800000, expenses: 7500000 },
-    { month: "Jun", revenue: 12450000, expenses: 8230000 },
-  ];
+    return [
+      {
+        title: t("dashboard.stats.totalFarms"),
+        value: farmCount.toString(),
+        icon: MapPin,
+      },
+      {
+        title: t("dashboard.stats.totalHectares"),
+        value: totalHectares.toFixed(1),
+        icon: Sprout,
+      },
+      {
+        title: t("dashboard.stats.activeCrops"),
+        value: activeCrops.toString(),
+        icon: Sprout,
+      },
+      {
+        title: t("dashboard.stats.pendingTasks"),
+        value: pendingTasks.toString(),
+        icon: ListTodo,
+      },
+    ];
+  }, [farms, crops, tasks, t]);
 
-  const cropDistributionData = [
-    { name: "Mango", value: 8 },
-    { name: "Cashew", value: 5 },
-    { name: "Pineapple", value: 4 },
-    { name: "Banana", value: 3 },
-    { name: "Papaya", value: 2 },
-  ];
+  const financialStats = useMemo(() => {
+    const revenue = txData?.totals.income ?? 0;
+    const expenses = txData?.totals.expense ?? 0;
 
-  const taskStatusData = [
-    { status: "Pending", count: 18 },
-    { status: "In Progress", count: 12 },
-    { status: "Completed", count: 45 },
-    { status: "Cancelled", count: 3 },
-  ];
+    return [
+      {
+        title: t("dashboard.stats.monthlyRevenue"),
+        value: new Intl.NumberFormat("fr-FR").format(revenue),
+      },
+      {
+        title: t("dashboard.stats.monthlyExpenses"),
+        value: new Intl.NumberFormat("fr-FR").format(expenses),
+      },
+    ];
+  }, [txData, t]);
 
-  const salesTrendData = [
-    {
-      date: "Week 1",
-      Mango: 2500000,
-      Cashew: 1800000,
-      Pineapple: 1200000,
-      Banana: 900000,
-      Papaya: 600000,
-    },
-    {
-      date: "Week 2",
-      Mango: 2800000,
-      Cashew: 2100000,
-      Pineapple: 1400000,
-      Banana: 1100000,
-      Papaya: 700000,
-    },
-    {
-      date: "Week 3",
-      Mango: 3200000,
-      Cashew: 2300000,
-      Pineapple: 1600000,
-      Banana: 1300000,
-      Papaya: 800000,
-    },
-    {
-      date: "Week 4",
-      Mango: 3500000,
-      Cashew: 2600000,
-      Pineapple: 1800000,
-      Banana: 1500000,
-      Papaya: 900000,
-    },
-  ];
+  // Recent tasks (top 5, sorted by due date)
+  const recentTasks = useMemo(() => {
+    if (!tasks || tasks.length === 0) return [];
+    return [...tasks]
+      .filter((t) => t.status !== "completed" && t.status !== "cancelled")
+      .sort((a, b) => {
+        if (!a.dueDate && !b.dueDate) return 0;
+        if (!a.dueDate) return 1;
+        if (!b.dueDate) return -1;
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+      })
+      .slice(0, 5);
+  }, [tasks]);
 
-  const cropTypes = ["Mango", "Cashew", "Pineapple", "Banana", "Papaya"];
+  // Crop status grouped by type
+  const cropStatus = useMemo(() => {
+    if (!crops || crops.length === 0) return [];
+    const grouped: Record<
+      string,
+      { count: number; statuses: Record<string, number> }
+    > = {};
+
+    for (const crop of crops) {
+      const type = crop.cropType;
+      if (!grouped[type]) {
+        grouped[type] = { count: 0, statuses: {} };
+      }
+      grouped[type].count++;
+      grouped[type].statuses[crop.status] =
+        (grouped[type].statuses[crop.status] || 0) + 1;
+    }
+
+    return Object.entries(grouped)
+      .map(([type, data]) => {
+        // Find the dominant status
+        const dominantStatus = Object.entries(data.statuses).sort(
+          ([, a], [, b]) => b - a,
+        )[0][0];
+        const progress = STATUS_PROGRESS[dominantStatus] ?? 0;
+
+        return {
+          crop: type.charAt(0).toUpperCase() + type.slice(1),
+          emoji: CROP_EMOJI[type] || "\uD83C\uDF31",
+          fields: data.count,
+          status: dominantStatus.charAt(0).toUpperCase() + dominantStatus.slice(1),
+          progress,
+        };
+      })
+      .sort((a, b) => b.fields - a.fields);
+  }, [crops]);
+
+  // Revenue chart data (group transactions by month)
+  const revenueData = useMemo(() => {
+    const transactions = txData?.transactions ?? [];
+    if (transactions.length === 0) return [];
+
+    const monthMap: Record<string, { revenue: number; expenses: number }> = {};
+    for (const tx of transactions) {
+      const date = new Date(tx.transactionDate);
+      const month = date.toLocaleDateString("en-US", {
+        month: "short",
+        year: "2-digit",
+      });
+      if (!monthMap[month]) {
+        monthMap[month] = { revenue: 0, expenses: 0 };
+      }
+      const amount = parseFloat(tx.amount);
+      if (tx.type === "income") {
+        monthMap[month].revenue += amount;
+      } else {
+        monthMap[month].expenses += amount;
+      }
+    }
+
+    return Object.entries(monthMap)
+      .map(([month, data]) => ({
+        month,
+        revenue: data.revenue,
+        expenses: data.expenses,
+      }))
+      .slice(-6);
+  }, [txData]);
+
+  // Crop distribution chart data
+  const cropDistributionData = useMemo(() => {
+    if (!crops || crops.length === 0) return [];
+    const countByType: Record<string, number> = {};
+    for (const crop of crops) {
+      const name = crop.cropType.charAt(0).toUpperCase() + crop.cropType.slice(1);
+      countByType[name] = (countByType[name] || 0) + 1;
+    }
+    return Object.entries(countByType).map(([name, value]) => ({ name, value }));
+  }, [crops]);
+
+  // Task status chart data
+  const taskStatusData = useMemo(() => {
+    if (!tasks || tasks.length === 0) return [];
+    const countByStatus: Record<string, number> = {};
+    for (const task of tasks) {
+      const status =
+        task.status === "in_progress"
+          ? "In Progress"
+          : task.status.charAt(0).toUpperCase() + task.status.slice(1);
+      countByStatus[status] = (countByStatus[status] || 0) + 1;
+    }
+    return Object.entries(countByStatus).map(([status, count]) => ({
+      status,
+      count,
+    }));
+  }, [tasks]);
+
+  // Sales trend chart data (group by week and crop type)
+  const { salesTrendData, cropTypes } = useMemo(() => {
+    const sales = salesData?.sales ?? [];
+    if (sales.length === 0) return { salesTrendData: [], cropTypes: [] };
+
+    const cropSet = new Set<string>();
+    const weekMap: Record<string, Record<string, number>> = {};
+
+    for (const sale of sales) {
+      const date = new Date(sale.saleDate);
+      const weekStart = new Date(date);
+      weekStart.setDate(date.getDate() - date.getDay());
+      const weekLabel = weekStart.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+      const cropName =
+        sale.cropType.charAt(0).toUpperCase() + sale.cropType.slice(1);
+      cropSet.add(cropName);
+
+      if (!weekMap[weekLabel]) {
+        weekMap[weekLabel] = {};
+      }
+      weekMap[weekLabel][cropName] =
+        (weekMap[weekLabel][cropName] || 0) + parseFloat(sale.totalAmount);
+    }
+
+    const types = Array.from(cropSet);
+    const data = Object.entries(weekMap).map(([date, cropData]) => ({
+      date,
+      ...cropData,
+    }));
+
+    return { salesTrendData: data, cropTypes: types };
+  }, [salesData]);
+
+  const formatDueDate = (dueDate: Date | string | null) => {
+    if (!dueDate) return "No date";
+    const date = new Date(dueDate);
+    const now = new Date();
+    const diffDays = Math.round(
+      (date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+    );
+
+    if (diffDays < 0) return `${Math.abs(diffDays)}d overdue`;
+    if (diffDays === 0) return "Today";
+    if (diffDays === 1) return "Tomorrow";
+    if (diffDays <= 7) return `In ${diffDays} days`;
+    return date.toLocaleDateString();
+  };
+
+  const hasNoData =
+    !isLoading &&
+    !error &&
+    (farms?.length ?? 0) === 0 &&
+    (crops?.length ?? 0) === 0 &&
+    (tasks?.length ?? 0) === 0;
+
+  // Error state
+  if (error && !isLoading) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {t("dashboard.title")}
+          </h1>
+        </div>
+        <div className="flex flex-col items-center justify-center py-16 gap-4">
+          <AlertCircle className="h-12 w-12 text-destructive" />
+          <div className="text-center">
+            <h3 className="font-semibold text-lg">Failed to load dashboard</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              {error.message || "An error occurred while fetching data"}
+            </p>
+          </div>
+          <Button onClick={refetchAll} variant="outline">
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Empty state (new user with no data)
+  if (hasNoData) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {t("dashboard.title")}
+          </h1>
+          <p className="text-muted-foreground">{t("dashboard.welcome")}</p>
+        </div>
+        <div className="flex flex-col items-center justify-center py-16 gap-6">
+          <div className="rounded-full bg-primary/10 p-6">
+            <Sprout className="h-16 w-16 text-primary" />
+          </div>
+          <div className="text-center max-w-md">
+            <h3 className="font-semibold text-xl">Welcome to FructoSahel</h3>
+            <p className="text-muted-foreground mt-2">
+              Get started by adding your first farm. Once you have farms, crops,
+              and tasks, your dashboard will come alive with data and analytics.
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <Button asChild>
+              <Link href={`/${locale}/dashboard/farms`}>
+                <Plus className="mr-2 h-4 w-4" />
+                {t("farms.addFarm")}
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href={`/${locale}/demo`}>Try Demo</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -225,9 +405,7 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold tracking-tight">
           {t("dashboard.title")}
         </h1>
-        <p className="text-muted-foreground">
-          {t("dashboard.welcome")}, Admin! {t("dashboard.overview")}
-        </p>
+        <p className="text-muted-foreground">{t("dashboard.overview")}</p>
       </div>
 
       {/* Stats Grid */}
@@ -241,17 +419,11 @@ export default function DashboardPage() {
               <stat.icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">
-                <span
-                  className={
-                    stat.trend === "up" ? "text-green-600" : "text-red-600"
-                  }
-                >
-                  {stat.change}
-                </span>{" "}
-                from last month
-              </p>
+              {isLoading ? (
+                <Skeleton className="h-8 w-16" />
+              ) : (
+                <div className="text-2xl font-bold">{stat.value}</div>
+              )}
             </CardContent>
           </Card>
         ))}
@@ -268,24 +440,11 @@ export default function DashboardPage() {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stat.value} XOF</div>
-              <div className="flex items-center text-xs">
-                {stat.trend === "up" ? (
-                  <ArrowUpRight className="mr-1 h-4 w-4 text-green-600" />
-                ) : (
-                  <ArrowDownRight className="mr-1 h-4 w-4 text-red-600" />
-                )}
-                <span
-                  className={
-                    stat.trend === "up" ? "text-green-600" : "text-red-600"
-                  }
-                >
-                  {stat.change}
-                </span>
-                <span className="ml-1 text-muted-foreground">
-                  vs last month
-                </span>
-              </div>
+              {isLoading ? (
+                <Skeleton className="h-8 w-32" />
+              ) : (
+                <div className="text-2xl font-bold">{stat.value} XOF</div>
+              )}
             </CardContent>
           </Card>
         ))}
@@ -303,56 +462,75 @@ export default function DashboardPage() {
               </CardDescription>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="/en/dashboard/tasks">{t("common.viewAll")}</Link>
+              <Link href={`/${locale}/dashboard/tasks`}>
+                {t("common.viewAll")}
+              </Link>
             </Button>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Task</TableHead>
-                  <TableHead>Priority</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Due</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentTasks.map((task) => (
-                  <TableRow key={task.id}>
-                    <TableCell className="font-medium">{task.title}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          task.priority === "urgent"
-                            ? "destructive"
-                            : task.priority === "high"
-                              ? "warning"
-                              : "secondary"
-                        }
-                      >
-                        {task.priority}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          task.status === "completed"
-                            ? "success"
-                            : task.status === "in_progress"
-                              ? "default"
-                              : "outline"
-                        }
-                      >
-                        {task.status.replace("_", " ")}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {task.dueDate}
-                    </TableCell>
-                  </TableRow>
+            {isLoading ? (
+              <div className="space-y-3">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <Skeleton key={i} className="h-10 w-full" />
                 ))}
-              </TableBody>
-            </Table>
+              </div>
+            ) : recentTasks.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-8 gap-2">
+                <ListTodo className="h-8 w-8 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  No pending tasks
+                </p>
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Task</TableHead>
+                    <TableHead>Priority</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Due</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {recentTasks.map((task) => (
+                    <TableRow key={task.id}>
+                      <TableCell className="font-medium">
+                        {task.title}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={
+                            task.priority === "urgent"
+                              ? "destructive"
+                              : task.priority === "high"
+                                ? "warning"
+                                : "secondary"
+                          }
+                        >
+                          {task.priority}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={
+                            task.status === "completed"
+                              ? "success"
+                              : task.status === "in_progress"
+                                ? "default"
+                                : "outline"
+                          }
+                        >
+                          {task.status.replace("_", " ")}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {formatDueDate(task.dueDate)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
           </CardContent>
         </Card>
 
@@ -366,31 +544,49 @@ export default function DashboardPage() {
               </CardDescription>
             </div>
             <Button variant="outline" size="sm" asChild>
-              <Link href="/en/dashboard/farms/crops">
+              <Link href={`/${locale}/dashboard/farms/crops`}>
                 {t("common.viewAll")}
               </Link>
             </Button>
           </CardHeader>
           <CardContent>
-            <div className="space-y-6">
-              {cropStatus.map((crop) => (
-                <div key={crop.crop} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{crop.emoji}</span>
-                      <div>
-                        <span className="font-medium">{crop.crop}</span>
-                        <span className="ml-2 text-sm text-muted-foreground">
-                          ({crop.fields} fields)
-                        </span>
-                      </div>
-                    </div>
-                    <Badge variant="secondary">{crop.status}</Badge>
+            {isLoading ? (
+              <div className="space-y-4">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="space-y-2">
+                    <Skeleton className="h-6 w-full" />
+                    <Skeleton className="h-2 w-full" />
                   </div>
-                  <Progress value={crop.progress} className="h-2" />
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : cropStatus.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-8 gap-2">
+                <Sprout className="h-8 w-8 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  No crops planted yet
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {cropStatus.map((crop) => (
+                  <div key={crop.crop} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">{crop.emoji}</span>
+                        <div>
+                          <span className="font-medium">{crop.crop}</span>
+                          <span className="ml-2 text-sm text-muted-foreground">
+                            ({crop.fields} {crop.fields === 1 ? "crop" : "crops"})
+                          </span>
+                        </div>
+                      </div>
+                      <Badge variant="secondary">{crop.status}</Badge>
+                    </div>
+                    <Progress value={crop.progress} className="h-2" />
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -410,11 +606,19 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle>Revenue vs Expenses</CardTitle>
               <CardDescription>
-                Monthly financial performance (XOF)
+                Financial performance (XOF)
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <RevenueChart data={revenueData} />
+              {isLoading ? (
+                <Skeleton className="h-[300px] w-full" />
+              ) : revenueData.length === 0 ? (
+                <div className="flex h-[300px] items-center justify-center text-muted-foreground">
+                  No transaction data available
+                </div>
+              ) : (
+                <RevenueChart data={revenueData} />
+              )}
             </CardContent>
           </Card>
 
@@ -427,7 +631,15 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <CropDistributionChart data={cropDistributionData} />
+              {isLoading ? (
+                <Skeleton className="h-[300px] w-full" />
+              ) : cropDistributionData.length === 0 ? (
+                <div className="flex h-[300px] items-center justify-center text-muted-foreground">
+                  No crop data available
+                </div>
+              ) : (
+                <CropDistributionChart data={cropDistributionData} />
+              )}
             </CardContent>
           </Card>
 
@@ -438,7 +650,15 @@ export default function DashboardPage() {
               <CardDescription>Overview of all tasks by status</CardDescription>
             </CardHeader>
             <CardContent>
-              <TaskStatusChart data={taskStatusData} />
+              {isLoading ? (
+                <Skeleton className="h-[300px] w-full" />
+              ) : taskStatusData.length === 0 ? (
+                <div className="flex h-[300px] items-center justify-center text-muted-foreground">
+                  No task data available
+                </div>
+              ) : (
+                <TaskStatusChart data={taskStatusData} />
+              )}
             </CardContent>
           </Card>
 
@@ -449,7 +669,15 @@ export default function DashboardPage() {
               <CardDescription>Weekly sales by crop type (XOF)</CardDescription>
             </CardHeader>
             <CardContent>
-              <SalesTrendChart data={salesTrendData} crops={cropTypes} />
+              {isLoading ? (
+                <Skeleton className="h-[300px] w-full" />
+              ) : salesTrendData.length === 0 ? (
+                <div className="flex h-[300px] items-center justify-center text-muted-foreground">
+                  No sales data available
+                </div>
+              ) : (
+                <SalesTrendChart data={salesTrendData} crops={cropTypes} />
+              )}
             </CardContent>
           </Card>
         </div>
@@ -467,7 +695,7 @@ export default function DashboardPage() {
               className="h-auto flex-col gap-2 py-4"
               asChild
             >
-              <Link href="/en/dashboard/farms">
+              <Link href={`/${locale}/dashboard/farms`}>
                 <MapPin className="h-6 w-6" />
                 <span>{t("farms.addFarm")}</span>
               </Link>
@@ -477,7 +705,7 @@ export default function DashboardPage() {
               className="h-auto flex-col gap-2 py-4"
               asChild
             >
-              <Link href="/en/dashboard/tasks">
+              <Link href={`/${locale}/dashboard/tasks`}>
                 <ListTodo className="h-6 w-6" />
                 <span>{t("tasks.addTask")}</span>
               </Link>
@@ -487,7 +715,7 @@ export default function DashboardPage() {
               className="h-auto flex-col gap-2 py-4"
               asChild
             >
-              <Link href="/en/dashboard/finance">
+              <Link href={`/${locale}/dashboard/finance`}>
                 <DollarSign className="h-6 w-6" />
                 <span>{t("finance.addTransaction")}</span>
               </Link>
@@ -497,7 +725,7 @@ export default function DashboardPage() {
               className="h-auto flex-col gap-2 py-4"
               asChild
             >
-              <Link href="/en/dashboard/agents">
+              <Link href={`/${locale}/dashboard/agents`}>
                 <Users className="h-6 w-6" />
                 <span>AI Advisors</span>
               </Link>
