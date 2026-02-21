@@ -1,8 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Bell, Search, Globe, User } from "lucide-react";
+import { Bell, Search, User } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { OfflineStatusBadge } from "@/components/offline-indicator";
-import { cn } from "@/lib/utils";
 
 interface DashboardHeaderProps {
   locale: string;
@@ -23,6 +23,9 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ locale }: DashboardHeaderProps) {
   const t = useTranslations();
+  const pathname = usePathname();
+  const otherLocale = locale === "en" ? "fr" : "en";
+  const otherLocalePath = pathname.replace(`/${locale}`, `/${otherLocale}`);
 
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-xl px-6">
@@ -40,32 +43,13 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
         {/* Offline Status */}
         <OfflineStatusBadge />
 
-        {/* Language Switcher */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-lg">
-              <Globe className="h-4.5 w-4.5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
-              <Link
-                href={`/en/dashboard`}
-                className={cn(locale === "en" && "font-bold")}
-              >
-                English
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link
-                href={`/fr/dashboard`}
-                className={cn(locale === "fr" && "font-bold")}
-              >
-                Francais
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {/* Language Toggle */}
+        <Button variant="ghost" size="sm" className="gap-2 rounded-lg px-3" asChild>
+          <Link href={otherLocalePath}>
+            <span className="text-base leading-none">{locale === "en" ? "\uD83C\uDDEB\uD83C\uDDF7" : "\uD83C\uDDEC\uD83C\uDDE7"}</span>
+            <span className="text-sm font-medium">{locale === "en" ? "FR" : "EN"}</span>
+          </Link>
+        </Button>
 
         {/* Notifications */}
         <Button variant="ghost" size="icon" className="relative rounded-lg">

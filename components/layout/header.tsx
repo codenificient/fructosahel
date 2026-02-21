@@ -2,16 +2,9 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { Menu, X, Globe, Leaf } from "lucide-react";
+import { Menu, X, Leaf } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 
 interface HeaderProps {
   locale: string;
@@ -59,32 +52,13 @@ export function Header({ locale }: HeaderProps) {
 
         {/* Right side */}
         <div className="flex items-center gap-3">
-          {/* Language Switcher */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-lg">
-                <Globe className="h-4.5 w-4.5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <Link
-                  href={`/en`}
-                  className={cn(locale === "en" && "font-bold")}
-                >
-                  English
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link
-                  href={`/fr`}
-                  className={cn(locale === "fr" && "font-bold")}
-                >
-                  Francais
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Language Toggle */}
+          <Button variant="ghost" size="sm" className="gap-2 rounded-lg px-3" asChild>
+            <Link href={`/${otherLocale}`}>
+              <span className="text-base leading-none">{locale === "en" ? "\uD83C\uDDEB\uD83C\uDDF7" : "\uD83C\uDDEC\uD83C\uDDE7"}</span>
+              <span className="text-sm font-medium">{locale === "en" ? "FR" : "EN"}</span>
+            </Link>
+          </Button>
 
           {/* CTA Buttons */}
           <div className="hidden md:flex md:items-center md:gap-2">
