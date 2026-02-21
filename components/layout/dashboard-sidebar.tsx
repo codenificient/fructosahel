@@ -18,6 +18,7 @@ import {
   ChevronRight,
   FileBarChart,
   Leaf,
+  Route,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -68,6 +69,11 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
       href: `/${locale}/dashboard/reports`,
       icon: FileBarChart,
       label: t("reports.title"),
+    },
+    {
+      href: `/${locale}/dashboard/roadmap`,
+      icon: Route,
+      label: t("roadmap.title"),
     },
     {
       href: `/${locale}/dashboard/team`,

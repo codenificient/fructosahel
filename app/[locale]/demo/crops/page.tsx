@@ -53,6 +53,23 @@ const cropTypeLabels: Record<CropType, string> = {
   banana: "Banana",
   papaya: "Papaya",
   avocado: "Avocado",
+  potato: "Potato",
+  cowpea: "Cowpea",
+  bambara_groundnut: "Bambara Groundnut",
+  sorghum: "Sorghum",
+  pearl_millet: "Pearl Millet",
+  moringa: "Moringa",
+  sweet_potato: "Sweet Potato",
+  onion: "Onion",
+  rice: "Rice",
+  tomato: "Tomato",
+  pepper: "Pepper",
+  okra: "Okra",
+  peanut: "Peanut",
+  cassava: "Cassava",
+  pigeon_pea: "Pigeon Pea",
+  citrus: "Citrus",
+  guava: "Guava",
 };
 
 const cropStatusLabels: Record<CropStatus, string> = {

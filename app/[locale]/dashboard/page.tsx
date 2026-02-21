@@ -54,6 +54,23 @@ const CROP_EMOJI: Record<string, string> = {
   banana: "\uD83C\uDF4C",
   papaya: "\uD83C\uDF48",
   avocado: "\uD83E\uDD51",
+  potato: "\uD83E\uDD54",
+  cowpea: "\uD83E\uDED8",
+  bambara_groundnut: "\uD83E\uDED8",
+  sorghum: "\uD83C\uDF3E",
+  pearl_millet: "\uD83C\uDF3E",
+  moringa: "\uD83C\uDF3F",
+  sweet_potato: "\uD83C\uDF60",
+  onion: "\uD83E\uDDC5",
+  rice: "\uD83C\uDF5A",
+  tomato: "\uD83C\uDF45",
+  pepper: "\uD83C\uDF36\uFE0F",
+  okra: "\uD83E\uDD52",
+  peanut: "\uD83E\uDD5C",
+  cassava: "\uD83E\uDD54",
+  pigeon_pea: "\uD83E\uDED8",
+  citrus: "\uD83C\uDF4A",
+  guava: "\uD83C\uDF50",
 };
 
 const STATUS_PROGRESS: Record<string, number> = {

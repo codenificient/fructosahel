@@ -267,6 +267,46 @@
       "description": "Expert advice on planting, irrigation, fertilizers, pest control, and crop management."
     }
   },
+  "roadmap": {
+    "title": "Roadmap",
+    "subtitle": "Track your farm's phased growth from foundation to full production",
+    "phase": "Phase",
+    "phases": "Phases",
+    "milestone": "Milestone",
+    "milestones": "Milestones",
+    "addPhase": "Add Phase",
+    "addMilestone": "Add Milestone",
+    "phaseNumber": "Phase Number",
+    "targetHectares": "Target Hectares",
+    "targetRevenue": "Target Revenue",
+    "targetDate": "Target Date",
+    "dateRange": "Date Range",
+    "progress": "Progress",
+    "statuses": {
+      "not_started": "Not Started",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "on_hold": "On Hold",
+      "skipped": "Skipped"
+    },
+    "categories": {
+      "infrastructure": "Infrastructure",
+      "crops": "Crops",
+      "livestock": "Livestock",
+      "equipment": "Equipment",
+      "processing": "Processing",
+      "financial": "Financial",
+      "other": "Other"
+    },
+    "stats": {
+      "totalPhases": "Total Phases",
+      "completedPhases": "Completed",
+      "activeMilestones": "Active Milestones",
+      "targetRevenue": "Target Revenue"
+    },
+    "emptyState": "No roadmap phases created yet. Add your first phase to start planning your farm's growth.",
+    "demoBanner": "This is a demo roadmap with sample phases modeled on a 7-year Sahel farm plan. Sign in to create your own roadmap."
+  },
   "blog": {
     "title": "Knowledge Base",
     "subtitle": "Expert guides for growing fruits in the Sahel region",

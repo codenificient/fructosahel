@@ -10,6 +10,10 @@ import type {
   agentMessages,
   blogPosts,
   growingGuides,
+  roadmapPhases,
+  milestones,
+  livestock,
+  farmZones,
 } from "@/lib/db/schema";
 
 // Infer types from schema
@@ -46,6 +50,18 @@ export type NewBlogPost = typeof blogPosts.$inferInsert;
 export type GrowingGuide = typeof growingGuides.$inferSelect;
 export type NewGrowingGuide = typeof growingGuides.$inferInsert;
 
+export type RoadmapPhase = typeof roadmapPhases.$inferSelect;
+export type NewRoadmapPhase = typeof roadmapPhases.$inferInsert;
+
+export type Milestone = typeof milestones.$inferSelect;
+export type NewMilestone = typeof milestones.$inferInsert;
+
+export type Livestock = typeof livestock.$inferSelect;
+export type NewLivestock = typeof livestock.$inferInsert;
+
+export type FarmZone = typeof farmZones.$inferSelect;
+export type NewFarmZone = typeof farmZones.$inferInsert;
+
 // Enum types
 export type Country = "burkina_faso" | "mali" | "niger";
 export type CropType =
@@ -54,7 +70,24 @@ export type CropType =
   | "avocado"
   | "mango"
   | "banana"
-  | "papaya";
+  | "papaya"
+  | "potato"
+  | "cowpea"
+  | "bambara_groundnut"
+  | "sorghum"
+  | "pearl_millet"
+  | "moringa"
+  | "sweet_potato"
+  | "onion"
+  | "rice"
+  | "tomato"
+  | "pepper"
+  | "okra"
+  | "peanut"
+  | "cassava"
+  | "pigeon_pea"
+  | "citrus"
+  | "guava";
 export type CropStatus =
   | "planning"
   | "planted"
@@ -69,6 +102,29 @@ export type TaskPriority = "low" | "medium" | "high" | "urgent";
 export type TransactionType = "income" | "expense";
 export type AgentType = "marketing" | "finance" | "agronomist";
 export type UserRole = "admin" | "manager" | "worker" | "viewer";
+export type PhaseStatus = "not_started" | "in_progress" | "completed" | "on_hold";
+export type MilestoneStatus = "not_started" | "in_progress" | "completed" | "skipped";
+export type MilestoneCategory =
+  | "infrastructure"
+  | "crops"
+  | "livestock"
+  | "equipment"
+  | "processing"
+  | "financial"
+  | "other";
+export type LivestockType =
+  | "chickens"
+  | "guinea_fowl"
+  | "ducks"
+  | "sheep"
+  | "pigs";
+export type FarmZoneType =
+  | "zone_0_core"
+  | "zone_1_intensive"
+  | "zone_2_semi_intensive"
+  | "zone_3_extensive"
+  | "zone_4_catchment"
+  | "buffer";
 
 // Growing schedule types
 export interface MonthlyTask {

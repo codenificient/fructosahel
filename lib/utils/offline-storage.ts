@@ -22,7 +22,10 @@ export interface CachedData<T = unknown> {
     | "tasks"
     | "transactions"
     | "sales"
-    | "users";
+    | "users"
+    | "phases"
+    | "milestones"
+    | "livestock";
   data: T;
   updatedAt: number;
   expiresAt?: number;

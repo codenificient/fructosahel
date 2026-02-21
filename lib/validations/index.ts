@@ -5,3 +5,5 @@ export * from "./tasks";
 export * from "./transactions";
 export * from "./sales";
 export * from "./users";
+export * from "./roadmap";
+export * from "./livestock";

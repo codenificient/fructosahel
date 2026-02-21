@@ -13,6 +13,7 @@ import {
   Users,
   Bot,
   FileBarChart,
+  Route,
   ChevronLeft,
   ChevronRight,
   FlaskConical,
@@ -72,6 +73,11 @@ export function DemoSidebar({ locale }: DemoSidebarProps) {
       href: `/${locale}/demo/reports`,
       icon: FileBarChart,
       label: t("reports.title"),
+    },
+    {
+      href: `/${locale}/demo/roadmap`,
+      icon: Route,
+      label: t("roadmap.title"),
     },
     {
       href: `/${locale}/demo/agents`,

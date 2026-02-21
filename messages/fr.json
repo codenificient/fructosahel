@@ -267,6 +267,46 @@
       "description": "Conseils d'experts sur la plantation, l'irrigation, les engrais, la lutte antiparasitaire et la gestion des cultures."
     }
   },
+  "roadmap": {
+    "title": "Feuille de Route",
+    "subtitle": "Suivez la croissance de votre ferme de la fondation a la pleine production",
+    "phase": "Phase",
+    "phases": "Phases",
+    "milestone": "Jalon",
+    "milestones": "Jalons",
+    "addPhase": "Ajouter une Phase",
+    "addMilestone": "Ajouter un Jalon",
+    "phaseNumber": "Numero de Phase",
+    "targetHectares": "Hectares Cibles",
+    "targetRevenue": "Revenus Cibles",
+    "targetDate": "Date Cible",
+    "dateRange": "Periode",
+    "progress": "Progression",
+    "statuses": {
+      "not_started": "Non Demarre",
+      "in_progress": "En Cours",
+      "completed": "Termine",
+      "on_hold": "En Pause",
+      "skipped": "Ignore"
+    },
+    "categories": {
+      "infrastructure": "Infrastructure",
+      "crops": "Cultures",
+      "livestock": "Elevage",
+      "equipment": "Equipement",
+      "processing": "Transformation",
+      "financial": "Financier",
+      "other": "Autre"
+    },
+    "stats": {
+      "totalPhases": "Total des Phases",
+      "completedPhases": "Terminees",
+      "activeMilestones": "Jalons Actifs",
+      "targetRevenue": "Revenus Cibles"
+    },
+    "emptyState": "Aucune phase de feuille de route creee. Ajoutez votre premiere phase pour planifier la croissance de votre ferme.",
+    "demoBanner": "Ceci est une feuille de route de demonstration avec des phases basees sur un plan agricole sahelien de 7 ans. Connectez-vous pour creer votre propre feuille de route."
+  },
   "blog": {
     "title": "Base de Connaissances",
     "subtitle": "Guides d'experts pour cultiver des fruits dans la region du Sahel",

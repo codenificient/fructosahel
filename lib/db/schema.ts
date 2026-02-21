@@ -21,6 +21,23 @@ export const cropTypeEnum = pgEnum("crop_type", [
   "mango",
   "banana",
   "papaya",
+  "potato",
+  "cowpea",
+  "bambara_groundnut",
+  "sorghum",
+  "pearl_millet",
+  "moringa",
+  "sweet_potato",
+  "onion",
+  "rice",
+  "tomato",
+  "pepper",
+  "okra",
+  "peanut",
+  "cassava",
+  "pigeon_pea",
+  "citrus",
+  "guava",
 ]);
 export const cropStatusEnum = pgEnum("crop_status", [
   "planning",
@@ -58,6 +75,42 @@ export const userRoleEnum = pgEnum("user_role", [
   "manager",
   "worker",
   "viewer",
+]);
+export const phaseStatusEnum = pgEnum("phase_status", [
+  "not_started",
+  "in_progress",
+  "completed",
+  "on_hold",
+]);
+export const milestoneStatusEnum = pgEnum("milestone_status", [
+  "not_started",
+  "in_progress",
+  "completed",
+  "skipped",
+]);
+export const milestoneCategoryEnum = pgEnum("milestone_category", [
+  "infrastructure",
+  "crops",
+  "livestock",
+  "equipment",
+  "processing",
+  "financial",
+  "other",
+]);
+export const livestockTypeEnum = pgEnum("livestock_type", [
+  "chickens",
+  "guinea_fowl",
+  "ducks",
+  "sheep",
+  "pigs",
+]);
+export const farmZoneTypeEnum = pgEnum("farm_zone_type", [
+  "zone_0_core",
+  "zone_1_intensive",
+  "zone_2_semi_intensive",
+  "zone_3_extensive",
+  "zone_4_catchment",
+  "buffer",
 ]);
 
 // Users table
@@ -255,6 +308,72 @@ export const growingGuides = pgTable("growing_guides", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// Roadmap phases
+export const roadmapPhases = pgTable("roadmap_phases", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  farmId: uuid("farm_id")
+    .references(() => farms.id, { onDelete: "cascade" })
+    .notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  phaseNumber: integer("phase_number").notNull(),
+  status: phaseStatusEnum("status").default("not_started").notNull(),
+  targetStartDate: timestamp("target_start_date"),
+  targetEndDate: timestamp("target_end_date"),
+  actualStartDate: timestamp("actual_start_date"),
+  actualEndDate: timestamp("actual_end_date"),
+  targetHectares: decimal("target_hectares", { precision: 10, scale: 2 }),
+  targetRevenueUsd: decimal("target_revenue_usd", { precision: 12, scale: 2 }),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Milestones within phases
+export const milestones = pgTable("milestones", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  phaseId: uuid("phase_id")
+    .references(() => roadmapPhases.id, { onDelete: "cascade" })
+    .notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  category: milestoneCategoryEnum("category").default("other").notNull(),
+  status: milestoneStatusEnum("status").default("not_started").notNull(),
+  targetDate: timestamp("target_date"),
+  completedDate: timestamp("completed_date"),
+  sortOrder: integer("sort_order").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Livestock
+export const livestock = pgTable("livestock", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  farmId: uuid("farm_id")
+    .references(() => farms.id, { onDelete: "cascade" })
+    .notNull(),
+  livestockType: livestockTypeEnum("livestock_type").notNull(),
+  breed: varchar("breed", { length: 100 }),
+  quantity: integer("quantity").notNull(),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Farm zones
+export const farmZones = pgTable("farm_zones", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  farmId: uuid("farm_id")
+    .references(() => farms.id, { onDelete: "cascade" })
+    .notNull(),
+  zoneType: farmZoneTypeEnum("zone_type").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  sizeHectares: decimal("size_hectares", { precision: 10, scale: 2 }),
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   managedFarms: many(farms),
@@ -271,6 +390,9 @@ export const farmsRelations = relations(farms, ({ one, many }) => ({
   tasks: many(tasks),
   transactions: many(transactions),
   sales: many(sales),
+  roadmapPhases: many(roadmapPhases),
+  livestock: many(livestock),
+  farmZones: many(farmZones),
 }));
 
 export const fieldsRelations = relations(fields, ({ one, many }) => ({
@@ -364,6 +486,38 @@ export const blogPostsRelations = relations(blogPosts, ({ one }) => ({
   author: one(users, {
     fields: [blogPosts.authorId],
     references: [users.id],
+  }),
+}));
+
+export const roadmapPhasesRelations = relations(
+  roadmapPhases,
+  ({ one, many }) => ({
+    farm: one(farms, {
+      fields: [roadmapPhases.farmId],
+      references: [farms.id],
+    }),
+    milestones: many(milestones),
+  }),
+);
+
+export const milestonesRelations = relations(milestones, ({ one }) => ({
+  phase: one(roadmapPhases, {
+    fields: [milestones.phaseId],
+    references: [roadmapPhases.id],
+  }),
+}));
+
+export const livestockRelations = relations(livestock, ({ one }) => ({
+  farm: one(farms, {
+    fields: [livestock.farmId],
+    references: [farms.id],
+  }),
+}));
+
+export const farmZonesRelations = relations(farmZones, ({ one }) => ({
+  farm: one(farms, {
+    fields: [farmZones.farmId],
+    references: [farms.id],
   }),
 }));
 
