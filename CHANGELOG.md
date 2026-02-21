@@ -1,3 +1,9 @@
+## [1.5.0](https://github.com/codenificient/fructosahel/compare/v1.4.0...v1.5.0) (2026-02-21)
+
+### Features
+
+* **ui:** replace language dropdown with binary flag toggle ([4b85e35](https://github.com/codenificient/fructosahel/commit/4b85e35051b14c4565b98439bd232390b192fc1c))
+
 ## [1.4.0](https://github.com/codenificient/fructosahel/compare/v1.3.0...v1.4.0) (2026-02-21)
 
 ### Features
