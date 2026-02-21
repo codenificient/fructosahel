@@ -25,26 +25,26 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
   const t = useTranslations();
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-6">
+    <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-xl px-6">
       {/* Search */}
       <div className="relative flex-1 md:max-w-md">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="search"
           placeholder={`${t("common.search")}...`}
-          className="pl-9"
+          className="pl-9 bg-muted/50 border-0 focus-visible:bg-background focus-visible:ring-1"
         />
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         {/* Offline Status */}
         <OfflineStatusBadge />
 
         {/* Language Switcher */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Globe className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className="rounded-lg">
+              <Globe className="h-4.5 w-4.5" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -68,19 +68,19 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
         </DropdownMenu>
 
         {/* Notifications */}
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-destructive" />
+        <Button variant="ghost" size="icon" className="relative rounded-lg">
+          <Bell className="h-4.5 w-4.5" />
+          <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-sahel-terracotta ring-2 ring-background" />
         </Button>
 
         {/* User Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-              <Avatar className="h-9 w-9">
+              <Avatar className="h-9 w-9 ring-2 ring-border">
                 <AvatarImage src="/avatars/user.jpg" alt="User" />
-                <AvatarFallback>
-                  <User className="h-5 w-5" />
+                <AvatarFallback className="bg-primary/10 text-primary text-sm font-semibold">
+                  <User className="h-4 w-4" />
                 </AvatarFallback>
               </Avatar>
             </Button>
@@ -99,7 +99,7 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
               <Link href={`/${locale}/dashboard/settings`}>Settings</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">
+            <DropdownMenuItem className="text-destructive focus:text-destructive">
               {t("nav.logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>

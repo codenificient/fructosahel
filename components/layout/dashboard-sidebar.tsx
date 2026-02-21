@@ -17,6 +17,7 @@ import {
   ChevronLeft,
   ChevronRight,
   FileBarChart,
+  Leaf,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -91,7 +92,7 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
   return (
     <aside
       className={cn(
-        "relative flex h-screen flex-col border-r bg-card transition-all duration-300",
+        "relative flex h-screen flex-col border-r bg-card/50 backdrop-blur-sm transition-all duration-300",
         collapsed ? "w-16" : "w-64",
       )}
     >
@@ -100,15 +101,22 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
         {!collapsed && (
           <Link
             href={`/${locale}/dashboard`}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2.5"
           >
-            <Sprout className="h-8 w-8 text-primary" />
-            <span className="text-lg font-bold text-primary">FructoSahel</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
+              <Leaf className="h-4.5 w-4.5 text-primary-foreground" />
+            </div>
+            <span className="text-lg font-bold tracking-tight">
+              <span className="text-primary">Fructo</span>
+              <span className="text-sahel-terracotta">Sahel</span>
+            </span>
           </Link>
         )}
         {collapsed && (
-          <Link href={`/${locale}/dashboard`}>
-            <Sprout className="mx-auto h-8 w-8 text-primary" />
+          <Link href={`/${locale}/dashboard`} className="mx-auto">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
+              <Leaf className="h-4.5 w-4.5 text-primary-foreground" />
+            </div>
           </Link>
         )}
       </div>
@@ -117,18 +125,18 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
       <Button
         variant="ghost"
         size="icon"
-        className="absolute -right-3 top-20 z-10 h-6 w-6 rounded-full border bg-background"
+        className="absolute -right-3 top-20 z-10 h-6 w-6 rounded-full border bg-background shadow-sm"
         onClick={() => setCollapsed(!collapsed)}
       >
         {collapsed ? (
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-3.5 w-3.5" />
         ) : (
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="h-3.5 w-3.5" />
         )}
       </Button>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 p-2">
+      <nav className="flex-1 space-y-0.5 p-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -136,13 +144,13 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
-              <item.icon className={cn("h-5 w-5 shrink-0")} />
+              <item.icon className={cn("h-4.5 w-4.5 shrink-0")} />
               {!collapsed && <span>{item.label}</span>}
             </Link>
           );
@@ -158,20 +166,20 @@ export function DashboardSidebar({ locale }: DashboardSidebarProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
-              <item.icon className="h-5 w-5 shrink-0" />
+              <item.icon className="h-4.5 w-4.5 shrink-0" />
               {!collapsed && <span>{item.label}</span>}
             </Link>
           );
         })}
         <Separator className="my-2" />
-        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-destructive hover:text-destructive-foreground">
-          <LogOut className="h-5 w-5 shrink-0" />
+        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-destructive/10 hover:text-destructive">
+          <LogOut className="h-4.5 w-4.5 shrink-0" />
           {!collapsed && <span>{t("nav.logout")}</span>}
         </button>
       </div>

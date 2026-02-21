@@ -11,6 +11,9 @@ import {
   Users,
   AlertCircle,
   Plus,
+  TrendingUp,
+  ArrowUpRight,
+  Leaf,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -132,21 +135,29 @@ export default function DashboardPage() {
         title: t("dashboard.stats.totalFarms"),
         value: farmCount.toString(),
         icon: MapPin,
+        color: "text-primary",
+        bg: "bg-primary/10",
       },
       {
         title: t("dashboard.stats.totalHectares"),
         value: totalHectares.toFixed(1),
         icon: Sprout,
+        color: "text-accent",
+        bg: "bg-accent/10",
       },
       {
         title: t("dashboard.stats.activeCrops"),
         value: activeCrops.toString(),
-        icon: Sprout,
+        icon: Leaf,
+        color: "text-sahel-terracotta",
+        bg: "bg-sahel-terracotta/10",
       },
       {
         title: t("dashboard.stats.pendingTasks"),
         value: pendingTasks.toString(),
         icon: ListTodo,
+        color: "text-sahel-earth",
+        bg: "bg-sahel-earth/10",
       },
     ];
   }, [farms, crops, tasks, t]);
@@ -159,10 +170,14 @@ export default function DashboardPage() {
       {
         title: t("dashboard.stats.monthlyRevenue"),
         value: new Intl.NumberFormat("fr-FR").format(revenue),
+        icon: TrendingUp,
+        color: "text-primary",
       },
       {
         title: t("dashboard.stats.monthlyExpenses"),
         value: new Intl.NumberFormat("fr-FR").format(expenses),
+        icon: DollarSign,
+        color: "text-sahel-terracotta",
       },
     ];
   }, [txData, t]);
@@ -346,15 +361,17 @@ export default function DashboardPage() {
           </h1>
         </div>
         <div className="flex flex-col items-center justify-center py-16 gap-4">
-          <AlertCircle className="h-12 w-12 text-destructive" />
+          <div className="rounded-full bg-destructive/10 p-4">
+            <AlertCircle className="h-10 w-10 text-destructive" />
+          </div>
           <div className="text-center">
-            <h3 className="font-semibold text-lg">Failed to load dashboard</h3>
+            <h3 className="font-semibold text-lg">{t("dashboard.errorTitle")}</h3>
             <p className="text-sm text-muted-foreground mt-1">
-              {error.message || "An error occurred while fetching data"}
+              {error.message || t("common.error")}
             </p>
           </div>
           <Button onClick={refetchAll} variant="outline">
-            Try Again
+            {t("dashboard.tryAgain")}
           </Button>
         </div>
       </div>
@@ -372,25 +389,24 @@ export default function DashboardPage() {
           <p className="text-muted-foreground">{t("dashboard.welcome")}</p>
         </div>
         <div className="flex flex-col items-center justify-center py-16 gap-6">
-          <div className="rounded-full bg-primary/10 p-6">
+          <div className="rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 p-8">
             <Sprout className="h-16 w-16 text-primary" />
           </div>
           <div className="text-center max-w-md">
-            <h3 className="font-semibold text-xl">Welcome to FructoSahel</h3>
-            <p className="text-muted-foreground mt-2">
-              Get started by adding your first farm. Once you have farms, crops,
-              and tasks, your dashboard will come alive with data and analytics.
+            <h3 className="font-bold text-xl">{t("dashboard.emptyTitle")}</h3>
+            <p className="text-muted-foreground mt-2 leading-relaxed">
+              {t("dashboard.emptyDescription")}
             </p>
           </div>
           <div className="flex gap-3">
-            <Button asChild>
+            <Button asChild className="shadow-sm">
               <Link href={`/${locale}/dashboard/farms`}>
                 <Plus className="mr-2 h-4 w-4" />
                 {t("farms.addFarm")}
               </Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href={`/${locale}/demo`}>Try Demo</Link>
+              <Link href={`/${locale}/demo`}>{t("dashboard.tryDemo")}</Link>
             </Button>
           </div>
         </div>
@@ -405,18 +421,20 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold tracking-tight">
           {t("dashboard.title")}
         </h1>
-        <p className="text-muted-foreground">{t("dashboard.overview")}</p>
+        <p className="text-muted-foreground mt-1">{t("dashboard.overview")}</p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.title}>
+          <Card key={stat.title} className="overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 {stat.title}
               </CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" />
+              <div className={`rounded-lg p-2 ${stat.bg}`}>
+                <stat.icon className={`h-4 w-4 ${stat.color}`} />
+              </div>
             </CardHeader>
             <CardContent>
               {isLoading ? (
@@ -432,12 +450,14 @@ export default function DashboardPage() {
       {/* Financial Stats */}
       <div className="grid gap-4 md:grid-cols-2">
         {financialStats.map((stat) => (
-          <Card key={stat.title}>
+          <Card key={stat.title} className="overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 {stat.title}
               </CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
+              <div className={`rounded-lg p-2 ${stat.color === "text-primary" ? "bg-primary/10" : "bg-sahel-terracotta/10"}`}>
+                <stat.icon className={`h-4 w-4 ${stat.color}`} />
+              </div>
             </CardHeader>
             <CardContent>
               {isLoading ? (
@@ -456,14 +476,15 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle>{t("tasks.title")}</CardTitle>
+              <CardTitle>{t("dashboard.recentTasks")}</CardTitle>
               <CardDescription>
-                Recent tasks requiring attention
+                {t("dashboard.tasksNeedingAttention")}
               </CardDescription>
             </div>
             <Button variant="outline" size="sm" asChild>
               <Link href={`/${locale}/dashboard/tasks`}>
                 {t("common.viewAll")}
+                <ArrowUpRight className="ml-1 h-3 w-3" />
               </Link>
             </Button>
           </CardHeader>
@@ -476,9 +497,9 @@ export default function DashboardPage() {
               </div>
             ) : recentTasks.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-8 gap-2">
-                <ListTodo className="h-8 w-8 text-muted-foreground" />
+                <ListTodo className="h-8 w-8 text-muted-foreground/50" />
                 <p className="text-sm text-muted-foreground">
-                  No pending tasks
+                  {t("dashboard.noTasks")}
                 </p>
               </div>
             ) : (
@@ -538,14 +559,15 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle>{t("crops.title")}</CardTitle>
+              <CardTitle>{t("dashboard.cropOverview")}</CardTitle>
               <CardDescription>
-                Current crop status across all farms
+                {t("dashboard.cropStatusDescription")}
               </CardDescription>
             </div>
             <Button variant="outline" size="sm" asChild>
               <Link href={`/${locale}/dashboard/farms/crops`}>
                 {t("common.viewAll")}
+                <ArrowUpRight className="ml-1 h-3 w-3" />
               </Link>
             </Button>
           </CardHeader>
@@ -561,17 +583,17 @@ export default function DashboardPage() {
               </div>
             ) : cropStatus.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-8 gap-2">
-                <Sprout className="h-8 w-8 text-muted-foreground" />
+                <Sprout className="h-8 w-8 text-muted-foreground/50" />
                 <p className="text-sm text-muted-foreground">
-                  No crops planted yet
+                  {t("dashboard.noCrops")}
                 </p>
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {cropStatus.map((crop) => (
                   <div key={crop.crop} className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2.5">
                         <span className="text-2xl">{crop.emoji}</span>
                         <div>
                           <span className="font-medium">{crop.crop}</span>
@@ -580,9 +602,11 @@ export default function DashboardPage() {
                           </span>
                         </div>
                       </div>
-                      <Badge variant="secondary">{crop.status}</Badge>
+                      <Badge variant="secondary" className="text-xs">
+                        {crop.status}
+                      </Badge>
                     </div>
-                    <Progress value={crop.progress} className="h-2" />
+                    <Progress value={crop.progress} className="h-1.5" />
                   </div>
                 ))}
               </div>
@@ -592,11 +616,13 @@ export default function DashboardPage() {
       </div>
 
       {/* Analytics Charts */}
-      <div className="space-y-4">
+      <div className="space-y-5">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Analytics</h2>
-          <p className="text-muted-foreground">
-            Visual insights into your farm performance
+          <h2 className="text-2xl font-bold tracking-tight">
+            {t("dashboard.analyticsTitle")}
+          </h2>
+          <p className="text-muted-foreground mt-1">
+            {t("dashboard.analyticsSubtitle")}
           </p>
         </div>
 
@@ -604,9 +630,9 @@ export default function DashboardPage() {
           {/* Revenue Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Revenue vs Expenses</CardTitle>
+              <CardTitle>{t("dashboard.revenueVsExpenses")}</CardTitle>
               <CardDescription>
-                Financial performance (XOF)
+                {t("dashboard.financialPerformance")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -614,7 +640,7 @@ export default function DashboardPage() {
                 <Skeleton className="h-[300px] w-full" />
               ) : revenueData.length === 0 ? (
                 <div className="flex h-[300px] items-center justify-center text-muted-foreground">
-                  No transaction data available
+                  {t("dashboard.noTransactions")}
                 </div>
               ) : (
                 <RevenueChart data={revenueData} />
@@ -625,9 +651,9 @@ export default function DashboardPage() {
           {/* Crop Distribution Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Crop Distribution</CardTitle>
+              <CardTitle>{t("dashboard.cropDistribution")}</CardTitle>
               <CardDescription>
-                Distribution of crops across all fields
+                {t("dashboard.cropDistributionDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -635,7 +661,7 @@ export default function DashboardPage() {
                 <Skeleton className="h-[300px] w-full" />
               ) : cropDistributionData.length === 0 ? (
                 <div className="flex h-[300px] items-center justify-center text-muted-foreground">
-                  No crop data available
+                  {t("dashboard.noCropData")}
                 </div>
               ) : (
                 <CropDistributionChart data={cropDistributionData} />
@@ -646,15 +672,15 @@ export default function DashboardPage() {
           {/* Task Status Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Task Status</CardTitle>
-              <CardDescription>Overview of all tasks by status</CardDescription>
+              <CardTitle>{t("dashboard.taskStatus")}</CardTitle>
+              <CardDescription>{t("dashboard.taskStatusDescription")}</CardDescription>
             </CardHeader>
             <CardContent>
               {isLoading ? (
                 <Skeleton className="h-[300px] w-full" />
               ) : taskStatusData.length === 0 ? (
                 <div className="flex h-[300px] items-center justify-center text-muted-foreground">
-                  No task data available
+                  {t("dashboard.noTaskData")}
                 </div>
               ) : (
                 <TaskStatusChart data={taskStatusData} />
@@ -665,15 +691,15 @@ export default function DashboardPage() {
           {/* Sales Trend Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Sales Trend</CardTitle>
-              <CardDescription>Weekly sales by crop type (XOF)</CardDescription>
+              <CardTitle>{t("dashboard.salesTrend")}</CardTitle>
+              <CardDescription>{t("dashboard.salesTrendDescription")}</CardDescription>
             </CardHeader>
             <CardContent>
               {isLoading ? (
                 <Skeleton className="h-[300px] w-full" />
               ) : salesTrendData.length === 0 ? (
                 <div className="flex h-[300px] items-center justify-center text-muted-foreground">
-                  No sales data available
+                  {t("dashboard.noSalesData")}
                 </div>
               ) : (
                 <SalesTrendChart data={salesTrendData} crops={cropTypes} />
@@ -687,47 +713,48 @@ export default function DashboardPage() {
       <Card>
         <CardHeader>
           <CardTitle>{t("dashboard.quickActions")}</CardTitle>
+          <CardDescription>{t("dashboard.quickActionsDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
             <Button
               variant="outline"
-              className="h-auto flex-col gap-2 py-4"
+              className="h-auto flex-col gap-2 py-5 hover:bg-primary/5 hover:border-primary/30"
               asChild
             >
               <Link href={`/${locale}/dashboard/farms`}>
-                <MapPin className="h-6 w-6" />
-                <span>{t("farms.addFarm")}</span>
+                <MapPin className="h-5 w-5 text-primary" />
+                <span className="text-sm">{t("farms.addFarm")}</span>
               </Link>
             </Button>
             <Button
               variant="outline"
-              className="h-auto flex-col gap-2 py-4"
+              className="h-auto flex-col gap-2 py-5 hover:bg-accent/5 hover:border-accent/30"
               asChild
             >
               <Link href={`/${locale}/dashboard/tasks`}>
-                <ListTodo className="h-6 w-6" />
-                <span>{t("tasks.addTask")}</span>
+                <ListTodo className="h-5 w-5 text-accent" />
+                <span className="text-sm">{t("tasks.addTask")}</span>
               </Link>
             </Button>
             <Button
               variant="outline"
-              className="h-auto flex-col gap-2 py-4"
+              className="h-auto flex-col gap-2 py-5 hover:bg-sahel-terracotta/5 hover:border-sahel-terracotta/30"
               asChild
             >
               <Link href={`/${locale}/dashboard/finance`}>
-                <DollarSign className="h-6 w-6" />
-                <span>{t("finance.addTransaction")}</span>
+                <DollarSign className="h-5 w-5 text-sahel-terracotta" />
+                <span className="text-sm">{t("finance.addTransaction")}</span>
               </Link>
             </Button>
             <Button
               variant="outline"
-              className="h-auto flex-col gap-2 py-4"
+              className="h-auto flex-col gap-2 py-5 hover:bg-sahel-earth/5 hover:border-sahel-earth/30"
               asChild
             >
               <Link href={`/${locale}/dashboard/agents`}>
-                <Users className="h-6 w-6" />
-                <span>AI Advisors</span>
+                <Users className="h-5 w-5 text-sahel-earth" />
+                <span className="text-sm">{t("dashboard.aiAdvisors")}</span>
               </Link>
             </Button>
           </div>

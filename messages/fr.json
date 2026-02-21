@@ -1,7 +1,7 @@
 {
   "common": {
     "appName": "FructoSahel",
-    "tagline": "Transformer l'Agriculture du Sahel",
+    "tagline": "Le Sol du Sahel Rencontre l'Agriculture Intelligente",
     "loading": "Chargement...",
     "save": "Enregistrer",
     "cancel": "Annuler",
@@ -33,35 +33,37 @@
   },
   "landing": {
     "hero": {
-      "title": "Cultiver l'Avenir de l'Agriculture Sahelienne",
-      "subtitle": "Autonomiser les agriculteurs au Burkina Faso, au Mali et au Niger avec des analyses basees sur l'IA et des outils modernes de gestion agricole.",
+      "badge": "Agriculture Intelligente pour l'Afrique de l'Ouest",
+      "titleLine1": "Cultivez des Recoltes Plus Intelligentes a Travers le",
+      "titleHighlight": "Sahel",
+      "subtitle": "Du sol a la vente, FructoSahel donne aux agriculteurs du Burkina Faso, du Mali et du Niger les outils IA et les analyses en temps reel pour produire plus, gaspiller moins et mieux gagner.",
       "cta": "Commencer",
-      "tryDemo": "Essayer la Demo",
-      "learnMore": "En Savoir Plus"
+      "tryDemo": "Explorer la Demo",
+      "learnMore": "Guides de Culture"
     },
     "features": {
-      "title": "Pourquoi Choisir FructoSahel?",
-      "subtitle": "Des outils modernes concus pour les defis uniques de l'agriculture sahelienne",
+      "title": "Concu pour le Travail Reel des Agriculteurs Saheliens",
+      "subtitle": "Pas une simple application agricole generique. Chaque fonctionnalite est faconnee par les realites de l'agriculture en zone seche, des marches locaux et des chaines d'approvisionnement ouest-africaines.",
       "farmManagement": {
-        "title": "Gestion des Exploitations",
-        "description": "Suivez vos fermes, parcelles et cultures avec des outils de surveillance et de planification detailles."
+        "title": "Cartographie des Parcelles",
+        "description": "Localisez vos fermes sur une carte, suivez l'etat des parcelles et surveillez le sol et l'irrigation sur chaque hectare."
       },
       "aiAgents": {
-        "title": "Conseillers IA",
-        "description": "Obtenez des conseils d'experts de nos agents IA en agronomie, marketing et finance."
+        "title": "Equipe de Conseillers IA",
+        "description": "Dialoguez avec des agents IA specialises en agronomie, prix du marche et planification financiere adaptes aux cultures du Sahel."
       },
       "analytics": {
-        "title": "Analyses Intelligentes",
-        "description": "Prenez des decisions basees sur les donnees avec des rapports et des analyses complets."
+        "title": "Analyses Recolte-Revenus",
+        "description": "Visualisez exactement ou va votre argent et ou il fructifie. Suivez rendements, couts et benefices au fil des saisons."
       },
       "knowledgeBase": {
-        "title": "Base de Connaissances",
-        "description": "Accedez a des guides de culture detailles pour les ananas, noix de cajou, mangues et plus encore."
+        "title": "Guides de Culture Saheliens",
+        "description": "Guides bilingues couvrant tout, de la lutte antiparasitaire aux fenetres de plantation optimales pour les fruits tropicaux en climat aride."
       }
     },
     "crops": {
-      "title": "Nos Cultures Cibles",
-      "subtitle": "Expertise specialisee dans les cultures a haute valeur du Sahel",
+      "title": "Six Cultures, Une Plateforme",
+      "subtitle": "Une expertise approfondie des fruits tropicaux a haute valeur qui prosperent en conditions saheliennes",
       "pineapple": "Ananas",
       "cashew": "Noix de Cajou",
       "avocado": "Avocat",
@@ -76,17 +78,45 @@
       "countries": "Pays"
     },
     "cta": {
-      "title": "Pret a Transformer Votre Ferme?",
-      "subtitle": "Rejoignez des centaines d'agriculteurs qui utilisent deja FructoSahel pour ameliorer leurs rendements et leur rentabilite.",
-      "button": "Essai Gratuit"
+      "title": "Votre Prochaine Recolte Commence Ici",
+      "subtitle": "Rejoignez le reseau grandissant d'agriculteurs saheliens utilisant des outils IA pour augmenter les rendements, reduire les pertes et acceder a de meilleurs marches.",
+      "button": "Creer un Compte Gratuit",
+      "demoButton": "Essayer la Demo"
     }
   },
   "dashboard": {
     "title": "Tableau de Bord",
     "welcome": "Bon retour",
-    "overview": "Apercu",
+    "overview": "Vos operations agricoles en un coup d'oeil",
     "recentActivity": "Activite Recente",
     "quickActions": "Actions Rapides",
+    "quickActionsDescription": "Taches courantes et raccourcis",
+    "aiAdvisors": "Conseillers IA",
+    "recentTasks": "Taches a Venir",
+    "tasksNeedingAttention": "Taches qui necessitent votre attention bientot",
+    "noTasks": "Tout est a jour \u2014 aucune tache en attente",
+    "cropOverview": "Progression des Cultures",
+    "cropStatusDescription": "Stade de croissance sur toutes vos parcelles",
+    "noCrops": "Aucune culture plantee pour le moment",
+    "analyticsTitle": "Indicateurs de Performance",
+    "analyticsSubtitle": "Suivez les performances de vos fermes cette saison",
+    "revenueVsExpenses": "Revenus vs Depenses",
+    "financialPerformance": "Performance financiere mensuelle (FCFA)",
+    "noTransactions": "Pas encore de donnees de transactions",
+    "cropDistribution": "Repartition des Cultures",
+    "cropDistributionDescription": "Comment vos cultures sont reparties sur les parcelles",
+    "noCropData": "Pas encore de donnees de cultures",
+    "taskStatus": "Repartition des Taches",
+    "taskStatusDescription": "Toutes les taches regroupees par statut actuel",
+    "noTaskData": "Pas encore de donnees de taches",
+    "salesTrend": "Tendance des Ventes",
+    "salesTrendDescription": "Revenus hebdomadaires par type de culture (FCFA)",
+    "noSalesData": "Pas encore de donnees de ventes",
+    "errorTitle": "Impossible de charger le tableau de bord",
+    "tryAgain": "Reessayer",
+    "emptyTitle": "Bienvenue sur FructoSahel",
+    "emptyDescription": "Ajoutez votre premiere ferme pour commencer. Une fois vos fermes, cultures et taches configurees, ce tableau de bord se remplira de donnees et d'analyses en temps reel.",
+    "tryDemo": "Essayer la Demo",
     "stats": {
       "totalFarms": "Total des Fermes",
       "totalHectares": "Total des Hectares",

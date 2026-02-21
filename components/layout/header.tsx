@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { Menu, X, Globe, Sprout } from "lucide-react";
+import { Menu, X, Globe, Leaf } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,21 +31,26 @@ export function Header({ locale }: HeaderProps) {
   const otherLocale = locale === "en" ? "fr" : "en";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
-        <Link href={`/${locale}`} className="flex items-center gap-2">
-          <Sprout className="h-8 w-8 text-primary" />
-          <span className="text-xl font-bold text-primary">FructoSahel</span>
+        <Link href={`/${locale}`} className="flex items-center gap-2.5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary shadow-sm">
+            <Leaf className="h-5 w-5 text-primary-foreground" />
+          </div>
+          <span className="text-xl font-bold tracking-tight">
+            <span className="text-primary">Fructo</span>
+            <span className="text-sahel-terracotta">Sahel</span>
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex md:items-center md:gap-6">
+        <div className="hidden md:flex md:items-center md:gap-1">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               {link.label}
             </Link>
@@ -53,12 +58,12 @@ export function Header({ locale }: HeaderProps) {
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {/* Language Switcher */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Globe className="h-5 w-5" />
+              <Button variant="ghost" size="icon" className="rounded-lg">
+                <Globe className="h-4.5 w-4.5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -83,10 +88,10 @@ export function Header({ locale }: HeaderProps) {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex md:items-center md:gap-2">
-            <Button variant="ghost" asChild>
+            <Button variant="ghost" className="text-sm" asChild>
               <Link href={`/${locale}/login`}>{t("login")}</Link>
             </Button>
-            <Button asChild>
+            <Button className="shadow-sm" asChild>
               <Link href={`/${locale}/dashboard`}>{t("dashboard")}</Link>
             </Button>
           </div>
@@ -99,9 +104,9 @@ export function Header({ locale }: HeaderProps) {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
+              <X className="h-5 w-5" />
             ) : (
-              <Menu className="h-6 w-6" />
+              <Menu className="h-5 w-5" />
             )}
           </Button>
         </div>
@@ -109,13 +114,13 @@ export function Header({ locale }: HeaderProps) {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="border-t md:hidden">
+        <div className="animate-slide-down border-t md:hidden">
           <div className="container mx-auto space-y-1 px-4 py-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="block rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-primary"
+                className="block rounded-lg px-3 py-2.5 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}

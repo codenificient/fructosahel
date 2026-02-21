@@ -1,7 +1,7 @@
 {
   "common": {
     "appName": "FructoSahel",
-    "tagline": "Transforming Sahel Agriculture",
+    "tagline": "Where Sahel Soil Meets Smart Farming",
     "loading": "Loading...",
     "save": "Save",
     "cancel": "Cancel",
@@ -27,41 +27,43 @@
     "blog": "Knowledge Base",
     "contact": "Contact",
     "dashboard": "Dashboard",
-    "login": "Login",
-    "logout": "Logout",
+    "login": "Sign In",
+    "logout": "Sign Out",
     "signUp": "Sign Up"
   },
   "landing": {
     "hero": {
-      "title": "Growing the Future of Sahel Agriculture",
-      "subtitle": "Empowering farmers in Burkina Faso, Mali, and Niger with AI-driven insights and modern farm management tools.",
-      "cta": "Get Started",
-      "tryDemo": "Try Demo",
-      "learnMore": "Learn More"
+      "badge": "AI-Powered Agriculture for West Africa",
+      "titleLine1": "Cultivate Smarter Harvests Across the",
+      "titleHighlight": "Sahel",
+      "subtitle": "From soil to sale, FructoSahel gives farmers in Burkina Faso, Mali, and Niger the AI tools and real-time insights to grow more, waste less, and earn better.",
+      "cta": "Start Growing",
+      "tryDemo": "Explore Demo",
+      "learnMore": "Crop Guides"
     },
     "features": {
-      "title": "Why Choose FructoSahel?",
-      "subtitle": "Modern tools designed for the unique challenges of Sahel agriculture",
+      "title": "Built for How Sahel Farmers Actually Work",
+      "subtitle": "Not another generic farm app. Every feature is shaped by the realities of dryland agriculture, local markets, and West African supply chains.",
       "farmManagement": {
-        "title": "Farm Management",
-        "description": "Track your farms, fields, and crops with detailed monitoring and planning tools."
+        "title": "Farm & Field Mapping",
+        "description": "Pin your farms on a map, track field conditions, and monitor soil and irrigation across every hectare you manage."
       },
       "aiAgents": {
-        "title": "AI Advisors",
-        "description": "Get expert advice from our AI agronomist, marketing, and finance agents."
+        "title": "AI Advisory Team",
+        "description": "Chat with specialized AI agents for agronomy, market pricing, and financial planning tailored to Sahel crops."
       },
       "analytics": {
-        "title": "Smart Analytics",
-        "description": "Make data-driven decisions with comprehensive reports and insights."
+        "title": "Harvest-to-Revenue Analytics",
+        "description": "See exactly where your money goes and where it grows. Track yields, costs, and profits across seasons."
       },
       "knowledgeBase": {
-        "title": "Knowledge Base",
-        "description": "Access detailed growing guides for pineapples, cashews, mangos, and more."
+        "title": "Sahel Growing Guides",
+        "description": "Bilingual guides covering everything from pest control to optimal planting windows for tropical fruit in dryland climates."
       }
     },
     "crops": {
-      "title": "Our Focus Crops",
-      "subtitle": "Specialized expertise in high-value Sahel crops",
+      "title": "Six Crops, One Platform",
+      "subtitle": "Deep expertise in the high-value tropical fruits that thrive in Sahel conditions",
       "pineapple": "Pineapple",
       "cashew": "Cashew",
       "avocado": "Avocado",
@@ -71,22 +73,50 @@
     },
     "stats": {
       "farms": "Farms Managed",
-      "hectares": "Hectares Under Cultivation",
+      "hectares": "Hectares Cultivated",
       "farmers": "Farmers Supported",
       "countries": "Countries"
     },
     "cta": {
-      "title": "Ready to Transform Your Farm?",
-      "subtitle": "Join hundreds of farmers already using FructoSahel to improve their yields and profitability.",
-      "button": "Start Free Trial"
+      "title": "Your Next Harvest Starts Here",
+      "subtitle": "Join the growing network of Sahel farmers using AI-powered tools to increase yields, reduce losses, and connect to better markets.",
+      "button": "Create Free Account",
+      "demoButton": "Try the Demo"
     }
   },
   "dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome back",
-    "overview": "Overview",
+    "overview": "Your farm operations at a glance",
     "recentActivity": "Recent Activity",
     "quickActions": "Quick Actions",
+    "quickActionsDescription": "Common tasks and shortcuts",
+    "aiAdvisors": "AI Advisors",
+    "recentTasks": "Upcoming Tasks",
+    "tasksNeedingAttention": "Tasks that need your attention soon",
+    "noTasks": "All caught up \u2014 no pending tasks",
+    "cropOverview": "Crop Progress",
+    "cropStatusDescription": "Growth stage across all your fields",
+    "noCrops": "No crops planted yet",
+    "analyticsTitle": "Performance Insights",
+    "analyticsSubtitle": "Track how your farms are performing this season",
+    "revenueVsExpenses": "Revenue vs Expenses",
+    "financialPerformance": "Monthly financial performance (XOF)",
+    "noTransactions": "No transaction data yet",
+    "cropDistribution": "Crop Distribution",
+    "cropDistributionDescription": "How your crops are spread across fields",
+    "noCropData": "No crop data yet",
+    "taskStatus": "Task Breakdown",
+    "taskStatusDescription": "All tasks grouped by current status",
+    "noTaskData": "No task data yet",
+    "salesTrend": "Sales Trend",
+    "salesTrendDescription": "Weekly revenue by crop type (XOF)",
+    "noSalesData": "No sales data yet",
+    "errorTitle": "Could not load dashboard",
+    "tryAgain": "Try Again",
+    "emptyTitle": "Welcome to FructoSahel",
+    "emptyDescription": "Add your first farm to get started. Once you have farms, crops, and tasks set up, this dashboard will fill with live data and insights.",
+    "tryDemo": "Try Demo",
     "stats": {
       "totalFarms": "Total Farms",
       "totalHectares": "Total Hectares",

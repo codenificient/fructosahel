@@ -16,6 +16,7 @@ import {
   ChevronLeft,
   ChevronRight,
   FlaskConical,
+  Leaf,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -82,21 +83,28 @@ export function DemoSidebar({ locale }: DemoSidebarProps) {
   return (
     <aside
       className={cn(
-        "relative flex h-screen flex-col border-r bg-card transition-all duration-300",
+        "relative flex h-screen flex-col border-r bg-card/50 backdrop-blur-sm transition-all duration-300",
         collapsed ? "w-16" : "w-64",
       )}
     >
       {/* Logo */}
       <div className="flex h-16 items-center justify-between border-b px-4">
         {!collapsed && (
-          <Link href={`/${locale}/demo`} className="flex items-center gap-2">
-            <Sprout className="h-8 w-8 text-primary" />
-            <span className="text-lg font-bold text-primary">FructoSahel</span>
+          <Link href={`/${locale}/demo`} className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
+              <Leaf className="h-4.5 w-4.5 text-primary-foreground" />
+            </div>
+            <span className="text-lg font-bold tracking-tight">
+              <span className="text-primary">Fructo</span>
+              <span className="text-sahel-terracotta">Sahel</span>
+            </span>
           </Link>
         )}
         {collapsed && (
-          <Link href={`/${locale}/demo`}>
-            <Sprout className="mx-auto h-8 w-8 text-primary" />
+          <Link href={`/${locale}/demo`} className="mx-auto">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
+              <Leaf className="h-4.5 w-4.5 text-primary-foreground" />
+            </div>
           </Link>
         )}
       </div>
@@ -118,18 +126,18 @@ export function DemoSidebar({ locale }: DemoSidebarProps) {
       <Button
         variant="ghost"
         size="icon"
-        className="absolute -right-3 top-20 z-10 h-6 w-6 rounded-full border bg-background"
+        className="absolute -right-3 top-20 z-10 h-6 w-6 rounded-full border bg-background shadow-sm"
         onClick={() => setCollapsed(!collapsed)}
       >
         {collapsed ? (
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-3.5 w-3.5" />
         ) : (
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="h-3.5 w-3.5" />
         )}
       </Button>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 p-2">
+      <nav className="flex-1 space-y-0.5 p-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -137,13 +145,13 @@ export function DemoSidebar({ locale }: DemoSidebarProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
-              <item.icon className={cn("h-5 w-5 shrink-0")} />
+              <item.icon className={cn("h-4.5 w-4.5 shrink-0")} />
               {!collapsed && <span>{item.label}</span>}
             </Link>
           );
@@ -154,9 +162,9 @@ export function DemoSidebar({ locale }: DemoSidebarProps) {
       <div className="border-t p-2">
         <Link
           href={`/${locale}/dashboard`}
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+          className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-primary transition-all duration-200 hover:bg-primary/10"
         >
-          <LayoutDashboard className="h-5 w-5 shrink-0" />
+          <LayoutDashboard className="h-4.5 w-4.5 shrink-0" />
           {!collapsed && <span>Go to Real Dashboard</span>}
         </Link>
       </div>
