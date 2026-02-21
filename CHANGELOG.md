@@ -1,3 +1,9 @@
+## [1.8.0](https://github.com/codenificient/fructosahel/compare/v1.7.0...v1.8.0) (2026-02-21)
+
+### Features
+
+* add configurable multi-currency support (XOF, USD, ECO) ([c99f5db](https://github.com/codenificient/fructosahel/commit/c99f5db7751b5282d03c9159bf7d7cebbd094c30))
+
 ## [1.7.0](https://github.com/codenificient/fructosahel/compare/v1.6.0...v1.7.0) (2026-02-21)
 
 ### Features
