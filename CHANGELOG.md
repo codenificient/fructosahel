@@ -1,3 +1,13 @@
+## [1.3.0](https://github.com/codenificient/fructosahel/compare/v1.2.1...v1.3.0) (2026-02-21)
+
+### Features
+
+* wire dashboard overview to real data and add demo reports page ([ce756ad](https://github.com/codenificient/fructosahel/commit/ce756ad9dc493eb26c189912a9f493624a3b4038))
+
+### Documentation
+
+* add business plan and The Moringa Plan master strategy ([69b2a1f](https://github.com/codenificient/fructosahel/commit/69b2a1fc2a1a6e45aa4701a632b2d16a2bd20618))
+
 ## [1.2.1](https://github.com/codenificient/fructosahel/compare/v1.2.0...v1.2.1) (2026-02-08)
 
 ### Bug Fixes
