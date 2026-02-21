@@ -1,3 +1,9 @@
+## [1.6.0](https://github.com/codenificient/fructosahel/compare/v1.5.0...v1.6.0) (2026-02-21)
+
+### Features
+
+* add roadmap/timeline feature, livestock tracking, and 17 new crop types ([8ececa7](https://github.com/codenificient/fructosahel/commit/8ececa7f853de51b4aea80b70337ba89a1df6907))
+
 ## [1.5.0](https://github.com/codenificient/fructosahel/compare/v1.4.0...v1.5.0) (2026-02-21)
 
 ### Features
