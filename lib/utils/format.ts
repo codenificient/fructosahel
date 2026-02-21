@@ -1,15 +1,32 @@
 import { format as formatDate } from "date-fns";
+import {
+  type CurrencyCode,
+  formatAmountFromXOF,
+} from "@/lib/currency";
 
 /**
- * Format a number as currency (West African CFA Franc)
- * @param amount - The amount to format
- * @param locale - The locale to use (default: 'fr-BF' for Burkina Faso)
+ * Format a number as currency
+ * @param amount - The amount to format (in XOF)
+ * @param localeOrCurrency - Locale string or CurrencyCode. Defaults to "XOF".
  * @returns Formatted currency string
  */
-export function formatCurrency(amount: number, locale = "fr-BF"): string {
-  return new Intl.NumberFormat(locale, {
+export function formatCurrency(
+  amount: number,
+  localeOrCurrency: string = "XOF",
+): string {
+  // If passed a CurrencyCode, use the new multi-currency formatter
+  if (
+    localeOrCurrency === "XOF" ||
+    localeOrCurrency === "USD" ||
+    localeOrCurrency === "ECO"
+  ) {
+    return formatAmountFromXOF(amount, localeOrCurrency as CurrencyCode);
+  }
+
+  // Legacy: locale-based formatting (backward compat)
+  return new Intl.NumberFormat(localeOrCurrency, {
     style: "currency",
-    currency: "XOF", // West African CFA Franc
+    currency: "XOF",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount);

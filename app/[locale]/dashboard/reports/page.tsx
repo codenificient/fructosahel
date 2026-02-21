@@ -57,6 +57,7 @@ import {
   type ReportFilters,
   useReports,
 } from "@/lib/hooks/use-reports";
+import { useCurrency } from "@/contexts/currency-context";
 
 const CROP_TYPES = [
   { value: "all", label: "All Crops" },
@@ -85,6 +86,7 @@ const PRIORITY_LABELS: Record<string, string> = {
 export default function ReportsPage() {
   const t = useTranslations();
   const printRef = useRef<HTMLDivElement>(null);
+  const { formatAmount, symbol } = useCurrency();
 
   // Filter state
   const [filters, setFilters] = useState<ReportFilters>({
@@ -155,11 +157,6 @@ export default function ReportsPage() {
   // Print handler
   const handlePrint = () => {
     window.print();
-  };
-
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("fr-FR").format(amount);
   };
 
   // Render loading skeleton
@@ -417,7 +414,7 @@ export default function ReportsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-green-600">
-                  {formatCurrency(financial.totals.revenue)} XOF
+                  {formatAmount(financial.totals.revenue)}
                 </div>
               </CardContent>
             </Card>
@@ -430,7 +427,7 @@ export default function ReportsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-red-600">
-                  {formatCurrency(financial.totals.expenses)} XOF
+                  {formatAmount(financial.totals.expenses)}
                 </div>
               </CardContent>
             </Card>
@@ -453,7 +450,7 @@ export default function ReportsPage() {
                       : "text-red-600"
                   }`}
                 >
-                  {formatCurrency(financial.totals.netProfit)} XOF
+                  {formatAmount(financial.totals.netProfit)}
                 </div>
               </CardContent>
             </Card>
@@ -493,10 +490,10 @@ export default function ReportsPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Period</TableHead>
-                    <TableHead className="text-right">Revenue (XOF)</TableHead>
-                    <TableHead className="text-right">Expenses (XOF)</TableHead>
+                    <TableHead className="text-right">Revenue ({symbol})</TableHead>
+                    <TableHead className="text-right">Expenses ({symbol})</TableHead>
                     <TableHead className="text-right">
-                      Net Profit (XOF)
+                      Net Profit ({symbol})
                     </TableHead>
                     <TableHead className="text-right">Sales</TableHead>
                     <TableHead className="text-right">Transactions</TableHead>
@@ -509,17 +506,17 @@ export default function ReportsPage() {
                         {row.period}
                       </TableCell>
                       <TableCell className="text-right text-green-600">
-                        {formatCurrency(row.revenue)}
+                        {formatAmount(row.revenue)}
                       </TableCell>
                       <TableCell className="text-right text-red-600">
-                        {formatCurrency(row.expenses)}
+                        {formatAmount(row.expenses)}
                       </TableCell>
                       <TableCell
                         className={`text-right font-medium ${
                           row.netProfit >= 0 ? "text-blue-600" : "text-red-600"
                         }`}
                       >
-                        {formatCurrency(row.netProfit)}
+                        {formatAmount(row.netProfit)}
                       </TableCell>
                       <TableCell className="text-right">
                         {row.salesCount}
@@ -572,7 +569,7 @@ export default function ReportsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {formatCurrency(crop.totals.totalExpectedYield)} kg
+                  {formatAmount(crop.totals.totalExpectedYield)} kg
                 </div>
               </CardContent>
             </Card>
@@ -584,7 +581,7 @@ export default function ReportsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {formatCurrency(crop.totals.totalActualYield)} kg
+                  {formatAmount(crop.totals.totalActualYield)} kg
                 </div>
               </CardContent>
             </Card>
@@ -649,13 +646,13 @@ export default function ReportsPage() {
                         {row.cropType}
                       </TableCell>
                       <TableCell className="text-right">
-                        {formatCurrency(row.totalPlants)}
+                        {formatAmount(row.totalPlants)}
                       </TableCell>
                       <TableCell className="text-right">
-                        {formatCurrency(row.expectedYield)}
+                        {formatAmount(row.expectedYield)}
                       </TableCell>
                       <TableCell className="text-right">
-                        {formatCurrency(row.actualYield)}
+                        {formatAmount(row.actualYield)}
                       </TableCell>
                       <TableCell className="text-right">
                         {row.yieldEfficiency.toFixed(1)}%
@@ -894,7 +891,7 @@ export default function ReportsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {formatCurrency(productivity.totals.totalYield)} kg
+                  {formatAmount(productivity.totals.totalYield)} kg
                 </div>
               </CardContent>
             </Card>
@@ -906,7 +903,7 @@ export default function ReportsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {formatCurrency(productivity.totals.avgYieldPerHectare)} kg/ha
+                  {formatAmount(productivity.totals.avgYieldPerHectare)} kg/ha
                 </div>
               </CardContent>
             </Card>
@@ -919,7 +916,7 @@ export default function ReportsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-green-600">
-                  {formatCurrency(productivity.totals.totalRevenue)} XOF
+                  {formatAmount(productivity.totals.totalRevenue)}
                 </div>
               </CardContent>
             </Card>
@@ -959,7 +956,7 @@ export default function ReportsPage() {
                     <TableHead className="text-right">Crops</TableHead>
                     <TableHead className="text-right">Yield (kg)</TableHead>
                     <TableHead className="text-right">Yield/ha</TableHead>
-                    <TableHead className="text-right">Revenue (XOF)</TableHead>
+                    <TableHead className="text-right">Revenue ({symbol})</TableHead>
                     <TableHead className="text-right">Revenue/ha</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -979,16 +976,16 @@ export default function ReportsPage() {
                         {farm.totalCrops}
                       </TableCell>
                       <TableCell className="text-right">
-                        {formatCurrency(farm.totalYieldKg)}
+                        {formatAmount(farm.totalYieldKg)}
                       </TableCell>
                       <TableCell className="text-right">
                         {farm.yieldPerHectare.toFixed(0)}
                       </TableCell>
                       <TableCell className="text-right text-green-600">
-                        {formatCurrency(farm.totalRevenue)}
+                        {formatAmount(farm.totalRevenue)}
                       </TableCell>
                       <TableCell className="text-right">
-                        {formatCurrency(farm.revenuePerHectare)}
+                        {formatAmount(farm.revenuePerHectare)}
                       </TableCell>
                     </TableRow>
                   ))}

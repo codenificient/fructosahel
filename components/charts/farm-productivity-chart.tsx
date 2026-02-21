@@ -12,6 +12,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useCurrency } from "@/contexts/currency-context";
+import { formatCompact } from "@/lib/currency";
 
 export interface FarmProductivityData {
   farmName: string;
@@ -41,6 +43,8 @@ export function FarmProductivityChart({
   data,
   metric = "both",
 }: FarmProductivityChartProps) {
+  const { formatAmount, currency, symbol } = useCurrency();
+
   if (metric === "both") {
     return (
       <ResponsiveContainer width="100%" height={350}>
@@ -69,7 +73,7 @@ export function FarmProductivityChart({
             orientation="right"
             className="text-xs"
             tick={{ fill: "hsl(var(--muted-foreground))" }}
-            tickFormatter={(value) => `${formatNumber(value)} XOF`}
+            tickFormatter={(value) => formatCompact(value, currency)}
           />
           <Tooltip
             contentStyle={{
@@ -81,7 +85,7 @@ export function FarmProductivityChart({
               if (name === "Yield/Hectare")
                 return [`${value.toFixed(0)} kg/ha`, name];
               if (name === "Revenue/Hectare")
-                return [`${value.toLocaleString()} XOF/ha`, name];
+                return [`${formatAmount(value)}/ha`, name];
               return [value, name];
             }}
           />
@@ -110,7 +114,7 @@ export function FarmProductivityChart({
   const dataKey = metric === "yield" ? "yieldPerHectare" : "revenuePerHectare";
   const color = metric === "yield" ? "#22c55e" : "#3b82f6";
   const label =
-    metric === "yield" ? "Yield per Hectare (kg)" : "Revenue per Hectare (XOF)";
+    metric === "yield" ? "Yield per Hectare (kg)" : `Revenue per Hectare (${symbol})`;
 
   return (
     <ResponsiveContainer width="100%" height={350}>
@@ -142,7 +146,7 @@ export function FarmProductivityChart({
           formatter={(value: number) => [
             metric === "yield"
               ? `${value.toFixed(0)} kg/ha`
-              : `${value.toLocaleString()} XOF/ha`,
+              : `${formatAmount(value)}/ha`,
             label,
           ]}
         />

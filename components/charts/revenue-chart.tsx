@@ -10,6 +10,8 @@ import {
   Legend,
   CartesianGrid,
 } from "recharts";
+import { useCurrency } from "@/contexts/currency-context";
+import { formatCompact } from "@/lib/currency";
 
 export interface RevenueChartData {
   month: string;
@@ -21,11 +23,9 @@ interface RevenueChartProps {
   data: RevenueChartData[];
 }
 
-const formatCurrency = (value: number) => {
-  return `${value.toLocaleString()} XOF`;
-};
-
 export function RevenueChart({ data }: RevenueChartProps) {
+  const { formatAmount, currency } = useCurrency();
+
   return (
     <ResponsiveContainer width="100%" height={350}>
       <LineChart
@@ -41,7 +41,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
         <YAxis
           className="text-xs"
           tick={{ fill: "hsl(var(--muted-foreground))" }}
-          tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`}
+          tickFormatter={(value) => formatCompact(value, currency)}
         />
         <Tooltip
           contentStyle={{
@@ -49,7 +49,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
             border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => formatCurrency(value)}
+          formatter={(value: number) => formatAmount(value)}
         />
         <Legend />
         <Line

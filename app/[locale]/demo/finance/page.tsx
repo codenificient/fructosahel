@@ -33,17 +33,15 @@ import {
   calculateTransactionTotals,
   calculateSalesTotals,
 } from "@/lib/demo-data";
+import { useCurrency } from "@/contexts/currency-context";
 
 export default function DemoFinancePage() {
   const t = useTranslations();
   const [activeTab, setActiveTab] = useState("transactions");
 
+  const { formatAmount } = useCurrency();
   const txTotals = calculateTransactionTotals(demoTransactions);
   const saleTotals = calculateSalesTotals(demoSales);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("fr-FR").format(amount) + " XOF";
-  };
 
   const formatDate = (date: Date | string) => {
     return new Date(date).toLocaleDateString();
@@ -85,7 +83,7 @@ export default function DemoFinancePage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
-              {formatCurrency(txTotals.income)}
+              {formatAmount(txTotals.income)}
             </div>
           </CardContent>
         </Card>
@@ -98,7 +96,7 @@ export default function DemoFinancePage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">
-              {formatCurrency(txTotals.expense)}
+              {formatAmount(txTotals.expense)}
             </div>
           </CardContent>
         </Card>
@@ -111,7 +109,7 @@ export default function DemoFinancePage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-blue-600">
-              {formatCurrency(txTotals.balance)}
+              {formatAmount(txTotals.balance)}
             </div>
           </CardContent>
         </Card>
@@ -124,7 +122,7 @@ export default function DemoFinancePage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {formatCurrency(saleTotals.totalRevenue)}
+              {formatAmount(saleTotals.totalRevenue)}
             </div>
           </CardContent>
         </Card>
@@ -177,7 +175,7 @@ export default function DemoFinancePage() {
                         className={`text-right font-medium ${tx.type === "income" ? "text-green-600" : "text-red-600"}`}
                       >
                         {tx.type === "income" ? "+" : "-"}
-                        {formatCurrency(parseFloat(tx.amount))}
+                        {formatAmount(parseFloat(tx.amount))}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -216,7 +214,7 @@ export default function DemoFinancePage() {
                         {parseFloat(sale.quantityKg).toLocaleString()} kg
                       </TableCell>
                       <TableCell className="text-right font-medium text-green-600">
-                        {formatCurrency(parseFloat(sale.totalAmount))}
+                        {formatAmount(parseFloat(sale.totalAmount))}
                       </TableCell>
                     </TableRow>
                   ))}

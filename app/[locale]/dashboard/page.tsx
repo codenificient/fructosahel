@@ -46,6 +46,7 @@ import { useCrops } from "@/lib/hooks/use-crops";
 import { useTasks } from "@/lib/hooks/use-tasks";
 import { useTransactions } from "@/lib/hooks/use-transactions";
 import { useSales } from "@/lib/hooks/use-sales";
+import { useCurrency } from "@/contexts/currency-context";
 
 const CROP_EMOJI: Record<string, string> = {
   mango: "\uD83E\uDD6D",
@@ -87,6 +88,7 @@ const STATUS_PROGRESS: Record<string, number> = {
 export default function DashboardPage() {
   const t = useTranslations();
   const locale = useLocale();
+  const { formatAmount } = useCurrency();
 
   const {
     data: farms,
@@ -186,18 +188,18 @@ export default function DashboardPage() {
     return [
       {
         title: t("dashboard.stats.monthlyRevenue"),
-        value: new Intl.NumberFormat("fr-FR").format(revenue),
+        value: formatAmount(revenue),
         icon: TrendingUp,
         color: "text-primary",
       },
       {
         title: t("dashboard.stats.monthlyExpenses"),
-        value: new Intl.NumberFormat("fr-FR").format(expenses),
+        value: formatAmount(expenses),
         icon: DollarSign,
         color: "text-sahel-terracotta",
       },
     ];
-  }, [txData, t]);
+  }, [txData, t, formatAmount]);
 
   // Recent tasks (top 5, sorted by due date)
   const recentTasks = useMemo(() => {
@@ -480,7 +482,7 @@ export default function DashboardPage() {
               {isLoading ? (
                 <Skeleton className="h-8 w-32" />
               ) : (
-                <div className="text-2xl font-bold">{stat.value} XOF</div>
+                <div className="text-2xl font-bold">{stat.value}</div>
               )}
             </CardContent>
           </Card>

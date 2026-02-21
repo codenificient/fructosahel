@@ -63,11 +63,13 @@ import {
   type SaleFilters,
 } from "@/lib/hooks/use-sales";
 import { useToastContext } from "@/components/toast-provider";
+import { useCurrency } from "@/contexts/currency-context";
 import type { NewTransaction, NewSale } from "@/types";
 
 export default function FinancePage() {
   const t = useTranslations();
   const { toast } = useToastContext();
+  const { formatAmount, symbol } = useCurrency();
 
   // Date range filters
   const [dateRange, setDateRange] = useState({
@@ -224,10 +226,6 @@ export default function FinancePage() {
           err instanceof Error ? err.message : "Failed to create sale",
       });
     }
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("fr-FR").format(amount);
   };
 
   const handleDateRangeChange = (
@@ -632,7 +630,7 @@ export default function FinancePage() {
             ) : (
               <>
                 <div className="text-2xl font-bold text-green-600">
-                  {formatCurrency(totalIncome)} XOF
+                  {formatAmount(totalIncome)}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   Total income
@@ -657,7 +655,7 @@ export default function FinancePage() {
             ) : (
               <>
                 <div className="text-2xl font-bold text-red-600">
-                  {formatCurrency(totalExpenses)} XOF
+                  {formatAmount(totalExpenses)}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   Total expenses
@@ -684,7 +682,7 @@ export default function FinancePage() {
                 <div
                   className={`text-2xl font-bold ${netProfit >= 0 ? "text-green-600" : "text-red-600"}`}
                 >
-                  {formatCurrency(netProfit)} XOF
+                  {formatAmount(netProfit)}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   Net profit/loss
@@ -727,7 +725,7 @@ export default function FinancePage() {
                       <TableHead>Type</TableHead>
                       <TableHead>Category</TableHead>
                       <TableHead>Description</TableHead>
-                      <TableHead className="text-right">Amount (XOF)</TableHead>
+                      <TableHead className="text-right">Amount ({symbol})</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -755,7 +753,7 @@ export default function FinancePage() {
                           className={`text-right font-medium ${tx.type === "income" ? "text-green-600" : "text-red-600"}`}
                         >
                           {tx.type === "income" ? "+" : "-"}
-                          {formatCurrency(Number(tx.amount))}
+                          {formatAmount(Number(tx.amount))}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -788,9 +786,9 @@ export default function FinancePage() {
                       <TableHead>Date</TableHead>
                       <TableHead>Crop</TableHead>
                       <TableHead>Quantity (kg)</TableHead>
-                      <TableHead>Price/kg (XOF)</TableHead>
+                      <TableHead>Price/kg ({symbol})</TableHead>
                       <TableHead>Buyer</TableHead>
-                      <TableHead className="text-right">Total (XOF)</TableHead>
+                      <TableHead className="text-right">Total ({symbol})</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -803,14 +801,14 @@ export default function FinancePage() {
                           {sale.cropType}
                         </TableCell>
                         <TableCell>
-                          {formatCurrency(Number(sale.quantityKg))}
+                          {Number(sale.quantityKg).toLocaleString()}
                         </TableCell>
                         <TableCell>
-                          {formatCurrency(Number(sale.pricePerKg))}
+                          {formatAmount(Number(sale.pricePerKg))}
                         </TableCell>
                         <TableCell>{sale.buyerName}</TableCell>
                         <TableCell className="text-right font-medium text-green-600">
-                          {formatCurrency(Number(sale.totalAmount))}
+                          {formatAmount(Number(sale.totalAmount))}
                         </TableCell>
                       </TableRow>
                     ))}

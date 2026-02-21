@@ -11,6 +11,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useCurrency } from "@/contexts/currency-context";
+import { formatCompact } from "@/lib/currency";
 
 export interface FinancialSummaryData {
   period: string;
@@ -24,24 +26,12 @@ interface FinancialSummaryChartProps {
   showNetProfit?: boolean;
 }
 
-const formatCurrency = (value: number) => {
-  if (Math.abs(value) >= 1000000) {
-    return `${(value / 1000000).toFixed(1)}M`;
-  }
-  if (Math.abs(value) >= 1000) {
-    return `${(value / 1000).toFixed(0)}K`;
-  }
-  return value.toLocaleString();
-};
-
-const formatTooltipValue = (value: number) => {
-  return `${value.toLocaleString()} XOF`;
-};
-
 export function FinancialSummaryChart({
   data,
   showNetProfit = true,
 }: FinancialSummaryChartProps) {
+  const { formatAmount, currency } = useCurrency();
+
   return (
     <ResponsiveContainer width="100%" height={350}>
       <BarChart
@@ -57,7 +47,7 @@ export function FinancialSummaryChart({
         <YAxis
           className="text-xs"
           tick={{ fill: "hsl(var(--muted-foreground))" }}
-          tickFormatter={formatCurrency}
+          tickFormatter={(value) => formatCompact(value, currency)}
         />
         <Tooltip
           contentStyle={{
@@ -65,7 +55,7 @@ export function FinancialSummaryChart({
             border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => formatTooltipValue(value)}
+          formatter={(value: number) => formatAmount(value)}
         />
         <Legend />
         <ReferenceLine y={0} stroke="hsl(var(--muted-foreground))" />

@@ -14,6 +14,7 @@ import {
   ServiceWorkerUpdatePrompt,
 } from "@/components/service-worker-provider";
 import { OfflineBanner } from "@/components/offline-indicator";
+import { CurrencyProvider } from "@/contexts/currency-context";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -185,17 +186,19 @@ export default async function LocaleLayout({
         <StackProvider app={stackServerApp}>
           <StackTheme>
             <NextIntlClientProvider messages={messages}>
-              <ServiceWorkerProvider>
-                <SentryUserProvider>
-                  <AnalyticsProvider>
-                    <ToastProvider>
-                      <OfflineBanner />
-                      {children}
-                      <ServiceWorkerUpdatePrompt />
-                    </ToastProvider>
-                  </AnalyticsProvider>
-                </SentryUserProvider>
-              </ServiceWorkerProvider>
+              <CurrencyProvider>
+                <ServiceWorkerProvider>
+                  <SentryUserProvider>
+                    <AnalyticsProvider>
+                      <ToastProvider>
+                        <OfflineBanner />
+                        {children}
+                        <ServiceWorkerUpdatePrompt />
+                      </ToastProvider>
+                    </AnalyticsProvider>
+                  </SentryUserProvider>
+                </ServiceWorkerProvider>
+              </CurrencyProvider>
             </NextIntlClientProvider>
           </StackTheme>
         </StackProvider>

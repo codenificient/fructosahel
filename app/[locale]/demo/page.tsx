@@ -39,9 +39,11 @@ import {
   SalesTrendChart,
 } from "@/components/charts";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCurrency } from "@/contexts/currency-context";
 
 export default function DashboardPage() {
   const t = useTranslations();
+  const { formatAmount, symbol } = useCurrency();
 
   // Mock data - in production this would come from the database
   const stats = [
@@ -78,14 +80,14 @@ export default function DashboardPage() {
   const financialStats = [
     {
       title: t("dashboard.stats.monthlyRevenue"),
-      value: "12,450,000",
+      value: formatAmount(12450000),
       change: "+12%",
       trend: "up",
       icon: TrendingUp,
     },
     {
       title: t("dashboard.stats.monthlyExpenses"),
-      value: "8,230,000",
+      value: formatAmount(8230000),
       change: "+5%",
       trend: "up",
       icon: TrendingDown,
@@ -268,7 +270,7 @@ export default function DashboardPage() {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stat.value} XOF</div>
+              <div className="text-2xl font-bold">{stat.value}</div>
               <div className="flex items-center text-xs">
                 {stat.trend === "up" ? (
                   <ArrowUpRight className="mr-1 h-4 w-4 text-green-600" />
@@ -410,7 +412,7 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle>Revenue vs Expenses</CardTitle>
               <CardDescription>
-                Monthly financial performance (XOF)
+                Monthly financial performance ({symbol})
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -446,7 +448,7 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Sales Trend</CardTitle>
-              <CardDescription>Weekly sales by crop type (XOF)</CardDescription>
+              <CardDescription>Weekly sales by crop type ({symbol})</CardDescription>
             </CardHeader>
             <CardContent>
               <SalesTrendChart data={salesTrendData} crops={cropTypes} />

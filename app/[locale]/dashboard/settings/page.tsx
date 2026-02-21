@@ -10,9 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Settings, User, Bell, Shield, Palette } from "lucide-react";
+import { Settings, User, Bell, Shield, Palette, Globe } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import { useCurrency } from "@/contexts/currency-context";
+import { CURRENCIES, type CurrencyCode } from "@/lib/currency";
 
 // Dynamically import the user-dependent component
 const UserInfo = dynamic(() => import("./user-info"), {
@@ -36,6 +39,7 @@ const UserInfo = dynamic(() => import("./user-info"), {
 export default function SettingsPage() {
   // Use a demo user ID by default - actual user ID handled in child components
   const userId = "demo-user-id";
+  const { currency, setCurrency } = useCurrency();
 
   return (
     <div className="space-y-6">
@@ -62,6 +66,10 @@ export default function SettingsPage() {
           <TabsTrigger value="appearance" className="flex items-center gap-2">
             <Palette className="h-4 w-4" />
             Appearance
+          </TabsTrigger>
+          <TabsTrigger value="preferences" className="flex items-center gap-2">
+            <Globe className="h-4 w-4" />
+            Preferences
           </TabsTrigger>
           <TabsTrigger value="security" className="flex items-center gap-2">
             <Shield className="h-4 w-4" />
@@ -108,6 +116,65 @@ export default function SettingsPage() {
                 Theme customization coming soon. The app currently follows your
                 system theme preference.
               </p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="preferences">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Globe className="h-5 w-5" />
+                Display Currency
+              </CardTitle>
+              <CardDescription>
+                Choose how financial values are displayed across the app.
+                All data is stored in XOF — this only affects the display.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {(["XOF", "USD", "ECO"] as CurrencyCode[]).map((code) => {
+                  const config = CURRENCIES[code];
+                  const isSelected = currency === code;
+                  return (
+                    <button
+                      key={code}
+                      type="button"
+                      onClick={() => setCurrency(code)}
+                      className={`w-full flex items-center gap-3 rounded-lg border p-4 text-left transition-colors hover:bg-muted/50 ${
+                        isSelected
+                          ? "border-primary bg-primary/5"
+                          : "border-border"
+                      }`}
+                    >
+                      <div
+                        className={`h-4 w-4 rounded-full border-2 flex items-center justify-center ${
+                          isSelected ? "border-primary" : "border-muted-foreground"
+                        }`}
+                      >
+                        {isSelected && (
+                          <div className="h-2 w-2 rounded-full bg-primary" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 font-medium">
+                          {code} — {config.label}
+                          {code === "ECO" && (
+                            <Badge variant="secondary" className="text-xs">
+                              Coming soon
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Symbol: {config.symbol}
+                          {code === "ECO" && " (pegged 1:1 to XOF)"}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

@@ -10,6 +10,8 @@ import {
   Legend,
   CartesianGrid,
 } from "recharts";
+import { useCurrency } from "@/contexts/currency-context";
+import { formatCompact } from "@/lib/currency";
 
 export interface SalesTrendData {
   date: string;
@@ -32,11 +34,9 @@ const CROP_COLORS: { [key: string]: string } = {
   Onion: "#14b8a6",
 };
 
-const formatCurrency = (value: number) => {
-  return `${(value / 1000000).toFixed(1)}M XOF`;
-};
-
 export function SalesTrendChart({ data, crops }: SalesTrendChartProps) {
+  const { formatAmount, currency } = useCurrency();
+
   return (
     <ResponsiveContainer width="100%" height={350}>
       <AreaChart
@@ -75,7 +75,7 @@ export function SalesTrendChart({ data, crops }: SalesTrendChartProps) {
         <YAxis
           className="text-xs"
           tick={{ fill: "hsl(var(--muted-foreground))" }}
-          tickFormatter={formatCurrency}
+          tickFormatter={(value) => formatCompact(value, currency)}
         />
         <Tooltip
           contentStyle={{
@@ -83,7 +83,7 @@ export function SalesTrendChart({ data, crops }: SalesTrendChartProps) {
             border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => `${value.toLocaleString()} XOF`}
+          formatter={(value: number) => formatAmount(value)}
         />
         <Legend />
         {crops.map((crop) => (
