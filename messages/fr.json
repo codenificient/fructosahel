@@ -373,5 +373,80 @@
       "hasAccount": "Vous avez deja un compte?",
       "login": "Connexion"
     }
+  },
+  "logistics": {
+    "title": "Logistique",
+    "subtitle": "Sahel Energies Inc. — Distribution, stockage et installations solaires",
+    "addOrder": "Nouvelle Commande",
+    "editOrder": "Modifier la Commande",
+    "orderDetails": "Details de la Commande",
+    "origin": "Origine",
+    "destination": "Destination",
+    "cargo": "Cargaison",
+    "weight": "Poids (kg)",
+    "vehicle": "Vehicule",
+    "estimatedCost": "Cout Estime",
+    "actualCost": "Cout Reel",
+    "scheduledDate": "Date Prevue",
+    "completedDate": "Date de Livraison",
+    "orderTypes": {
+      "distribution": "Distribution",
+      "storage": "Stockage",
+      "processing_transport": "Transport de Transformation",
+      "solar_installation": "Installation Solaire",
+      "equipment_delivery": "Livraison d'Equipement"
+    },
+    "statuses": {
+      "pending": "En Attente",
+      "scheduled": "Programme",
+      "in_transit": "En Transit",
+      "delivered": "Livre",
+      "stored": "Stocke",
+      "cancelled": "Annule"
+    },
+    "stats": {
+      "totalOrders": "Total des Commandes",
+      "activeShipments": "Expeditions Actives",
+      "totalWeightKg": "Poids Total (kg)",
+      "solarInstallations": "Installations Solaires"
+    },
+    "emptyState": "Aucune commande logistique. Creez votre premiere commande pour suivre la distribution et le stockage.",
+    "demoBanner": "Ceci est une demo de Sahel Energies Inc. Connectez-vous pour gerer de vraies commandes."
+  },
+  "training": {
+    "title": "Formation",
+    "subtitle": "Programmes de formation des jeunes agriculteurs pour la souverainete alimentaire du Sahel",
+    "addProgram": "Nouveau Programme",
+    "editProgram": "Modifier le Programme",
+    "programDetails": "Details du Programme",
+    "location": "Lieu",
+    "startDate": "Date de Debut",
+    "endDate": "Date de Fin",
+    "maxParticipants": "Participants Maximum",
+    "enrolled": "Inscrits",
+    "curriculum": "Domaines du Programme",
+    "duration": "Duree (semaines)",
+    "statuses": {
+      "planning": "Planification",
+      "enrolling": "Inscription",
+      "in_progress": "En Cours",
+      "completed": "Termine",
+      "cancelled": "Annule"
+    },
+    "enrollmentStatuses": {
+      "applied": "Candidature",
+      "enrolled": "Inscrit",
+      "in_progress": "En Cours",
+      "completed": "Termine",
+      "dropped": "Abandonne"
+    },
+    "stats": {
+      "totalPrograms": "Total des Programmes",
+      "activePrograms": "Programmes Actifs",
+      "totalParticipants": "Total des Participants",
+      "graduatedFarmers": "Agriculteurs Diplomes"
+    },
+    "emptyState": "Aucun programme de formation. Creez votre premier programme pour commencer a former de jeunes agriculteurs.",
+    "demoBanner": "Ceci est une demo du systeme de formation. Connectez-vous pour gerer de vrais programmes."
   }
 }

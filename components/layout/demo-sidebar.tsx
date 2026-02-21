@@ -14,6 +14,8 @@ import {
   Bot,
   FileBarChart,
   Route,
+  Truck,
+  GraduationCap,
   ChevronLeft,
   ChevronRight,
   FlaskConical,
@@ -78,6 +80,16 @@ export function DemoSidebar({ locale }: DemoSidebarProps) {
       href: `/${locale}/demo/roadmap`,
       icon: Route,
       label: t("roadmap.title"),
+    },
+    {
+      href: `/${locale}/demo/logistics`,
+      icon: Truck,
+      label: t("logistics.title"),
+    },
+    {
+      href: `/${locale}/demo/training`,
+      icon: GraduationCap,
+      label: t("training.title"),
     },
     {
       href: `/${locale}/demo/agents`,

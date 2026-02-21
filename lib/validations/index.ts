@@ -7,3 +7,5 @@ export * from "./sales";
 export * from "./users";
 export * from "./roadmap";
 export * from "./livestock";
+export * from "./logistics";
+export * from "./training";

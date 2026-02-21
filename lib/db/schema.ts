@@ -112,6 +112,35 @@ export const farmZoneTypeEnum = pgEnum("farm_zone_type", [
   "zone_4_catchment",
   "buffer",
 ]);
+export const logisticsOrderTypeEnum = pgEnum("logistics_order_type", [
+  "distribution",
+  "storage",
+  "processing_transport",
+  "solar_installation",
+  "equipment_delivery",
+]);
+export const logisticsStatusEnum = pgEnum("logistics_status", [
+  "pending",
+  "scheduled",
+  "in_transit",
+  "delivered",
+  "stored",
+  "cancelled",
+]);
+export const trainingStatusEnum = pgEnum("training_status", [
+  "planning",
+  "enrolling",
+  "in_progress",
+  "completed",
+  "cancelled",
+]);
+export const enrollmentStatusEnum = pgEnum("enrollment_status", [
+  "applied",
+  "enrolled",
+  "in_progress",
+  "completed",
+  "dropped",
+]);
 
 // Users table
 export const users = pgTable("users", {
@@ -374,6 +403,62 @@ export const farmZones = pgTable("farm_zones", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// Logistics orders (Sahel Energies Incorporated)
+export const logisticsOrders = pgTable("logistics_orders", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  farmId: uuid("farm_id").references(() => farms.id, { onDelete: "cascade" }),
+  orderType: logisticsOrderTypeEnum("order_type").notNull(),
+  status: logisticsStatusEnum("status").default("pending").notNull(),
+  origin: varchar("origin", { length: 255 }).notNull(),
+  destination: varchar("destination", { length: 255 }).notNull(),
+  cargoDescription: text("cargo_description"),
+  weightKg: decimal("weight_kg", { precision: 10, scale: 2 }),
+  vehicleInfo: varchar("vehicle_info", { length: 255 }),
+  estimatedCostUsd: decimal("estimated_cost_usd", { precision: 12, scale: 2 }),
+  actualCostUsd: decimal("actual_cost_usd", { precision: 12, scale: 2 }),
+  scheduledDate: timestamp("scheduled_date"),
+  completedDate: timestamp("completed_date"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Training programs (Youth farmer training)
+export const trainingPrograms = pgTable("training_programs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  farmId: uuid("farm_id").references(() => farms.id, { onDelete: "cascade" }),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  status: trainingStatusEnum("status").default("planning").notNull(),
+  location: varchar("location", { length: 255 }),
+  startDate: timestamp("start_date"),
+  endDate: timestamp("end_date"),
+  maxParticipants: integer("max_participants"),
+  curriculumAreas: jsonb("curriculum_areas"), // string[] of focus areas
+  durationWeeks: integer("duration_weeks"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Training enrollments
+export const trainingEnrollments = pgTable("training_enrollments", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  programId: uuid("program_id")
+    .references(() => trainingPrograms.id, { onDelete: "cascade" })
+    .notNull(),
+  participantName: varchar("participant_name", { length: 255 }).notNull(),
+  participantAge: integer("participant_age"),
+  participantPhone: varchar("participant_phone", { length: 50 }),
+  homeVillage: varchar("home_village", { length: 255 }),
+  status: enrollmentStatusEnum("status").default("applied").notNull(),
+  enrolledAt: timestamp("enrolled_at").defaultNow().notNull(),
+  completedAt: timestamp("completed_at"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   managedFarms: many(farms),
@@ -393,6 +478,8 @@ export const farmsRelations = relations(farms, ({ one, many }) => ({
   roadmapPhases: many(roadmapPhases),
   livestock: many(livestock),
   farmZones: many(farmZones),
+  logisticsOrders: many(logisticsOrders),
+  trainingPrograms: many(trainingPrograms),
 }));
 
 export const fieldsRelations = relations(fields, ({ one, many }) => ({
@@ -520,6 +607,37 @@ export const farmZonesRelations = relations(farmZones, ({ one }) => ({
     references: [farms.id],
   }),
 }));
+
+export const logisticsOrdersRelations = relations(
+  logisticsOrders,
+  ({ one }) => ({
+    farm: one(farms, {
+      fields: [logisticsOrders.farmId],
+      references: [farms.id],
+    }),
+  }),
+);
+
+export const trainingProgramsRelations = relations(
+  trainingPrograms,
+  ({ one, many }) => ({
+    farm: one(farms, {
+      fields: [trainingPrograms.farmId],
+      references: [farms.id],
+    }),
+    enrollments: many(trainingEnrollments),
+  }),
+);
+
+export const trainingEnrollmentsRelations = relations(
+  trainingEnrollments,
+  ({ one }) => ({
+    program: one(trainingPrograms, {
+      fields: [trainingEnrollments.programId],
+      references: [trainingPrograms.id],
+    }),
+  }),
+);
 
 // Push notification subscriptions
 export const pushSubscriptions = pgTable("push_subscriptions", {

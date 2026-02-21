@@ -14,6 +14,9 @@ import type {
   milestones,
   livestock,
   farmZones,
+  logisticsOrders,
+  trainingPrograms,
+  trainingEnrollments,
 } from "@/lib/db/schema";
 
 // Infer types from schema
@@ -61,6 +64,15 @@ export type NewLivestock = typeof livestock.$inferInsert;
 
 export type FarmZone = typeof farmZones.$inferSelect;
 export type NewFarmZone = typeof farmZones.$inferInsert;
+
+export type LogisticsOrder = typeof logisticsOrders.$inferSelect;
+export type NewLogisticsOrder = typeof logisticsOrders.$inferInsert;
+
+export type TrainingProgram = typeof trainingPrograms.$inferSelect;
+export type NewTrainingProgram = typeof trainingPrograms.$inferInsert;
+
+export type TrainingEnrollment = typeof trainingEnrollments.$inferSelect;
+export type NewTrainingEnrollment = typeof trainingEnrollments.$inferInsert;
 
 // Enum types
 export type Country = "burkina_faso" | "mali" | "niger";
@@ -125,6 +137,31 @@ export type FarmZoneType =
   | "zone_3_extensive"
   | "zone_4_catchment"
   | "buffer";
+export type LogisticsOrderType =
+  | "distribution"
+  | "storage"
+  | "processing_transport"
+  | "solar_installation"
+  | "equipment_delivery";
+export type LogisticsStatus =
+  | "pending"
+  | "scheduled"
+  | "in_transit"
+  | "delivered"
+  | "stored"
+  | "cancelled";
+export type TrainingStatus =
+  | "planning"
+  | "enrolling"
+  | "in_progress"
+  | "completed"
+  | "cancelled";
+export type EnrollmentStatus =
+  | "applied"
+  | "enrolled"
+  | "in_progress"
+  | "completed"
+  | "dropped";
 
 // Growing schedule types
 export interface MonthlyTask {

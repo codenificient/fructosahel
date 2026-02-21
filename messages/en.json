@@ -373,5 +373,80 @@
       "hasAccount": "Already have an account?",
       "login": "Login"
     }
+  },
+  "logistics": {
+    "title": "Logistics",
+    "subtitle": "Sahel Energies Inc. — Distribution, storage, and solar installations",
+    "addOrder": "New Order",
+    "editOrder": "Edit Order",
+    "orderDetails": "Order Details",
+    "origin": "Origin",
+    "destination": "Destination",
+    "cargo": "Cargo",
+    "weight": "Weight (kg)",
+    "vehicle": "Vehicle",
+    "estimatedCost": "Estimated Cost",
+    "actualCost": "Actual Cost",
+    "scheduledDate": "Scheduled Date",
+    "completedDate": "Completed Date",
+    "orderTypes": {
+      "distribution": "Distribution",
+      "storage": "Storage",
+      "processing_transport": "Processing Transport",
+      "solar_installation": "Solar Installation",
+      "equipment_delivery": "Equipment Delivery"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "scheduled": "Scheduled",
+      "in_transit": "In Transit",
+      "delivered": "Delivered",
+      "stored": "Stored",
+      "cancelled": "Cancelled"
+    },
+    "stats": {
+      "totalOrders": "Total Orders",
+      "activeShipments": "Active Shipments",
+      "totalWeightKg": "Total Weight (kg)",
+      "solarInstallations": "Solar Installations"
+    },
+    "emptyState": "No logistics orders yet. Create your first order to start tracking distribution and storage.",
+    "demoBanner": "This is a demo of Sahel Energies Inc. logistics. Sign in to manage real orders."
+  },
+  "training": {
+    "title": "Training",
+    "subtitle": "Youth farmer training programs for Sahel food sovereignty",
+    "addProgram": "New Program",
+    "editProgram": "Edit Program",
+    "programDetails": "Program Details",
+    "location": "Location",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "maxParticipants": "Max Participants",
+    "enrolled": "Enrolled",
+    "curriculum": "Curriculum Areas",
+    "duration": "Duration (weeks)",
+    "statuses": {
+      "planning": "Planning",
+      "enrolling": "Enrolling",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "enrollmentStatuses": {
+      "applied": "Applied",
+      "enrolled": "Enrolled",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "dropped": "Dropped"
+    },
+    "stats": {
+      "totalPrograms": "Total Programs",
+      "activePrograms": "Active Programs",
+      "totalParticipants": "Total Participants",
+      "graduatedFarmers": "Graduated Farmers"
+    },
+    "emptyState": "No training programs yet. Create your first program to start training young farmers.",
+    "demoBanner": "This is a demo of the youth training system. Sign in to manage real programs."
   }
 }
