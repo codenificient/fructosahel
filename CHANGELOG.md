@@ -1,3 +1,9 @@
+## [1.4.0](https://github.com/codenificient/fructosahel/compare/v1.3.0...v1.4.0) (2026-02-21)
+
+### Features
+
+* **ui:** redesign frontend with Sahel-inspired palette, new fonts, and refreshed copy ([6353fa1](https://github.com/codenificient/fructosahel/commit/6353fa112e048dc625b666c847f923b33a6c365a))
+
 ## [1.3.0](https://github.com/codenificient/fructosahel/compare/v1.2.1...v1.3.0) (2026-02-21)
 
 ### Features
