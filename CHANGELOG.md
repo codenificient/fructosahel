@@ -1,3 +1,9 @@
+## [1.7.0](https://github.com/codenificient/fructosahel/compare/v1.6.0...v1.7.0) (2026-02-21)
+
+### Features
+
+* add logistics system, youth training, and updated financial projections ([10f6904](https://github.com/codenificient/fructosahel/commit/10f6904b0a45e7cba1e8acf6890da41326615c16))
+
 ## [1.6.0](https://github.com/codenificient/fructosahel/compare/v1.5.0...v1.6.0) (2026-02-21)
 
 ### Features
