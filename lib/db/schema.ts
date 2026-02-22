@@ -462,7 +462,8 @@ export const trainingEnrollments = pgTable("training_enrollments", {
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   managedFarms: many(farms),
-  tasks: many(tasks),
+  assignedTasks: many(tasks, { relationName: "taskAssignee" }),
+  createdTasks: many(tasks, { relationName: "taskCreator" }),
   conversations: many(agentConversations),
 }));
 
@@ -522,10 +523,12 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
   assignee: one(users, {
     fields: [tasks.assignedTo],
     references: [users.id],
+    relationName: "taskAssignee",
   }),
   creator: one(users, {
     fields: [tasks.createdBy],
     references: [users.id],
+    relationName: "taskCreator",
   }),
 }));
 

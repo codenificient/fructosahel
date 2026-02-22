@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     const allUsers = await db.query.users.findMany({
       with: {
         managedFarms: true,
-        tasks: {
+        assignedTasks: {
           limit: 5,
           orderBy: (tasks, { desc }) => [desc(tasks.createdAt)],
         },
