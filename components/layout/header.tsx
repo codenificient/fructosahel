@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Menu, X, Leaf } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface HeaderProps {
   locale: string;
@@ -52,6 +53,9 @@ export function Header({ locale }: HeaderProps) {
 
         {/* Right side */}
         <div className="flex items-center gap-3">
+          {/* Dark Mode Toggle */}
+          <ThemeToggle />
+
           {/* Language Toggle */}
           <Button variant="ghost" size="sm" className="gap-2 rounded-lg px-3" asChild>
             <Link href={`/${otherLocale}`}>

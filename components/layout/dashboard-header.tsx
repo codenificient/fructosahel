@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { OfflineStatusBadge } from "@/components/offline-indicator";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface DashboardHeaderProps {
   locale: string;
@@ -28,9 +29,9 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
   const otherLocalePath = pathname.replace(`/${locale}`, `/${otherLocale}`);
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-xl px-6">
+    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between gap-4 border-b bg-background/80 backdrop-blur-xl px-6">
       {/* Search */}
-      <div className="relative flex-1 md:max-w-md">
+      <div className="relative md:w-80">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="search"
@@ -42,6 +43,9 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
       <div className="flex items-center gap-2">
         {/* Offline Status */}
         <OfflineStatusBadge />
+
+        {/* Theme Toggle */}
+        <ThemeToggle />
 
         {/* Language Toggle */}
         <Button variant="ghost" size="sm" className="gap-2 rounded-lg px-3" asChild>
