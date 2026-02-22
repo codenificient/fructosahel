@@ -185,6 +185,7 @@ export default async function LocaleLayout({
       >
         <NeonAuthUIProvider
           authClient={authClient}
+          basePath={`/${locale}/auth`}
           redirectTo={`/${locale}/dashboard`}
           emailOTP
         >

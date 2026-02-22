@@ -20,8 +20,12 @@ export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const path = stripLocale(pathname);
 
-  // Neon Auth (Better Auth) uses this cookie for sessions
-  const hasSession = request.cookies.has("better-auth.session_token");
+  // Neon Auth sets __Secure-neon-auth.session_token (HTTPS) or
+  // neon-auth.session_token / better-auth.session_token (HTTP/localhost)
+  const hasSession =
+    request.cookies.has("__Secure-neon-auth.session_token") ||
+    request.cookies.has("neon-auth.session_token") ||
+    request.cookies.has("better-auth.session_token");
 
   const isProtectedRoute = protectedRoutes.some((r) => path.startsWith(r));
   const isSignInRoute = signInRoutes.some((r) => path.startsWith(r));
