@@ -1,3 +1,9 @@
+## [1.10.0](https://github.com/codenificient/fructosahel/compare/v1.9.0...v1.10.0) (2026-02-22)
+
+### Features
+
+* add themed auth page layout with shared header and footer ([2e1c905](https://github.com/codenificient/fructosahel/commit/2e1c9051434c0b3061fd593a0ae887c3388051ff))
+
 ## [1.9.0](https://github.com/codenificient/fructosahel/compare/v1.8.0...v1.9.0) (2026-02-22)
 
 ### Features
