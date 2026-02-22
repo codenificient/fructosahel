@@ -1,3 +1,18 @@
+## [1.11.0](https://github.com/codenificient/fructosahel/compare/v1.10.0...v1.11.0) (2026-02-22)
+
+### Features
+
+* fix auth cookie detection, add basePath, and seed database ([ae073c6](https://github.com/codenificient/fructosahel/commit/ae073c663491345e4505b190b5b97040d804bdaf))
+* migrate from Stack Auth to Neon Auth ([26a4425](https://github.com/codenificient/fructosahel/commit/26a4425a10cc5654248707cfae07ef701243ab9e))
+* wire up logout buttons and consolidate sidebars ([6147b2e](https://github.com/codenificient/fructosahel/commit/6147b2e6ef960ec56980b55684639c146868b5f9))
+
+### Bug Fixes
+
+* disambiguate user-task relations in Drizzle schema ([10dd76a](https://github.com/codenificient/fructosahel/commit/10dd76ae0b39df047cd52306a9a47cf868d2c23b))
+* reconfigure Neon Auth API route and auth page ([87eeb66](https://github.com/codenificient/fructosahel/commit/87eeb66ae12460d855437ce40a15265f9491b20f))
+* rename auth route back to [...path] to match handler internals ([b382c1f](https://github.com/codenificient/fructosahel/commit/b382c1ff834c8d0e2178941a16b6a70a4c742e57))
+* resolve reports page DB error and flatten nested Drizzle queries ([b1f8a46](https://github.com/codenificient/fructosahel/commit/b1f8a469600e2d0ad67ad678da8a75df31eaa651))
+
 ## [1.10.0](https://github.com/codenificient/fructosahel/compare/v1.9.0...v1.10.0) (2026-02-22)
 
 ### Features
