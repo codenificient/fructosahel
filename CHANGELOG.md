@@ -1,3 +1,9 @@
+## [1.9.0](https://github.com/codenificient/fructosahel/compare/v1.8.0...v1.9.0) (2026-02-22)
+
+### Features
+
+* add binary dark mode toggle to shared headers ([1913199](https://github.com/codenificient/fructosahel/commit/1913199ff3a4c0c188a64c5824d64acafa090b19))
+
 ## [1.8.0](https://github.com/codenificient/fructosahel/compare/v1.7.0...v1.8.0) (2026-02-21)
 
 ### Features
