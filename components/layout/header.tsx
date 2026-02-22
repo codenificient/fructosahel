@@ -67,7 +67,7 @@ export function Header({ locale }: HeaderProps) {
           {/* CTA Buttons */}
           <div className="hidden md:flex md:items-center md:gap-2">
             <Button variant="ghost" className="text-sm" asChild>
-              <Link href={`/${locale}/login`}>{t("login")}</Link>
+              <Link href={`/${locale}/handler/sign-in`}>{t("login")}</Link>
             </Button>
             <Button className="shadow-sm" asChild>
               <Link href={`/${locale}/dashboard`}>{t("dashboard")}</Link>
@@ -106,7 +106,7 @@ export function Header({ locale }: HeaderProps) {
             ))}
             <div className="flex flex-col gap-2 pt-4">
               <Button variant="outline" asChild className="w-full">
-                <Link href={`/${locale}/login`}>{t("login")}</Link>
+                <Link href={`/${locale}/handler/sign-in`}>{t("login")}</Link>
               </Button>
               <Button asChild className="w-full">
                 <Link href={`/${locale}/dashboard`}>{t("dashboard")}</Link>

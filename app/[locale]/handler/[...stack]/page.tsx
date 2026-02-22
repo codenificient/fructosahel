@@ -6,6 +6,6 @@ export default function Handler(props: {
   searchParams: Promise<unknown>;
 }) {
   return (
-    <StackHandler app={stackServerApp} routeProps={props} fullPage={true} />
+    <StackHandler app={stackServerApp} routeProps={props} fullPage={false} />
   );
 }
