@@ -17,6 +17,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { OfflineStatusBadge } from "@/components/offline-indicator";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { authClient } from "@/lib/auth/client";
 
 interface DashboardHeaderProps {
   locale: string;
@@ -87,7 +88,14 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
               <Link href={`/${locale}/dashboard/settings`}>Settings</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive focus:text-destructive">
+            <DropdownMenuItem
+              className="text-destructive focus:text-destructive cursor-pointer"
+              onClick={() =>
+                authClient.signOut().then(() => {
+                  window.location.href = `/${locale}`;
+                })
+              }
+            >
               {t("nav.logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -75,7 +75,12 @@ export function handleApiError(
       requestBody: sanitizeRequestBody(requestBody),
     });
 
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Sanitize database errors to avoid leaking SQL queries to the client
+    const clientMessage = isDatabaseError(error)
+      ? "A database error occurred. Please try again later."
+      : error.message;
+
+    return NextResponse.json({ error: clientMessage }, { status: 500 });
   }
 
   // Track unknown error types
@@ -89,6 +94,24 @@ export function handleApiError(
   return NextResponse.json(
     { error: "An unexpected error occurred" },
     { status: 500 },
+  );
+}
+
+/**
+ * Detect database/query errors that should not be exposed to clients.
+ * Matches Drizzle ORM, Neon, and raw PostgreSQL error patterns.
+ */
+function isDatabaseError(error: Error): boolean {
+  const msg = error.message;
+  return (
+    msg.includes("Failed query:") ||
+    msg.includes("select ") ||
+    msg.includes("insert into ") ||
+    msg.includes("update ") ||
+    msg.includes("delete from ") ||
+    error.constructor.name === "NeonDbError" ||
+    "severity" in error ||
+    "code" in error
   );
 }
 

@@ -1,4 +1,4 @@
-import { DemoSidebar, DashboardHeader } from "@/components/layout";
+import { AppSidebar, DashboardHeader } from "@/components/layout";
 
 interface DemoLayoutProps {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ export default async function DemoLayout({
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <DemoSidebar locale={locale} />
+      <AppSidebar locale={locale} mode="demo" />
       <div className="flex flex-1 flex-col overflow-hidden">
         <DashboardHeader locale={locale} />
         <main className="flex-1 overflow-y-auto bg-muted/30 p-6">

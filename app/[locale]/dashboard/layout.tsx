@@ -1,4 +1,4 @@
-import { DashboardSidebar, DashboardHeader } from "@/components/layout";
+import { AppSidebar, DashboardHeader } from "@/components/layout";
 import { NotificationProvider } from "@/components/notifications";
 
 interface DashboardLayoutProps {
@@ -15,7 +15,7 @@ export default async function DashboardLayout({
   return (
     <NotificationProvider>
       <div className="flex h-screen overflow-hidden">
-        <DashboardSidebar locale={locale} />
+        <AppSidebar locale={locale} mode="dashboard" />
         <div className="flex flex-1 flex-col overflow-hidden">
           <DashboardHeader locale={locale} />
           <main className="flex-1 overflow-y-auto bg-muted/30 p-6">
