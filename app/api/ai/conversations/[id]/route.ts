@@ -2,7 +2,7 @@ import { and, asc, eq } from "drizzle-orm";
 import type { NextRequest } from "next/server";
 import { ApiError, handleApiError, notFound, success } from "@/lib/api/errors";
 import { agentConversations, agentMessages, db, users } from "@/lib/db";
-import { stackServerApp } from "@/lib/stack";
+import { neonAuth } from "@/lib/auth/server";
 
 // GET /api/ai/conversations/[id] - Get a conversation with all messages
 export async function GET(
@@ -10,9 +10,9 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const user = await stackServerApp.getUser();
+    const { session, user } = await neonAuth();
 
-    if (!user) {
+    if (!session || !user) {
       throw new ApiError(401, "Unauthorized");
     }
 
@@ -20,7 +20,7 @@ export async function GET(
 
     // Find the user in our database
     const dbUser = await db.query.users.findFirst({
-      where: eq(users.email, user.primaryEmail || ""),
+      where: eq(users.email, user.email || ""),
     });
 
     if (!dbUser) {
@@ -56,9 +56,9 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const user = await stackServerApp.getUser();
+    const { session, user } = await neonAuth();
 
-    if (!user) {
+    if (!session || !user) {
       throw new ApiError(401, "Unauthorized");
     }
 
@@ -66,7 +66,7 @@ export async function DELETE(
 
     // Find the user in our database
     const dbUser = await db.query.users.findFirst({
-      where: eq(users.email, user.primaryEmail || ""),
+      where: eq(users.email, user.email || ""),
     });
 
     if (!dbUser) {
@@ -100,9 +100,9 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const user = await stackServerApp.getUser();
+    const { session, user } = await neonAuth();
 
-    if (!user) {
+    if (!session || !user) {
       throw new ApiError(401, "Unauthorized");
     }
 
@@ -112,7 +112,7 @@ export async function PATCH(
 
     // Find the user in our database
     const dbUser = await db.query.users.findFirst({
-      where: eq(users.email, user.primaryEmail || ""),
+      where: eq(users.email, user.email || ""),
     });
 
     if (!dbUser) {

@@ -8,7 +8,7 @@ import {
   success,
 } from "@/lib/api/errors";
 import { agentConversations, agentMessages, db, users } from "@/lib/db";
-import { stackServerApp } from "@/lib/stack";
+import { neonAuth } from "@/lib/auth/server";
 
 // GET /api/ai/conversations/[id]/messages - Get all messages for a conversation
 export async function GET(
@@ -16,9 +16,9 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const user = await stackServerApp.getUser();
+    const { session, user } = await neonAuth();
 
-    if (!user) {
+    if (!session || !user) {
       throw new ApiError(401, "Unauthorized");
     }
 
@@ -26,7 +26,7 @@ export async function GET(
 
     // Find the user in our database
     const dbUser = await db.query.users.findFirst({
-      where: eq(users.email, user.primaryEmail || ""),
+      where: eq(users.email, user.email || ""),
     });
 
     if (!dbUser) {
@@ -62,9 +62,9 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const user = await stackServerApp.getUser();
+    const { session, user } = await neonAuth();
 
-    if (!user) {
+    if (!session || !user) {
       throw new ApiError(401, "Unauthorized");
     }
 
@@ -82,7 +82,7 @@ export async function POST(
 
     // Find the user in our database
     const dbUser = await db.query.users.findFirst({
-      where: eq(users.email, user.primaryEmail || ""),
+      where: eq(users.email, user.email || ""),
     });
 
     if (!dbUser) {

@@ -8,18 +8,19 @@
  */
 
 import { useEffect } from "react";
-import { useUser } from "@stackframe/stack";
+import { authClient } from "@/lib/auth/client";
 import { setSentryUserFromClient } from "@/components/sentry-user-provider";
 
 export function useSentryUser(): void {
-  const user = useUser();
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
 
   useEffect(() => {
     if (user) {
       setSentryUserFromClient({
         id: user.id,
-        email: user.primaryEmail || undefined,
-        username: user.displayName || undefined,
+        email: user.email || undefined,
+        username: user.name || undefined,
       });
     } else {
       setSentryUserFromClient(null);

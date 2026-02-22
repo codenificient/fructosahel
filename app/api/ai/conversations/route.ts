@@ -2,23 +2,23 @@ import { desc, eq } from "drizzle-orm";
 import type { NextRequest } from "next/server";
 import { ApiError, created, handleApiError, success } from "@/lib/api/errors";
 import { agentConversations, db, users } from "@/lib/db";
-import { stackServerApp } from "@/lib/stack";
+import { neonAuth } from "@/lib/auth/server";
 
 // GET /api/ai/conversations - List user's conversations
 export async function GET(_request: NextRequest) {
   try {
-    // Get the current user from Stack Auth
-    const user = await stackServerApp.getUser();
+    // Get the current user from Neon Auth
+    const { session, user } = await neonAuth();
 
-    if (!user) {
+    if (!session || !user) {
       throw new ApiError(401, "Unauthorized");
     }
 
     // Find or create the user in our database
     const dbUser = await getOrCreateUser(
       user.id,
-      user.primaryEmail || "",
-      user.displayName || "User",
+      user.email || "",
+      user.name || "User",
     );
 
     const conversations = await db.query.agentConversations.findMany({
@@ -52,9 +52,9 @@ export async function GET(_request: NextRequest) {
 // POST /api/ai/conversations - Create a new conversation
 export async function POST(request: NextRequest) {
   try {
-    const user = await stackServerApp.getUser();
+    const { session, user } = await neonAuth();
 
-    if (!user) {
+    if (!session || !user) {
       throw new ApiError(401, "Unauthorized");
     }
 
@@ -71,8 +71,8 @@ export async function POST(request: NextRequest) {
     // Find or create the user in our database
     const dbUser = await getOrCreateUser(
       user.id,
-      user.primaryEmail || "",
-      user.displayName || "User",
+      user.email || "",
+      user.name || "User",
     );
 
     const [newConversation] = await db
@@ -97,9 +97,9 @@ function generateTitle(content?: string): string {
   return words.join(" ") + (words.length >= 5 ? "..." : "");
 }
 
-// Helper function to get or create a user in our database based on Stack Auth
+// Helper function to get or create a user in our database
 async function getOrCreateUser(
-  _stackUserId: string,
+  _authUserId: string,
   email: string,
   name: string,
 ) {

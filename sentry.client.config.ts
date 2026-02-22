@@ -14,8 +14,8 @@ Sentry.init({
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
 
-  // Debug mode for development
-  debug: process.env.NODE_ENV === "development",
+  // Debug mode disabled — causes infinite loop with next-intl transport
+  debug: false,
 
   // Environment tag
   environment: process.env.NODE_ENV,

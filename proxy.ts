@@ -2,54 +2,50 @@ import { NextRequest, NextResponse } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 
-// Create the i18n middleware
 const intlMiddleware = createIntlMiddleware(routing);
 
-// Protected routes that require authentication
 const protectedRoutes = ["/dashboard"];
+const signInRoutes = ["/auth/sign-in", "/auth/sign-up"];
 
-// Auth handler routes that should be public
-const authRoutes = ["/handler"];
+function getLocale(pathname: string): string {
+  const match = pathname.match(/^\/(en|fr)/);
+  return match ? match[1] : "en";
+}
+
+function stripLocale(pathname: string): string {
+  return pathname.replace(/^\/(en|fr)/, "") || "/";
+}
 
 export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const path = stripLocale(pathname);
 
-  // Remove locale prefix for route matching
-  const pathnameWithoutLocale = pathname.replace(/^\/(en|fr)/, "") || "/";
+  // Neon Auth (Better Auth) uses this cookie for sessions
+  const hasSession = request.cookies.has("better-auth.session_token");
 
-  // Check if this is a protected route
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathnameWithoutLocale.startsWith(route),
-  );
+  const isProtectedRoute = protectedRoutes.some((r) => path.startsWith(r));
+  const isSignInRoute = signInRoutes.some((r) => path.startsWith(r));
 
-  // Check if this is an auth route (should be public)
-  const isAuthRoute = authRoutes.some((route) =>
-    pathnameWithoutLocale.startsWith(route),
-  );
+  const locale = getLocale(pathname);
 
-  // If it's a protected route, check for authentication
-  if (isProtectedRoute && !isAuthRoute) {
-    // Check for Stack Auth session cookie
-    const sessionCookie =
-      request.cookies.get("stack-refresh-token") ||
-      request.cookies.get("stack-access-token");
-
-    if (!sessionCookie) {
-      // Get the current locale from the pathname
-      const localeMatch = pathname.match(/^\/(en|fr)/);
-      const locale = localeMatch ? localeMatch[1] : "en";
-
-      // Redirect to sign-in page
-      const signInUrl = new URL(`/${locale}/handler/sign-in`, request.url);
-      signInUrl.searchParams.set("after_auth_return_to", pathname);
-      return NextResponse.redirect(signInUrl);
-    }
+  // Authenticated user on sign-in/sign-up → send to dashboard
+  if (hasSession && isSignInRoute) {
+    return NextResponse.redirect(
+      new URL(`/${locale}/dashboard`, request.url),
+    );
   }
 
-  // Apply i18n middleware
+  // Unauthenticated user on protected route → send to sign-in
+  if (!hasSession && isProtectedRoute) {
+    const signInUrl = new URL(`/${locale}/auth/sign-in`, request.url);
+    signInUrl.searchParams.set("callbackURL", pathname);
+    return NextResponse.redirect(signInUrl);
+  }
+
+  // All other requests → next-intl handles locale rewriting
   return intlMiddleware(request);
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
+  matcher: ["/((?!api|_next|_vercel|monitoring|.*\\..*).*)"],
 };

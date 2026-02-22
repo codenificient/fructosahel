@@ -3,8 +3,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
-import { StackProvider, StackTheme } from "@stackframe/stack";
-import { stackServerApp } from "@/lib/stack";
+import { NeonAuthUIProvider } from "@neondatabase/auth/react";
+import { authClient } from "@/lib/auth/client";
 import { routing } from "@/i18n/routing";
 import { ToastProvider } from "@/components/toast-provider";
 import { AnalyticsProvider } from "@/components/analytics-provider";
@@ -171,7 +171,7 @@ export default async function LocaleLayout({
   };
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
@@ -183,25 +183,27 @@ export default async function LocaleLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <StackProvider app={stackServerApp}>
-          <StackTheme>
-            <NextIntlClientProvider messages={messages}>
-              <CurrencyProvider>
-                <ServiceWorkerProvider>
-                  <SentryUserProvider>
-                    <AnalyticsProvider>
-                      <ToastProvider>
-                        <OfflineBanner />
-                        {children}
-                        <ServiceWorkerUpdatePrompt />
-                      </ToastProvider>
-                    </AnalyticsProvider>
-                  </SentryUserProvider>
-                </ServiceWorkerProvider>
-              </CurrencyProvider>
-            </NextIntlClientProvider>
-          </StackTheme>
-        </StackProvider>
+        <NeonAuthUIProvider
+          authClient={authClient}
+          redirectTo={`/${locale}/dashboard`}
+          emailOTP
+        >
+          <NextIntlClientProvider messages={messages}>
+            <CurrencyProvider>
+              <ServiceWorkerProvider>
+                <SentryUserProvider>
+                  <AnalyticsProvider>
+                    <ToastProvider>
+                      <OfflineBanner />
+                      {children}
+                      <ServiceWorkerUpdatePrompt />
+                    </ToastProvider>
+                  </AnalyticsProvider>
+                </SentryUserProvider>
+              </ServiceWorkerProvider>
+            </CurrencyProvider>
+          </NextIntlClientProvider>
+        </NeonAuthUIProvider>
       </body>
     </html>
   );
