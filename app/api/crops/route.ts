@@ -17,21 +17,30 @@ export async function GET(request: NextRequest) {
       whereClause = eq(crops.fieldId, fieldId);
     }
 
-    const allCrops = await db.query.crops.findMany({
-      where: whereClause,
-      with: {
-        field: {
-          with: {
-            farm: true,
+    // Fetch crops with first-level relations, then attach farms separately
+    // (neon-http driver doesn't support 2+ levels of nested relations)
+    const [rawCrops, allFarms] = await Promise.all([
+      db.query.crops.findMany({
+        where: whereClause,
+        with: {
+          field: true,
+          activities: {
+            limit: 5,
+            orderBy: (activities, { desc }) => [desc(activities.performedAt)],
           },
         },
-        activities: {
-          limit: 5,
-          orderBy: (activities, { desc }) => [desc(activities.performedAt)],
-        },
-      },
-      orderBy: (crops, { desc }) => [desc(crops.createdAt)],
-    });
+        orderBy: (crops, { desc }) => [desc(crops.createdAt)],
+      }),
+      db.query.farms.findMany(),
+    ]);
+
+    const farmById = new Map(allFarms.map((f) => [f.id, f]));
+    const allCrops = rawCrops.map((c) => ({
+      ...c,
+      field: c.field
+        ? { ...c.field, farm: farmById.get(c.field.farmId) || null }
+        : null,
+    }));
 
     // Additional filtering
     let filteredCrops = allCrops;

@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { eq } from "drizzle-orm";
-import { db, tasks } from "@/lib/db";
+import { db, tasks, fields } from "@/lib/db";
 import { updateTaskSchema } from "@/lib/validations/tasks";
 import { handleApiError, success, notFound } from "@/lib/api/errors";
 import { notifyNewTaskAssigned } from "@/lib/services/notification-service";
@@ -12,19 +12,25 @@ export async function GET(_request: NextRequest, { params }: Params) {
   try {
     const { id } = await params;
 
+    // Fetch task with first-level relations, then attach field separately
+    // (neon-http driver doesn't support 2+ levels of nested relations)
     const task = await db.query.tasks.findFirst({
       where: eq(tasks.id, id),
       with: {
         farm: true,
-        crop: {
-          with: {
-            field: true,
-          },
-        },
+        crop: true,
         assignee: true,
         creator: true,
       },
     });
+
+    // Attach field data to crop
+    if (task?.crop) {
+      const field = await db.query.fields.findFirst({
+        where: eq(fields.id, task.crop.fieldId),
+      });
+      (task as Record<string, unknown>).crop = { ...task.crop, field: field || null };
+    }
 
     if (!task) {
       return notFound("Task");

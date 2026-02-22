@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { eq } from "drizzle-orm";
-import { db, crops } from "@/lib/db";
+import { db, crops, farms } from "@/lib/db";
 import { updateCropSchema } from "@/lib/validations/crops";
 import { handleApiError, success, notFound } from "@/lib/api/errors";
 
@@ -11,20 +11,26 @@ export async function GET(_request: NextRequest, { params }: Params) {
   try {
     const { id } = await params;
 
+    // Fetch crop with first-level relations, then attach farm separately
+    // (neon-http driver doesn't support 2+ levels of nested relations)
     const crop = await db.query.crops.findFirst({
       where: eq(crops.id, id),
       with: {
-        field: {
-          with: {
-            farm: true,
-          },
-        },
+        field: true,
         activities: {
           orderBy: (activities, { desc }) => [desc(activities.performedAt)],
         },
         tasks: true,
       },
     });
+
+    // Attach farm data to field
+    if (crop?.field) {
+      const farm = await db.query.farms.findFirst({
+        where: eq(farms.id, crop.field.farmId),
+      });
+      (crop as Record<string, unknown>).field = { ...crop.field, farm: farm || null };
+    }
 
     if (!crop) {
       return notFound("Crop");

@@ -213,19 +213,27 @@ async function generateCropReport(
     overallEfficiency: number;
   };
 }> {
-  // Fetch all crops with field data
-  const allCrops = await db.query.crops.findMany({
-    with: {
-      field: {
-        with: {
-          farm: true,
-        },
-      },
-    },
-  });
+  // Fetch crops, fields, and farms separately to avoid deep nesting
+  // (neon-http driver doesn't support 2+ levels of nested relations)
+  const [allCrops, allFields, allFarms] = await Promise.all([
+    db.query.crops.findMany({ with: { field: true } }),
+    db.query.fields.findMany(),
+    db.query.farms.findMany(),
+  ]);
+
+  // Build a lookup of field → farm
+  const farmById = new Map(allFarms.map((f) => [f.id, f]));
+
+  // Attach farm data to each crop's field
+  const cropsWithFarm = allCrops.map((c) => ({
+    ...c,
+    field: c.field
+      ? { ...c.field, farm: farmById.get(c.field.farmId) || null }
+      : null,
+  }));
 
   // Filter crops
-  let filteredCrops = allCrops;
+  let filteredCrops = cropsWithFarm;
 
   if (farmId) {
     filteredCrops = filteredCrops.filter((c) => c.field?.farm?.id === farmId);
@@ -402,37 +410,60 @@ async function generateProductivityReport(
     avgYieldPerHectare: number;
   };
 }> {
-  // Fetch all farms with related data
+  // Fetch farms, fields, crops, and sales separately to avoid deep nesting
+  // (neon-http driver doesn't support 2+ levels of nested relations)
   const farmConditions = farmId ? eq(farms.id, farmId) : undefined;
 
-  const allFarms = await db.query.farms.findMany({
-    where: farmConditions,
-    with: {
-      fields: {
-        with: {
-          crops: true,
-        },
-      },
-      sales: true,
-    },
+  const [prodFarms, prodFields, prodCrops, prodSales] = await Promise.all([
+    db.query.farms.findMany({ where: farmConditions }),
+    db.query.fields.findMany(),
+    db.query.crops.findMany(),
+    db.query.sales.findMany({
+      where: farmId ? eq(sales.farmId, farmId) : undefined,
+    }),
+  ]);
+
+  // Build lookups: field → crops, farm → fields, farm → sales
+  const cropsByFieldId = new Map<string, typeof prodCrops>();
+  prodCrops.forEach((c) => {
+    const list = cropsByFieldId.get(c.fieldId) || [];
+    list.push(c);
+    cropsByFieldId.set(c.fieldId, list);
   });
 
-  const farmProductivity: FarmProductivity[] = allFarms.map((farm) => {
+  const fieldsByFarmId = new Map<string, typeof prodFields>();
+  prodFields.forEach((f) => {
+    const list = fieldsByFarmId.get(f.farmId) || [];
+    list.push(f);
+    fieldsByFarmId.set(f.farmId, list);
+  });
+
+  const salesByFarmId = new Map<string, typeof prodSales>();
+  prodSales.forEach((s) => {
+    const list = salesByFarmId.get(s.farmId) || [];
+    list.push(s);
+    salesByFarmId.set(s.farmId, list);
+  });
+
+  const farmProductivity: FarmProductivity[] = prodFarms.map((farm) => {
     const totalHectares = parseFloat(farm.sizeHectares) || 0;
-    const totalFields = farm.fields?.length || 0;
+    const farmFields = fieldsByFarmId.get(farm.id) || [];
+    const totalFields = farmFields.length;
 
     let totalCrops = 0;
     let totalYieldKg = 0;
 
-    farm.fields?.forEach((field) => {
-      field.crops?.forEach((crop) => {
+    farmFields.forEach((field) => {
+      const fieldCrops = cropsByFieldId.get(field.id) || [];
+      fieldCrops.forEach((crop) => {
         totalCrops++;
         totalYieldKg += parseFloat(crop.actualYieldKg || "0");
       });
     });
 
     // Filter sales by date range
-    const filteredSales = (farm.sales || []).filter((s) => {
+    const farmSales = salesByFarmId.get(farm.id) || [];
+    const filteredSales = farmSales.filter((s) => {
       const date = new Date(s.saleDate);
       return date >= startDate && date <= endDate;
     });

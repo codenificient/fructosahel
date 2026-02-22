@@ -23,6 +23,7 @@ async function runMigration(file: string) {
 }
 
 async function main() {
+  await runMigration("drizzle/0001_add_crop_image_url.sql");
   await runMigration("drizzle/0002_add_roadmap_and_livestock.sql");
   await runMigration("drizzle/0003_add_logistics_and_training.sql");
   console.log("\nAll migrations complete.");

@@ -11,15 +11,14 @@ export async function GET(_request: NextRequest, { params }: Params) {
   try {
     const { id } = await params;
 
+    // Fetch user with first-level relations only
+    // (neon-http driver doesn't support 2+ levels of nested relations)
     const user = await db.query.users.findFirst({
       where: eq(users.id, id),
       with: {
-        managedFarms: {
-          with: {
-            fields: true,
-          },
-        },
-        tasks: {
+        managedFarms: true,
+        assignedTasks: {
+          limit: 10,
           orderBy: (tasks, { desc }) => [desc(tasks.createdAt)],
         },
         conversations: {
