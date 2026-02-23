@@ -1,3 +1,13 @@
+## [1.11.1](https://github.com/codenificient/fructosahel/compare/v1.11.0...v1.11.1) (2026-02-23)
+
+### Bug Fixes
+
+* resolve sidebar active link not updating with as-needed localePrefix ([5da1e7d](https://github.com/codenificient/fructosahel/commit/5da1e7d10eea3ad5f7a990aa43e129a11f4075fa))
+
+### Documentation
+
+* mark tasks 2.8 and 6.9 as done in implementation plan ([9d9fb71](https://github.com/codenificient/fructosahel/commit/9d9fb71771cd934a45f10bd44428ae4bf153435b))
+
 ## [1.11.0](https://github.com/codenificient/fructosahel/compare/v1.10.0...v1.11.0) (2026-02-22)
 
 ### Features
