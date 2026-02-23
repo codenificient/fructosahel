@@ -1,5 +1,11 @@
 # FructoSahel Implementation Plan
 
+## Changelog
+
+| Date | Change |
+|------|--------|
+| 2026-02-22 | EDIT: Mark tasks 2.8 (seed data scripts) and 6.9 (dashboard charts from real data) as Done; remove from Still Pending list |
+
 ## Project Overview
 
 A comprehensive farm management platform for fruit production in the Sahel region (Burkina Faso, Mali, Niger) with AI-powered advisory services.
@@ -48,7 +54,7 @@ A comprehensive farm management platform for fruit production in the Sahel regio
 | 2.5 Generate TypeScript types | Done | Yes | Type Agent |
 | 2.6 Configure Stack Auth | Done | Yes | Auth Agent |
 | 2.7 Create auth middleware | Done | Yes | Auth Agent |
-| 2.8 Write seed data scripts | Pending | Yes | Data Agent |
+| 2.8 Write seed data scripts | Done | Yes | Data Agent |
 
 ### Deliverables
 - [x] Complete database schema (15 tables)
@@ -169,7 +175,7 @@ All 6 crop guides (5.3-5.8) can be written simultaneously by different agents.
 | 6.6 Build finance tracking | Done | Yes | Dashboard Agent 2 |
 | 6.7 Build team management | Done | Yes | Dashboard Agent 3 |
 | 6.8 Build task management | Done | Yes | Dashboard Agent 4 |
-| 6.9 Create charts/analytics | Pending | Yes | Analytics Agent |
+| 6.9 Create charts/analytics | Done | Yes | Analytics Agent |
 | 6.10 Implement data export | Pending | Yes | Export Agent |
 
 ### Deliverables
@@ -484,9 +490,7 @@ The following tasks are on the critical path and cannot be parallelized:
 - ~~Sentry monitoring (Phase 12.4)~~ COMPLETED
 
 ### Still Pending (Lower Priority)
-- Seed data scripts (Phase 2.8)
 - Blog search functionality (Phase 5.10)
-- Dashboard charts from real data (Phase 6.9)
 - Data export functionality (Phase 6.10)
 - API integration tests (Phase 11.3)
 - Performance testing (Phase 11.5)
