@@ -60,6 +60,12 @@ export function AppSidebar({ locale, mode }: AppSidebarProps) {
     { href: `${prefix}/agents`, icon: Bot, label: t("agents.title") },
   ];
 
+  // With localePrefix: "as-needed", the default locale is stripped from URLs.
+  // usePathname() may return "/dashboard/farms" while hrefs are "/en/dashboard/farms".
+  // Compare against both the full href and the href without the locale prefix.
+  const isPathActive = (href: string) =>
+    pathname === href || pathname === href.slice(locale.length + 1);
+
   return (
     <aside
       className={cn(
@@ -136,7 +142,7 @@ export function AppSidebar({ locale, mode }: AppSidebarProps) {
       {/* Navigation */}
       <nav className="flex-1 space-y-0.5 p-2">
         {navItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive = isPathActive(item.href);
           return (
             <Link
               key={item.href}
@@ -171,7 +177,7 @@ export function AppSidebar({ locale, mode }: AppSidebarProps) {
               href={`${prefix}/settings`}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
-                pathname === `${prefix}/settings`
+                isPathActive(`${prefix}/settings`)
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
