@@ -1,3 +1,9 @@
+## [1.12.0](https://github.com/codenificient/fructosahel/compare/v1.11.1...v1.12.0) (2026-03-16)
+
+### Features
+
+* add Umami analytics tracking ([2967eb2](https://github.com/codenificient/fructosahel/commit/2967eb25ea2ff10895a32c3488410deb5904ae4c))
+
 ## [1.11.1](https://github.com/codenificient/fructosahel/compare/v1.11.0...v1.11.1) (2026-02-23)
 
 ### Bug Fixes
