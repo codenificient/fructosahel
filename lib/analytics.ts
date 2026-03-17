@@ -23,7 +23,7 @@ class Analytics {
     // Initialize configuration from environment variables
     this.config = {
       apiKey: process.env.NEXT_PUBLIC_ANALYTICS_API_KEY || "",
-      endpoint: process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT || "",
+      endpoint: process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT || "https://codenalytics.vercel.app/api",
       enabled: process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true",
       debug: process.env.NODE_ENV === "development",
     };
