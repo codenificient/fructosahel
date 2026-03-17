@@ -1,3 +1,9 @@
+## [1.12.2](https://github.com/codenificient/fructosahel/compare/v1.12.1...v1.12.2) (2026-03-17)
+
+### Bug Fixes
+
+* update analytics endpoint to codenalytics.vercel.app ([4cfaa2f](https://github.com/codenificient/fructosahel/commit/4cfaa2f4985ad653a715327e188f6080cb18af06))
+
 ## [1.12.1](https://github.com/codenificient/fructosahel/compare/v1.12.0...v1.12.1) (2026-03-17)
 
 ### Bug Fixes
