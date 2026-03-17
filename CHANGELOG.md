@@ -1,3 +1,9 @@
+## [1.12.1](https://github.com/codenificient/fructosahel/compare/v1.12.0...v1.12.1) (2026-03-17)
+
+### Bug Fixes
+
+* add middleware, auth header fix, and CLAUDE.md ([f17425e](https://github.com/codenificient/fructosahel/commit/f17425eac7c83e69605553d7975cd8e860dc4cc5))
+
 ## [1.12.0](https://github.com/codenificient/fructosahel/compare/v1.11.1...v1.12.0) (2026-03-16)
 
 ### Features
