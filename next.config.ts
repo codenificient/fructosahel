@@ -62,6 +62,10 @@ const nextConfig: NextConfig = {
         source: "/manifest.webmanifest",
         destination: "/manifest.json",
       },
+      {
+        source: "/a/:path*",
+        destination: "https://analytics.afrotomation.com/:path*",
+      },
     ];
   },
 

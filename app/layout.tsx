@@ -64,7 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script defer src="https://analytics.afrotomation.com/track" data-website-id="9242d367-3041-4e38-8d5f-d43c9800e56a"></script>
+        <script defer src="/a/script.js" data-host-url="/a" data-website-id="9242d367-3041-4e38-8d5f-d43c9800e56a"></script>
       </head>
       <body
         className={`${outfit.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased`}
