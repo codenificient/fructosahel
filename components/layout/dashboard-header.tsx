@@ -26,6 +26,8 @@ interface DashboardHeaderProps {
 export function DashboardHeader({ locale }: DashboardHeaderProps) {
   const t = useTranslations();
   const pathname = usePathname();
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
   const otherLocale = locale === "en" ? "fr" : "en";
   const otherLocalePath = pathname.replace(`/${locale}`, `/${otherLocale}`);
 
@@ -67,9 +69,9 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-9 w-9 rounded-full">
               <Avatar className="h-9 w-9 ring-2 ring-border">
-                <AvatarImage src="/avatars/user.jpg" alt="User" />
+                <AvatarImage src={user?.image || "/avatars/user.jpg"} alt={user?.name || "User"} />
                 <AvatarFallback className="bg-primary/10 text-primary text-sm font-semibold">
-                  <User className="h-4 w-4" />
+                  {user?.name ? user.name.charAt(0).toUpperCase() : <User className="h-4 w-4" />}
                 </AvatarFallback>
               </Avatar>
             </Button>
@@ -77,9 +79,9 @@ export function DashboardHeader({ locale }: DashboardHeaderProps) {
           <DropdownMenuContent className="w-56" align="end">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium">Admin User</p>
+                <p className="text-sm font-medium">{user?.name || "User"}</p>
                 <p className="text-xs text-muted-foreground">
-                  admin@fructosahel.com
+                  {user?.email || ""}
                 </p>
               </div>
             </DropdownMenuLabel>
