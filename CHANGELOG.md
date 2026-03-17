@@ -1,3 +1,9 @@
+## [1.13.0](https://github.com/codenificient/fructosahel/compare/v1.12.2...v1.13.0) (2026-03-17)
+
+### Features
+
+* add seed script, error boundary, and fix build stability ([66fdcd9](https://github.com/codenificient/fructosahel/commit/66fdcd9649fbcbf2d780d7d5c04647ce02366f2f))
+
 ## [1.12.2](https://github.com/codenificient/fructosahel/compare/v1.12.1...v1.12.2) (2026-03-17)
 
 ### Bug Fixes
