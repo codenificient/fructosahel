@@ -1,3 +1,9 @@
+## [1.13.1](https://github.com/codenificient/fructosahel/compare/v1.13.0...v1.13.1) (2026-03-17)
+
+### Bug Fixes
+
+* proxy Umami analytics through app domain to bypass adblockers ([7ee1a7f](https://github.com/codenificient/fructosahel/commit/7ee1a7f7f38dc53a3d7b55c4ca7191eec12ecf34))
+
 ## [1.13.0](https://github.com/codenificient/fructosahel/compare/v1.12.2...v1.13.0) (2026-03-17)
 
 ### Features
