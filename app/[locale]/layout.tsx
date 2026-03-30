@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Outfit, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NeonAuthUIProvider } from "@neondatabase/auth/react";
 import { authClient } from "@/lib/auth/client";
@@ -15,16 +15,23 @@ import {
 } from "@/components/service-worker-provider";
 import { OfflineBanner } from "@/components/offline-indicator";
 import { CurrencyProvider } from "@/contexts/currency-context";
-import "../globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 const siteUrl = "https://fructosahel.vercel.app";
@@ -173,6 +180,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
+        <script defer src="/a/script.js" data-host-url="/a" data-website-id="9242d367-3041-4e38-8d5f-d43c9800e56a"></script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -181,7 +189,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${outfit.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <NeonAuthUIProvider
           authClient={authClient}
