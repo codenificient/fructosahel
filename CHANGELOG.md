@@ -1,3 +1,10 @@
+## [1.13.2](https://github.com/codenificient/fructosahel/compare/v1.13.1...v1.13.2) (2026-03-30)
+
+### Bug Fixes
+
+* enable class-based dark mode for Tailwind v4 ([5e83f3f](https://github.com/codenificient/fructosahel/commit/5e83f3f81b85aa09c0544be11e1937f280f9e009))
+* remove nested html/body tags causing dark mode text color bug ([58b8e50](https://github.com/codenificient/fructosahel/commit/58b8e5077f6f02e964d739f012a85a445816dca0))
+
 ## [1.13.1](https://github.com/codenificient/fructosahel/compare/v1.13.0...v1.13.1) (2026-03-17)
 
 ### Bug Fixes
