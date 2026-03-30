@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "@neondatabase/auth/ui/tailwind";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     --background: 40 30% 98%;
