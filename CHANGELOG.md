@@ -1,3 +1,9 @@
+## [1.14.0](https://github.com/codenificient/fructosahel/compare/v1.13.2...v1.14.0) (2026-04-03)
+
+### Features
+
+* upgrade analytics SDK v2.0 — ClickHouse + Web Vitals + error tracking ([a58f021](https://github.com/codenificient/fructosahel/commit/a58f021868307ec16777cc97a55f7af654a93008))
+
 ## [1.13.2](https://github.com/codenificient/fructosahel/compare/v1.13.1...v1.13.2) (2026-03-30)
 
 ### Bug Fixes
