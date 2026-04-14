@@ -1,3 +1,9 @@
+## [1.14.5](https://github.com/codenificient/fructosahel/compare/v1.14.4...v1.14.5) (2026-04-14)
+
+### Bug Fixes
+
+* bypass locale rewriting for all /api routes ([f2c5e53](https://github.com/codenificient/fructosahel/commit/f2c5e53ccaa9da56086402d7f480c63a4b312fc5))
+
 ## [1.14.4](https://github.com/codenificient/fructosahel/compare/v1.14.3...v1.14.4) (2026-04-14)
 
 ### Bug Fixes
