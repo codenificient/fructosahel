@@ -1,3 +1,9 @@
+## [1.14.3](https://github.com/codenificient/fructosahel/compare/v1.14.2...v1.14.3) (2026-04-14)
+
+### Bug Fixes
+
+* exclude /api/health from proxy auth check ([d87aeb6](https://github.com/codenificient/fructosahel/commit/d87aeb61d90db3971accf049bc040d307ef6b66a))
+
 ## [1.14.2](https://github.com/codenificient/fructosahel/compare/v1.14.1...v1.14.2) (2026-04-14)
 
 ### Bug Fixes
