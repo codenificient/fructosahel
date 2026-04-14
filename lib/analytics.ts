@@ -22,11 +22,8 @@ class Analytics {
   constructor() {
     // Initialize configuration from environment variables
     this.config = {
-      endpoint: 'https://ingest.afrotomation.com',
+      endpoint: process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT || 'https://codenalytics.afrotomation.com/api',
       apiKey: process.env.NEXT_PUBLIC_ANALYTICS_API_KEY!,
-      webVitals: true,
-      errorTracking: true,
-      enabled: process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true",
       debug: process.env.NODE_ENV === "development",
     };
 
