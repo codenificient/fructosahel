@@ -1,3 +1,9 @@
+## [1.14.1](https://github.com/codenificient/fructosahel/compare/v1.14.0...v1.14.1) (2026-04-14)
+
+### Bug Fixes
+
+* **deploy:** full-source docker build (fixes prisma postinstall / analytics config) ([a169b09](https://github.com/codenificient/fructosahel/commit/a169b09aafef580f8c1a1d83cfc9a0a2ce02cbdb))
+
 ## [1.14.0](https://github.com/codenificient/fructosahel/compare/v1.13.2...v1.14.0) (2026-04-03)
 
 ### Features
