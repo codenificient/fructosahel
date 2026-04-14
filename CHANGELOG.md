@@ -1,3 +1,9 @@
+## [1.14.2](https://github.com/codenificient/fructosahel/compare/v1.14.1...v1.14.2) (2026-04-14)
+
+### Bug Fixes
+
+* add required enabled field to AnalyticsConfig ([daf751d](https://github.com/codenificient/fructosahel/commit/daf751d93ae269e0e15db1ed2bd4e5b222c96210))
+
 ## [1.14.1](https://github.com/codenificient/fructosahel/compare/v1.14.0...v1.14.1) (2026-04-14)
 
 ### Bug Fixes
