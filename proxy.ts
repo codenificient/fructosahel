@@ -7,8 +7,8 @@ const intlMiddleware = createIntlMiddleware(routing);
 const protectedRoutes = ["/dashboard"];
 const signInRoutes = ["/auth/sign-in", "/auth/sign-up"];
 
-// API routes that require authentication (exclude auth, analytics, and cron)
-const protectedApiPattern = /^\/api\/(?!auth|analytics|notifications\/cron)/;
+// API routes that require authentication (exclude auth, analytics, cron, and health)
+const protectedApiPattern = /^\/api\/(?!auth|analytics|notifications\/cron|health)/;
 
 function getLocale(pathname: string): string {
   const match = pathname.match(/^\/(en|fr)/);
