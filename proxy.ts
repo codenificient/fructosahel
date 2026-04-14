@@ -31,9 +31,9 @@ function hasSessionCookie(request: NextRequest): boolean {
 export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Protect API routes that require authentication
-  if (protectedApiPattern.test(pathname)) {
-    if (!hasSessionCookie(request)) {
+  // API routes bypass locale rewriting entirely
+  if (pathname.startsWith("/api/")) {
+    if (protectedApiPattern.test(pathname) && !hasSessionCookie(request)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     return NextResponse.next();
