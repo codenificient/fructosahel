@@ -1,3 +1,9 @@
+## [1.14.4](https://github.com/codenificient/fructosahel/compare/v1.14.3...v1.14.4) (2026-04-14)
+
+### Bug Fixes
+
+* increase healthcheck start-period and show wget errors ([b0098cc](https://github.com/codenificient/fructosahel/commit/b0098ccb09ce6efe652708d9428795f46c7b6058))
+
 ## [1.14.3](https://github.com/codenificient/fructosahel/compare/v1.14.2...v1.14.3) (2026-04-14)
 
 ### Bug Fixes
