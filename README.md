@@ -1,6 +1,6 @@
 # FructoSahel
 
-[![FructoSahel Preview](https://api.microlink.io/?url=https://fructosahel.vercel.app&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1200&viewport.height=630)](https://fructosahel.vercel.app)
+[![FructoSahel Preview](https://api.microlink.io/?url=https://fructosahel.tioye.dev&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1200&viewport.height=630)](https://fructosahel.tioye.dev)
 
 A modern farm management platform designed for agricultural operations in the Sahel region of West Africa. FructoSahel empowers farmers in Burkina Faso, Mali, and Niger with AI-driven insights, comprehensive crop tracking, and financial management tools.
 
