@@ -1,3 +1,9 @@
+## [1.14.6](https://github.com/codenificient/fructosahel/compare/v1.14.5...v1.14.6) (2026-04-24)
+
+### Bug Fixes
+
+* **db:** switch from Neon HTTP driver to pg (node-postgres) for CNPG ([0de7c36](https://github.com/codenificient/fructosahel/commit/0de7c36e46edf218cadb04cf25d49f876b654238))
+
 ## [1.14.5](https://github.com/codenificient/fructosahel/compare/v1.14.4...v1.14.5) (2026-04-14)
 
 ### Bug Fixes
