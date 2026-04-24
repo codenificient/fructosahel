@@ -1,3 +1,9 @@
+## [1.15.1](https://github.com/codenificient/fructosahel/compare/v1.15.0...v1.15.1) (2026-04-24)
+
+### Bug Fixes
+
+* **charts:** resolve Recharts Tooltip formatter type errors (ValueType | undefined) ([56781b8](https://github.com/codenificient/fructosahel/commit/56781b8de35033fefe960da36a15584ce49aacb1))
+
 ## [1.15.0](https://github.com/codenificient/fructosahel/compare/v1.14.6...v1.15.0) (2026-04-24)
 
 ### Features
