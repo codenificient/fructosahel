@@ -1,36 +1,58 @@
-import { Pool } from "pg";
+// Database client — CNPG / standard PostgreSQL via pg (node-postgres).
+//
+// Previously used @neondatabase/serverless (Neon HTTP WebSocket driver) which
+// is Neon-specific. After migrating to self-hosted CNPG in k3s the DATABASE_URL
+// points to a standard TCP endpoint
+// (postgresql://user:pass@host:5432/db?sslmode=disable) that the Neon HTTP
+// driver cannot reach. Swap follows the pattern in codenalytics commit ed2377b.
+//
+// drizzle-orm/node-postgres uses the pg Pool directly — no driver adapter
+// indirection needed (unlike PrismaPg). Call-site ergonomics are unchanged:
+//   db.query.*, db.select(), db.insert(), db.update(), db.delete()
+// all work identically.
+
 import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 import * as schema from "./schema";
 
-// Switched from `@neondatabase/serverless` (Neon HTTP driver) to `pg`
-// (node-postgres, raw TCP) after moving off Neon to self-hosted CNPG
-// inside k3s (afrotomation-pg-rw.postgres.svc.cluster.local).
+const globalForDb = globalThis as unknown as {
+  db: NodePgDatabase<typeof schema> | undefined;
+  pool: Pool | undefined;
+};
 
-// Lazy initialization to avoid build-time errors
-let _pool: Pool | null = null;
-let _db: NodePgDatabase<typeof schema> | null = null;
-
-function getDb(): NodePgDatabase<typeof schema> {
-  if (_db) return _db;
-
+function getConnectionString(): string {
   const connectionString = process.env.DATABASE_URL;
-
   if (!connectionString) {
     throw new Error(
       "DATABASE_URL environment variable is not set. " +
         "Please add it to your .env.local file.",
     );
   }
-
-  _pool = new Pool({ connectionString, max: 10 });
-  _db = drizzle(_pool, { schema });
-  return _db;
+  return connectionString;
 }
 
-// Export a proxy that lazily initializes the database
+function getPool(): Pool {
+  if (!globalForDb.pool) {
+    globalForDb.pool = new Pool({
+      connectionString: getConnectionString(),
+      max: 10,
+    });
+  }
+  return globalForDb.pool;
+}
+
+function getDatabase(): NodePgDatabase<typeof schema> {
+  if (!globalForDb.db) {
+    globalForDb.db = drizzle(getPool(), { schema });
+  }
+  return globalForDb.db;
+}
+
+// Export a proxy that lazily initializes on first use — avoids build-time
+// errors when DATABASE_URL is not set during static page collection.
 export const db = new Proxy({} as NodePgDatabase<typeof schema>, {
   get(_target, prop) {
-    const database = getDb();
+    const database = getDatabase();
     const value = database[prop as keyof typeof database];
     if (typeof value === "function") {
       return value.bind(database);

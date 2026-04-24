@@ -3,8 +3,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { Outfit, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
-import { NeonAuthUIProvider } from "@neondatabase/auth/react";
-import { authClient } from "@/lib/auth/client";
 import { routing } from "@/i18n/routing";
 import { ToastProvider } from "@/components/toast-provider";
 import { AnalyticsProvider } from "@/components/analytics-provider";
@@ -191,12 +189,6 @@ export default async function LocaleLayout({
       <body
         className={`${outfit.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased`}
       >
-        <NeonAuthUIProvider
-          authClient={authClient}
-          basePath={`/${locale}/auth`}
-          redirectTo={`/${locale}/dashboard`}
-          emailOTP
-        >
           <NextIntlClientProvider messages={messages}>
             <CurrencyProvider>
               <ServiceWorkerProvider>
@@ -212,7 +204,6 @@ export default async function LocaleLayout({
               </ServiceWorkerProvider>
             </CurrencyProvider>
           </NextIntlClientProvider>
-        </NeonAuthUIProvider>
       </body>
     </html>
   );

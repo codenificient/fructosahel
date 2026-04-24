@@ -15,7 +15,10 @@ export default async function AuthLayout({
     <div className="auth-page relative flex min-h-screen flex-col">
       <Header locale={locale} />
 
-      <div className="relative z-10 flex flex-1 items-center justify-center px-4 py-12">
+      {/* flex-1 + items-center centers vertically in remaining space without
+          overflow — no py-12 so header + card + footer fits in 100vh on
+          1024×768 without scroll. px-4 keeps it comfortable on 375px mobile. */}
+      <div className="relative z-10 flex flex-1 items-center justify-center px-4">
         {children}
       </div>
 

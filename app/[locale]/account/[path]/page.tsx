@@ -1,17 +1,19 @@
-import { AccountView } from "@neondatabase/auth/react";
+// Account settings page.
+// Previously used Neon Auth's <AccountView> component; after migration to
+// CodeniServer proxy-auth, account management is handled via
+// auth.afrotomation.com directly. Redirect users there.
+
+import { redirect } from "next/navigation";
 
 export const dynamicParams = false;
 
 export default async function AccountPage({
   params,
 }: {
-  params: Promise<{ path: string }>;
+  params: Promise<{ path: string; locale: string }>;
 }) {
   const { path } = await params;
 
-  return (
-    <main className="container mx-auto flex flex-1 flex-col items-center justify-center gap-3 p-4 md:p-6">
-      <AccountView path={path} />
-    </main>
-  );
+  // Redirect to CodeniServer account management.
+  redirect(`https://auth.afrotomation.com/account/${path}`);
 }

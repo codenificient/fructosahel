@@ -20,9 +20,8 @@ function stripLocale(pathname: string): string {
 }
 
 function hasSessionCookie(request: NextRequest): boolean {
+  // better-auth session cookies (CodeniServer proxy-auth pattern)
   return (
-    request.cookies.has("__Secure-neon-auth.session_token") ||
-    request.cookies.has("neon-auth.session_token") ||
     request.cookies.has("better-auth.session_token") ||
     request.cookies.has("__Secure-better-auth.session_token")
   );
