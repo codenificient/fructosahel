@@ -88,7 +88,7 @@ export function CropDistributionChart({ data }: CropDistributionChartProps) {
             border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => `${value} fields`}
+          formatter={(value) => `${value ?? 0} fields`}
         />
         <Legend />
       </PieChart>

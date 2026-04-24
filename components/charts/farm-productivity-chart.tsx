@@ -81,11 +81,12 @@ export function FarmProductivityChart({
               border: "1px solid hsl(var(--border))",
               borderRadius: "8px",
             }}
-            formatter={(value: number, name: string) => {
+            formatter={(value, name) => {
+              const n = Number(value ?? 0);
               if (name === "Yield/Hectare")
-                return [`${value.toFixed(0)} kg/ha`, name];
+                return [`${n.toFixed(0)} kg/ha`, name];
               if (name === "Revenue/Hectare")
-                return [`${formatAmount(value)}/ha`, name];
+                return [`${formatAmount(n)}/ha`, name];
               return [value, name];
             }}
           />
@@ -143,12 +144,15 @@ export function FarmProductivityChart({
             border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => [
-            metric === "yield"
-              ? `${value.toFixed(0)} kg/ha`
-              : `${formatAmount(value)}/ha`,
-            label,
-          ]}
+          formatter={(value) => {
+            const n = Number(value ?? 0);
+            return [
+              metric === "yield"
+                ? `${n.toFixed(0)} kg/ha`
+                : `${formatAmount(n)}/ha`,
+              label,
+            ];
+          }}
         />
         <Legend />
         <Bar

@@ -55,7 +55,7 @@ export function FinancialSummaryChart({
             border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => formatAmount(value)}
+          formatter={(value) => formatAmount(Number(value ?? 0))}
         />
         <Legend />
         <ReferenceLine y={0} stroke="hsl(var(--muted-foreground))" />

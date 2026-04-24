@@ -114,7 +114,7 @@ export function TaskCompletionChart({ data }: TaskCompletionChartProps) {
             border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => [`${value} tasks`, "Count"]}
+          formatter={(value) => [`${value ?? 0} tasks`, "Count"]}
         />
         <Legend />
       </PieChart>

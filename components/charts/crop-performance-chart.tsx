@@ -71,8 +71,8 @@ export function CropPerformanceChart({ data }: CropPerformanceChartProps) {
             border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
-          formatter={(value: number, name: string) => [
-            `${value.toLocaleString()} kg`,
+          formatter={(value, name) => [
+            `${Number(value ?? 0).toLocaleString()} kg`,
             name === "expectedYield" ? "Expected" : "Actual",
           ]}
         />

@@ -63,7 +63,7 @@ export function TaskStatusChart({ data }: TaskStatusChartProps) {
             border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => [`${value} tasks`, "Count"]}
+          formatter={(value) => [`${value ?? 0} tasks`, "Count"]}
         />
         <Legend />
         <Bar dataKey="count" name="Tasks" radius={[0, 8, 8, 0]}>

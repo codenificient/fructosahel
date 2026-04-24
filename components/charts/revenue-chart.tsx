@@ -49,7 +49,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
             border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => formatAmount(value)}
+          formatter={(value) => formatAmount(Number(value ?? 0))}
         />
         <Legend />
         <Line

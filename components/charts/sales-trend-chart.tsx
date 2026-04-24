@@ -83,7 +83,7 @@ export function SalesTrendChart({ data, crops }: SalesTrendChartProps) {
             border: "1px solid hsl(var(--border))",
             borderRadius: "8px",
           }}
-          formatter={(value: number) => formatAmount(value)}
+          formatter={(value) => formatAmount(Number(value ?? 0))}
         />
         <Legend />
         {crops.map((crop) => (
