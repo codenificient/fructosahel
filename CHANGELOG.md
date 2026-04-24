@@ -1,3 +1,9 @@
+## [1.15.0](https://github.com/codenificient/fructosahel/compare/v1.14.6...v1.15.0) (2026-04-24)
+
+### Features
+
+* **auth:** migrate to codeniserver proxy-auth, swap DB driver to pg ([50b2192](https://github.com/codenificient/fructosahel/commit/50b219202999f229b374faf1d12221b8525c3b3b))
+
 ## [1.14.6](https://github.com/codenificient/fructosahel/compare/v1.14.5...v1.14.6) (2026-04-24)
 
 ### Bug Fixes
