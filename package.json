@@ -19,6 +19,7 @@
     "test:e2e:report": "playwright show-report",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:migrate:prod": "bun scripts/migrate.ts",
     "db:push": "drizzle-kit push",
     "db:seed": "bun run lib/db/seed.ts"
   },
