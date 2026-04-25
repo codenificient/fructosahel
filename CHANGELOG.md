@@ -1,3 +1,9 @@
+## [1.16.0](https://github.com/codenificient/fructosahel/compare/v1.15.2...v1.16.0) (2026-04-25)
+
+### Features
+
+* **migrate:** add standalone migration script for ArgoCD PreSync Job ([#40](https://github.com/codenificient/fructosahel/issues/40)) ([30864b6](https://github.com/codenificient/fructosahel/commit/30864b69b1814104f505de09b68348ebe39b4594))
+
 ## [1.15.2](https://github.com/codenificient/fructosahel/compare/v1.15.1...v1.15.2) (2026-04-25)
 
 ### Bug Fixes
