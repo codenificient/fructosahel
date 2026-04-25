@@ -3,15 +3,20 @@ import { renderHook, waitFor, act } from "@testing-library/react";
 import { useFarms, useCreateFarm, useFarm } from "@/lib/hooks/use-farms";
 import type { Farm, NewFarm } from "@/types";
 
-// Mock farm data
+// Mock farm data — Farm is the schema's $inferSelect type, which means
+// every column is required. The optional-looking fields (latitude,
+// longitude, description, managerId) are `string | null`, not
+// `string | null | undefined` — set them to null explicitly.
 const mockFarm: Farm = {
   id: "1",
-  userId: "user-1",
   name: "Test Farm",
   location: "Ouagadougou",
   country: "burkina_faso",
-  totalHectares: 10.5,
+  sizeHectares: "10.5",
+  latitude: null,
+  longitude: null,
   description: "A test farm",
+  managerId: null,
   createdAt: new Date("2024-01-01"),
   updatedAt: new Date("2024-01-01"),
 };
@@ -20,12 +25,14 @@ const mockFarms: Farm[] = [
   mockFarm,
   {
     id: "2",
-    userId: "user-1",
     name: "Second Farm",
     location: "Bamako",
     country: "mali",
-    totalHectares: 15.0,
+    sizeHectares: "15.0",
+    latitude: null,
+    longitude: null,
     description: "Another test farm",
+    managerId: null,
     createdAt: new Date("2024-01-02"),
     updatedAt: new Date("2024-01-02"),
   },
@@ -155,19 +162,26 @@ describe("useCreateFarm", () => {
 
   it("creates a farm successfully", async () => {
     const newFarm: NewFarm = {
-      userId: "user-1",
       name: "New Farm",
       location: "Niamey",
       country: "niger",
-      totalHectares: 20.0,
+      sizeHectares: "20.0",
       description: "A new test farm",
     };
 
+    // Spread of NewFarm gives wider types (string | null | undefined) on
+    // the optional fields, but Farm tightens those to string | null. Force
+    // the narrowing by coalescing undefined → null on the four optional
+    // fields the schema-derived Farm type requires.
     const createdFarm: Farm = {
       ...newFarm,
       id: "3",
       createdAt: new Date(),
       updatedAt: new Date(),
+      latitude: newFarm.latitude ?? null,
+      longitude: newFarm.longitude ?? null,
+      description: newFarm.description ?? null,
+      managerId: newFarm.managerId ?? null,
     };
 
     const mockFetch = vi.fn().mockResolvedValueOnce({
@@ -202,11 +216,10 @@ describe("useCreateFarm", () => {
 
   it("handles create farm error", async () => {
     const newFarm: NewFarm = {
-      userId: "user-1",
       name: "New Farm",
       location: "Niamey",
       country: "niger",
-      totalHectares: 20.0,
+      sizeHectares: "20.0",
     };
 
     const mockFetch = vi.fn().mockResolvedValueOnce({
@@ -232,11 +245,10 @@ describe("useCreateFarm", () => {
 
   it("can reset mutation state", async () => {
     const newFarm: NewFarm = {
-      userId: "user-1",
       name: "New Farm",
       location: "Niamey",
       country: "niger",
-      totalHectares: 20.0,
+      sizeHectares: "20.0",
     };
 
     const mockFetch = vi.fn().mockResolvedValueOnce({
