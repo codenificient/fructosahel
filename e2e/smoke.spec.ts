@@ -32,7 +32,11 @@ test.describe("Smoke Tests", () => {
   test("navigation header is present", async ({ page }) => {
     await page.goto("/en");
     await expect(page.locator("header")).toBeVisible();
-    await expect(page.locator("text=FructoSahel")).toBeVisible();
+    // Brand wordmark in the header navigation (split into two spans: "Fructo" + "Sahel").
+    // Scope to the header to avoid matching the same wordmark in the footer / other body copy.
+    await expect(
+      page.locator("header").getByRole("link", { name: "FructoSahel" }),
+    ).toBeVisible();
   });
 
   test("French locale works", async ({ page }) => {

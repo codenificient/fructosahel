@@ -32,9 +32,15 @@ export class LandingPage extends BasePage {
     this.learnMoreButton = page
       .getByRole("link", { name: /learn more|en savoir plus/i })
       .first();
+    // The language switcher is a single Link in the header that toggles between
+    // /en and /fr. It renders the target locale label ("FR" when on EN, "EN"
+    // when on FR) alongside a flag emoji, so the accessible name is something
+    // like "🇫🇷 FR" or "🇬🇧 EN". Match the accessible name ending in just
+    // the locale code; this avoids the brand logo link (whose accessible name
+    // is "FructoSahel") even though both share the href "/en" or "/fr".
     this.languageSwitcher = page
-      .locator("button")
-      .filter({ has: page.locator("svg.lucide-globe") });
+      .locator("header")
+      .getByRole("link", { name: /\b(EN|FR)$/ });
     this.navigationLinks = page.locator("nav a");
     this.featuresSection = page
       .locator("section")
@@ -44,7 +50,14 @@ export class LandingPage extends BasePage {
       .locator("section")
       .filter({ hasText: /crops|cultures/i })
       .first();
-    this.statsSection = page.locator("section.bg-primary");
+    // The stats section no longer uses "bg-primary"; it uses an overlaid
+    // gradient ("gradient-sahel") and is anchored by the headline numbers
+    // "50+" and "1,200" rendered inside it. Locate the section by its
+    // first headline value to make the selector resilient to styling churn.
+    this.statsSection = page
+      .locator("section")
+      .filter({ hasText: /50\+/ })
+      .first();
     this.footer = page.locator("footer");
   }
 
@@ -78,18 +91,23 @@ export class LandingPage extends BasePage {
   }
 
   /**
-   * Open language dropdown
+   * Click the locale toggle in the header. Unlike older builds this is no
+   * longer a dropdown — it is a direct link to the other locale.
    */
   async openLanguageSwitcher() {
     await this.languageSwitcher.click();
   }
 
   /**
-   * Switch to a specific language
+   * Switch to a specific language. The header now exposes a direct link to
+   * the *other* locale (labelled "FR" when on EN and "EN" when on FR), so a
+   * single click is enough — no dropdown menuitem to follow. The caller is
+   * responsible for asserting the resulting URL (it differs depending on
+   * whether the target locale is the default; see `localePrefix: "as-needed"`
+   * in i18n/routing.ts).
    */
-  async switchLanguage(language: "English" | "Francais") {
+  async switchLanguage(_language: "English" | "Francais") {
     await this.openLanguageSwitcher();
-    await this.page.getByRole("menuitem", { name: language }).click();
   }
 
   /**

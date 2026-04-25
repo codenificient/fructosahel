@@ -52,9 +52,10 @@ test.describe("Landing Page", () => {
       await page.waitForURL("**/about");
       expect(page.url()).toContain("/about");
 
-      // Go back and test Blog
+      // Go back and test Blog. The English label is "Knowledge Base" (see
+      // messages/en.json -> nav.blog), not "Blog".
       await landingPage.goto("en");
-      await landingPage.navigateTo("Blog");
+      await landingPage.navigateTo("Knowledge Base");
       await page.waitForURL("**/blog");
       expect(page.url()).toContain("/blog");
 
@@ -78,8 +79,15 @@ test.describe("Landing Page", () => {
     }) => {
       await landingPage.goto("en");
       await landingPage.clickCTA();
-      await page.waitForURL("**/dashboard**");
-      expect(page.url()).toContain("/dashboard");
+      // The dashboard route is gated by the proxy/middleware (see proxy.ts).
+      // For unauthenticated visitors, /dashboard redirects to /auth/sign-in
+      // with the dashboard path preserved as a callbackURL — assert that the
+      // CTA reaches one of the two valid destinations.
+      await page.waitForURL(/\/(dashboard|auth\/sign-in)/);
+      expect(page.url()).toMatch(/\/(dashboard|auth\/sign-in)/);
+      // The original dashboard target should still be present somewhere in
+      // the URL (either as the path or as a callbackURL parameter).
+      expect(page.url()).toContain("dashboard");
     });
   });
 
@@ -89,7 +97,9 @@ test.describe("Landing Page", () => {
       page,
     }) => {
       await landingPage.goto("en");
-      expect(page.url()).toContain("/en");
+      // i18n routing uses localePrefix="as-needed", so the default locale
+      // (en) renders without a "/en" prefix — the URL is just "/".
+      expect(page.url()).toMatch(/\/(en\/?)?$/);
 
       await landingPage.switchLanguage("Francais");
       await page.waitForURL("**/fr");
@@ -104,8 +114,10 @@ test.describe("Landing Page", () => {
       expect(page.url()).toContain("/fr");
 
       await landingPage.switchLanguage("English");
-      await page.waitForURL("**/en");
-      expect(page.url()).toContain("/en");
+      // After switching to the default locale, "as-needed" routing strips
+      // the "/en" prefix, so the URL settles on "/" rather than "/en".
+      await page.waitForURL((url) => /\/(en\/?)?$/.test(url.pathname));
+      expect(page.url()).toMatch(/\/(en\/?)?$/);
     });
 
     test("should preserve locale in navigation", async ({
@@ -115,8 +127,12 @@ test.describe("Landing Page", () => {
       // Start in French
       await landingPage.goto("fr");
 
-      // Navigate to About
-      await landingPage.navigateTo("A propos");
+      // Navigate to About. The French nav label is "A Propos" (capitalised
+      // P) — match by role+name with a case-insensitive fallback.
+      await page
+        .getByRole("link", { name: /^a propos$/i })
+        .first()
+        .click();
       await page.waitForURL("**/fr/about");
       expect(page.url()).toContain("/fr/about");
     });

@@ -222,8 +222,11 @@ test.describe("Demo AI Agents", () => {
       await demoAgentsPage.goto("fr");
       await demoAgentsPage.verifyChatDisplayed();
 
-      // Check for French text
-      await expect(page.getByText(/nouveau/i).first()).toBeVisible();
+      // Check for French text. The agents page button label is "Nouvelle Conversation"
+      // (feminine form to agree with "conversation"), so match either form.
+      await expect(
+        page.getByText(/nouvelle|nouveau/i).first(),
+      ).toBeVisible();
     });
 
     test("should display agents in French", async ({
