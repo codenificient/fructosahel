@@ -27,11 +27,19 @@ ENV NODE_ENV=production \
     HOSTNAME=0.0.0.0
 
 RUN apk add --no-cache libc6-compat openssl wget
+# bun is required by the ArgoCD PreSync migration Job to run scripts/migrate.ts
+RUN npm install -g bun@1.2.17
 RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+
+# Migration support — used by the ArgoCD PreSync migrate Job.
+# `pg` and `drizzle-orm` are already traced into .next/standalone/node_modules
+# because they are in dependencies and used by the app's runtime db client.
+COPY --from=builder --chown=nextjs:nodejs /app/drizzle ./drizzle
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/migrate.ts ./scripts/migrate.ts
 
 USER nextjs
 EXPOSE 3000
