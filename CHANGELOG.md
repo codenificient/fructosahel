@@ -1,3 +1,9 @@
+## [1.15.2](https://github.com/codenificient/fructosahel/compare/v1.15.1...v1.15.2) (2026-04-25)
+
+### Bug Fixes
+
+* **tests:** remove stale userId field from farms mock, fix nullable types ([28963dc](https://github.com/codenificient/fructosahel/commit/28963dc9a01df54fa03251ec8685103a04355774))
+
 ## [1.15.1](https://github.com/codenificient/fructosahel/compare/v1.15.0...v1.15.1) (2026-04-24)
 
 ### Bug Fixes
