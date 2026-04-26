@@ -39,7 +39,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: arc-runner-set
     steps:
       - uses: actions/checkout@v4
 
@@ -56,7 +56,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           # REPLACE fructosahel with the actual repo name
-          images: ghcr.io/codenificient/fructosahel
+          images: ghcr.io/${{ github.repository_owner }}/fructosahel
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
