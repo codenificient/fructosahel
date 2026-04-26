@@ -44,7 +44,10 @@ export class DemoPage extends BasePage {
     this.calendarLink = page
       .getByRole("link", { name: /calendar|calendrier/i })
       .first();
-    this.agentsLink = page.getByRole("link", { name: /agents|ai/i }).first();
+    // Match by href to avoid a regex like /ai/i accidentally matching other nav
+    // items such as "Training" (contains "ai") or "AI" copy elsewhere on the page.
+    // Sidebar labels are "AI Advisors" (en) / "Conseillers IA" (fr); both link to /demo/agents.
+    this.agentsLink = page.locator('a[href$="/demo/agents"]').first();
   }
 
   /**
@@ -182,15 +185,18 @@ export class DemoFinancePage extends DemoPage {
   constructor(page: Page) {
     super(page);
     this.pageTitle = page.getByRole("heading", { level: 1 });
+    // Match the stats cards by their exact heading copy to avoid also matching
+    // the Recent Transactions card whose description "All income and expense records"
+    // would otherwise be picked up by a loose /expense/ filter.
     this.incomeCard = page
       .locator('[class*="card"]')
-      .filter({ hasText: /total income|revenu/i });
+      .filter({ hasText: /total income|revenu total/i });
     this.expenseCard = page
       .locator('[class*="card"]')
-      .filter({ hasText: /expense|depenses/i });
+      .filter({ hasText: /total expenses|depenses totales/i });
     this.profitCard = page
       .locator('[class*="card"]')
-      .filter({ hasText: /profit|benefice/i });
+      .filter({ hasText: /net profit|benefice net|profit/i });
     this.transactionsTab = page.getByRole("tab", { name: /transactions/i });
     this.salesTab = page.getByRole("tab", { name: /sales|ventes/i });
     this.transactionsTable = page.locator("table").first();
@@ -243,10 +249,13 @@ export class DemoCalendarPage extends DemoPage {
     super(page);
     this.pageTitle = page.getByRole("heading", { level: 1 });
     this.calendarGrid = page.locator(".grid.grid-cols-7");
+    // The current month header is a heading like "April 2026" at the top of
+    // the calendar card. Locate it directly by matching a heading whose
+    // accessible name contains a 4-digit year — this is robust against the
+    // underlying primitive (h2/h3) and to the demo banner that sits above
+    // the card without any "card" class on its wrapper.
     this.monthHeader = page
-      .locator('[class*="card"]')
-      .first()
-      .locator('h2, [class*="title"]')
+      .getByRole("heading", { name: /\b(19|20)\d{2}\b/ })
       .first();
     this.dayHeaders = page
       .locator(".grid.grid-cols-7 > div")
@@ -308,8 +317,12 @@ export class DemoAgentsPage extends DemoPage {
     this.newConversationButton = page.getByRole("button", {
       name: /new conversation|nouvelle/i,
     });
+    // The agents page renders a small banner like:
+    //   <div class="… bg-amber-50 …"><p class="… text-amber-800 …">Demo mode: …</p></div>
+    // Both the wrapper div and the inner <p> match `[class*="amber"]`, so we scope to
+    // the <p> tag to keep the locator strict-mode safe.
     this.demoModeNotice = page
-      .locator('[class*="amber"]')
+      .locator('p[class*="amber"]')
       .filter({ hasText: /demo mode/i });
     this.agronomistAgent = page.getByRole("button", {
       name: /agronomist|agronome/i,

@@ -161,7 +161,9 @@ test.describe("Demo Finance Page", () => {
   }) => {
     await demoFinancePage.goto("en");
 
-    await expect(page.getByText(/XOF/).first()).toBeVisible();
+    // The XOF currency renders with the colloquial "FCFA" symbol (see lib/currency.ts).
+    // Either the ISO code "XOF" or the symbol "FCFA" indicates the right format.
+    await expect(page.getByText(/FCFA|XOF/).first()).toBeVisible();
   });
 });
 

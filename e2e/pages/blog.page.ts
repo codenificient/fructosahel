@@ -167,7 +167,13 @@ export class ContactPage extends BasePage {
     this.emailInput = page.locator("#email");
     this.subjectInput = page.locator("#subject");
     this.messageTextarea = page.locator("#message");
-    this.submitButton = page.getByRole("button", { name: /submit|envoyer/i });
+    // The contact form submit button is labelled by the i18n key
+    // contact.form.submit ("Send Message" in EN, "Envoyer le Message" in FR).
+    // Match either localisation while keeping the previous fallback patterns
+    // in case the copy is tweaked again.
+    this.submitButton = page.getByRole("button", {
+      name: /send message|envoyer( le)? message|submit|envoyer/i,
+    });
     this.contactInfoCard = page
       .locator('[class*="card"]')
       .filter({ hasText: /contact information|informations de contact/i });

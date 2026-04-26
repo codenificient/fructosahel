@@ -191,8 +191,11 @@ test.describe("Public Pages", () => {
       await page.waitForURL("**/about");
       expect(page.url()).toContain("/about");
 
-      // Go to Blog from About
-      await page.getByRole("link", { name: "Blog" }).first().click();
+      // Go to Blog from About. The English nav label is "Knowledge Base".
+      await page
+        .getByRole("link", { name: "Knowledge Base" })
+        .first()
+        .click();
       await page.waitForURL("**/blog");
       expect(page.url()).toContain("/blog");
 
@@ -201,10 +204,11 @@ test.describe("Public Pages", () => {
       await page.waitForURL("**/contact");
       expect(page.url()).toContain("/contact");
 
-      // Return to Home
+      // Return to Home. With next-intl localePrefix="as-needed", the default
+      // locale (en) is rendered without a prefix, so the home link points to "/".
       await page.getByRole("link", { name: "Home" }).first().click();
-      await page.waitForURL("**/en");
-      expect(page.url()).toMatch(/\/en\/?$/);
+      await page.waitForURL((url) => /\/(en\/?)?$/.test(url.pathname));
+      expect(page.url()).toMatch(/\/(en\/?)?$/);
     });
   });
 });
