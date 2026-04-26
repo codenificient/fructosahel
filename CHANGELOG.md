@@ -1,3 +1,9 @@
+## [1.16.1](https://github.com/codenificient/fructosahel/compare/v1.16.0...v1.16.1) (2026-04-26)
+
+### Bug Fixes
+
+* **e2e:** resolve 14 pre-existing Playwright test failures ([#51](https://github.com/codenificient/fructosahel/issues/51)) ([986ff36](https://github.com/codenificient/fructosahel/commit/986ff3631500f0d97546ec8caef39266d3ac3a3c))
+
 ## [1.16.0](https://github.com/codenificient/fructosahel/compare/v1.15.2...v1.16.0) (2026-04-25)
 
 ### Features
