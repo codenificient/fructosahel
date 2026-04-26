@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.7
 ARG NODE_VERSION=22-alpine
 
-FROM node:${NODE_VERSION} AS builder
+FROM public.ecr.aws/docker/library/node:${NODE_VERSION} AS builder
 RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 COPY . .
@@ -19,7 +19,7 @@ RUN if [ -f bun.lock ]; then npm install -g bun@1.2.17 && bun install; \
 RUN if [ -f bun.lock ]; then bun run build; else npm run build; fi
 RUN mkdir -p /app/public
 
-FROM node:${NODE_VERSION} AS runner
+FROM public.ecr.aws/docker/library/node:${NODE_VERSION} AS runner
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
