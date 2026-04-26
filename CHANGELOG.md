@@ -1,3 +1,9 @@
+## [1.16.3](https://github.com/afrotomation/fructosahel/compare/v1.16.2...v1.16.3) (2026-04-26)
+
+### Bug Fixes
+
+* **docker:** copy drizzle-orm + pg deps explicitly to runner stage ([54c5d72](https://github.com/afrotomation/fructosahel/commit/54c5d72eeeb3677928a04b6491b3fedc7a4cfe7f)), closes [#37](https://github.com/afrotomation/fructosahel/issues/37)
+
 ## [1.16.2](https://github.com/afrotomation/fructosahel/compare/v1.16.1...v1.16.2) (2026-04-26)
 
 ### Bug Fixes
