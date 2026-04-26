@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.0",
-    "@codenificient/analytics-sdk": "^1.0.0",
+    "@codenificient/analytics-sdk": "^2.0.0",
     "@hookform/resolvers": "^5.2.2",
     "@neondatabase/auth": "^0.1.0-beta.21",
     "@neondatabase/serverless": "^1.0.2",
