@@ -1,3 +1,9 @@
+## [1.16.4](https://github.com/afrotomation/fructosahel/compare/v1.16.3...v1.16.4) (2026-04-26)
+
+### Bug Fixes
+
+* **docker:** Switch base images to public.ecr.aws (no Docker Hub rate limit) ([7b0c1d1](https://github.com/afrotomation/fructosahel/commit/7b0c1d142d02eac2d5363c6248272d741789e691))
+
 ## [1.16.3](https://github.com/afrotomation/fructosahel/compare/v1.16.2...v1.16.3) (2026-04-26)
 
 ### Bug Fixes
