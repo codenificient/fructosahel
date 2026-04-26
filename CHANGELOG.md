@@ -1,3 +1,9 @@
+## [1.16.2](https://github.com/afrotomation/fructosahel/compare/v1.16.1...v1.16.2) (2026-04-26)
+
+### Bug Fixes
+
+* **ci:** point semantic-release at afrotomation org URL ([7060eff](https://github.com/afrotomation/fructosahel/commit/7060eff4dd84630d8a654bc577d1211bbdb5a91f))
+
 ## [1.16.1](https://github.com/codenificient/fructosahel/compare/v1.16.0...v1.16.1) (2026-04-26)
 
 ### Bug Fixes
