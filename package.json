@@ -24,7 +24,7 @@
     "db:seed": "bun run lib/db/seed.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.71.0",
+    "@anthropic-ai/sdk": "^0.91.1",
     "@codenificient/analytics-sdk": "^1.0.0",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.15",
