@@ -8,7 +8,7 @@
  *   DATABASE_URL="..." npx tsx scripts/seed.ts
  */
 
-import { Pool } from "@neondatabase/serverless";
+import { Pool } from "pg";
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL as string,
