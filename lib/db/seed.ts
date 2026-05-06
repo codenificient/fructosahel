@@ -5,8 +5,8 @@
  * Run with: bun run db:seed
  */
 
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { Pool } from "pg";
+import { drizzle } from "drizzle-orm/node-postgres";
 import * as dotenv from "dotenv";
 import * as schema from "./schema";
 
@@ -19,8 +19,8 @@ if (!connectionString) {
   process.exit(1);
 }
 
-const sql = neon(connectionString);
-const db = drizzle(sql, { schema });
+const pool = new Pool({ connectionString });
+const db = drizzle(pool, { schema });
 
 async function seed() {
   console.log("Seeding database...\n");
