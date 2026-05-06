@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.0",
-    "@codenificient/analytics-sdk": "^1.0.0",
+    "@codenificient/analytics-sdk": "^2.0.0",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-avatar": "^1.1.11",
