@@ -1,11 +1,12 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "fructosahel",
       "dependencies": {
         "@anthropic-ai/sdk": "^0.71.0",
-        "@codenificient/analytics-sdk": "^1.0.0",
+        "@codenificient/analytics-sdk": "^2.0.0",
         "@hookform/resolvers": "^5.2.2",
         "@radix-ui/react-alert-dialog": "^1.1.15",
         "@radix-ui/react-avatar": "^1.1.11",
@@ -175,7 +176,7 @@
 
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.2.0", "", { "os": "win32", "cpu": "x64" }, "sha512-Nawu5nHjP/zPKTIryh2AavzTc/KEg4um/MxWdXW0A6P/RZOyIpa7+QSjeXwAwX/utJGaCoXRPWtF3m5U/bB3Ww=="],
 
-    "@codenificient/analytics-sdk": ["@codenificient/analytics-sdk@1.1.0", "", { "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-2cGeU2YbaCk8xgokeEhyid6mLQ8JWd/fD053bwX1rfyLNsvPbq1OBiD5ljTSxM+2KCU9aNNwe3wAuIF3mwkoGg=="],
+    "@codenificient/analytics-sdk": ["@codenificient/analytics-sdk@2.0.0", "", { "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-CwpoyNcbWNtZRHB3mLrLncI4mNycBLdPPeajr415mNos61RurpMgMyVhyeVdOCWl+FMC2r/Vir7FW4glgnkrwg=="],
 
     "@colors/colors": ["@colors/colors@1.5.0", "", {}, "sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ=="],
 
